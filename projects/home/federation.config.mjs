@@ -1,6 +1,7 @@
 import {
   withNativeFederation,
   fromPackageJson,
+  mappingsFromWorkspace
 } from '@angular-architects/native-federation/config';
 
 export default withNativeFederation({
@@ -9,6 +10,11 @@ export default withNativeFederation({
   exposes: {
     './Component': './projects/home/src/app/app.ts',
   },
+
+  sharedMappings: mappingsFromWorkspace({
+  singleton: true,
+  strictVersion: true, 
+}).filter(['shared-auth']).get(),
 
   shared: fromPackageJson({
     singleton: true,

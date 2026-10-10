@@ -11,6 +11,10 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "paths": {
+      "shared-auth": ["./dist/shared-auth"],
+      "shared-ui": ["./dist/shared-ui"]
+    },
     "target": "ES2022",
     "module": "preserve"
   },
@@ -32,6 +36,30 @@
     },
     {
       "path": "./projects/home/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/vixi/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/vixi/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/vixi/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/vixi/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/shared-ui/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/shared-ui/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/shared-auth/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/shared-auth/tsconfig.spec.json"
     }
   ]
 }

@@ -96,7 +96,8 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4200
+            "port": 4301,
+            "host": "0.0.0.0"
           }
         }
       }
@@ -190,7 +191,155 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4201
+            "port": 4302,
+            "host": "0.0.0.0"
+          }
+        }
+      }
+    },
+    "vixi": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/vixi",
+      "sourceRoot": "projects/vixi/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "cacheExternalArtifacts": true,
+            "tsConfig": "projects/vixi/tsconfig.federation.json"
+          },
+          "configurations": {
+            "production": {
+              "target": "vixi:esbuild:production"
+            },
+            "development": {
+              "target": "vixi:esbuild:development",
+              "dev": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "vixi:serve-original:development",
+            "tsConfig": "projects/vixi/tsconfig.federation.json",
+            "rebuildDelay": 500,
+            "cacheExternalArtifacts": true,
+            "dev": true,
+            "devServer": true,
+            "port": 0
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        },
+        "esbuild": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/vixi/src/main.ts",
+            "tsConfig": "projects/vixi/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/vixi/public"
+              }
+            ],
+            "styles": ["projects/vixi/src/styles.css"],
+            "polyfills": ["es-module-shims"]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-original": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "vixi:esbuild:production"
+            },
+            "development": {
+              "buildTarget": "vixi:esbuild:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4303,
+            "host": "0.0.0.0"
+          }
+        }
+      }
+    },
+    "shared-ui": {
+      "projectType": "library",
+      "root": "projects/shared-ui",
+      "sourceRoot": "projects/shared-ui/src",
+      "prefix": "sivaxi",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/shared-ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/shared-ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/shared-ui/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "shared-auth": {
+      "projectType": "library",
+      "root": "projects/shared-auth",
+      "sourceRoot": "projects/shared-auth/src",
+      "prefix": "sivaxi",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/shared-auth/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/shared-auth/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/shared-auth/tsconfig.spec.json"
           }
         }
       }

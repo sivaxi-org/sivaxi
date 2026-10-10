@@ -1,0 +1,31 @@
+http:
+  routers:
+    sivaxi-shell:
+      rule: "Host(`sivaxi.localhost`)"
+      entryPoints:
+        - web
+      service: shell-service
+    sivaxi-home:
+      rule: "Host(`home.localhost`)"
+      entryPoints:
+        - web
+      service: home-service
+    sivaxi-vixi:
+      rule: "Host(`vixi.localhost`)"
+      entryPoints:
+        - web
+      service: vixi-service
+
+  services:
+    shell-service:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:4301"
+    home-service:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:4302"
+    vixi-service:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:4303"

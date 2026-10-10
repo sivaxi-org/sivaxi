@@ -1,5 +1,7 @@
-import { Component, signal } from '@angular/core';
+
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from 'shared-auth';
 
 @Component({
   imports: [RouterOutlet],
@@ -9,4 +11,6 @@ import { RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('home');
+  protected readonly auth = inject(AuthService);
 }
+
