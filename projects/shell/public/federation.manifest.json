@@ -1,4 +1,4 @@
 {
-  "vixi": "http://localhost:4200/remoteEntry.json",
-  "portfolio": "http://localhost:4200/remoteEntry.json"
+ "vixi": "http://vixi.localhost:4200/remoteEntry.json",
+  "portfolio": "http://portfolio.localhost:4200/remoteEntry.json"
 }

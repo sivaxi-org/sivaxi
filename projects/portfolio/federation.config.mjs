@@ -7,7 +7,9 @@ export default withNativeFederation({
   name: 'portfolio',
 
   exposes: {
-    './Component': './projects/portfolio/src/app/app.ts',
+
+      './Component': './projects/portfolio/src/app/app.ts',
+  './Routes': './projects/portfolio/src/app/app.routes.ts',
   },
 
   shared: fromPackageJson({

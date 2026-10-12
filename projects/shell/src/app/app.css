@@ -1,0 +1,45 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  color: #171717;
+  background: #f8fafc;
+}
+
+.shell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 7%;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.brand {
+  color: #111827;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+nav a {
+  color: #4b5563;
+  text-decoration: none;
+}
+
+nav a.active,
+nav a:hover {
+  color: #111827;
+  font-weight: 600;
+}
+
+.shell-content {
+  padding: 32px 7%;
+}
