@@ -1,10 +1,14 @@
 
 import { Routes } from '@angular/router';
-import { App } from './app';
+import { Home } from './features/home/home';
+import {authGuard} from 'shared'
 
 export const routes: Routes = [
+
   {
-    path: '',
-    component: App,
-  },
+    path: "home",
+    canActivate: [authGuard],
+    component: Home
+  }
+
 ];

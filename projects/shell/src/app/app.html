@@ -1,12 +1,161 @@
-<header class="shell-header">
-  <a class="brand" routerLink="/">SIVAXI</a>
 
-  <nav aria-label="Main navigation">
-    <a routerLink="/vixi" routerLinkActive="active">Vixi AI</a>
-    <a routerLink="/portfolio" routerLinkActive="active">Portfolio</a>
+<header class="site-header">
+  <a class="brand" href="/" aria-label="Sivaxi home">
+    <span class="brand-mark">S</span>
+    <span class="brand-name">SIVAXI</span>
+  </a>
+
+  <nav class="main-nav" aria-label="Main navigation">
+    <a href="#technology">Technology</a>
+    <a href="#products">Products</a>
+    <a href="#about">About</a>
   </nav>
+
+  <a class="header-cta" href="#products">
+    Explore Sivaxi <span aria-hidden="true">↗</span>
+  </a>
 </header>
 
-<main class="shell-content">
-  <router-outlet />
+<main>
+  <section class="hero" id="about">
+    <div class="hero-copy">
+      <div class="eyebrow">
+        <span class="status-dot"></span>
+        INDEPENDENT THINKING. CONNECTED TECHNOLOGY.
+      </div>
+
+      <h1>
+        Engineering<br />
+        <span class="headline-muted">what comes</span><br />
+        <span class="headline-accent">next.</span>
+      </h1>
+
+      <p class="hero-description">
+        We build software, intelligent systems, and the infrastructure
+        that brings ambitious ideas to life.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button button-primary" href="#products">
+          Discover our work <span aria-hidden="true">↗</span>
+        </a>
+        <a class="button button-secondary" href="#technology">
+          What we build
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-art" aria-label="Abstract geometric brand artwork">
+      <div class="art-orbit orbit-one"></div>
+      <div class="art-orbit orbit-two"></div>
+      <div class="art-orbit orbit-three"></div>
+      <div class="art-core">
+        <span>S</span>
+      </div>
+      <span class="art-label label-top">SYSTEMS / 001</span>
+      <span class="art-label label-bottom">BUILT TO CONNECT</span>
+      <span class="art-coordinate">22° / ∞</span>
+    </div>
+
+    <div class="hero-index">
+      <span>01</span>
+      <span class="index-line"></span>
+      <span>BUILDING THE FUTURE, PRACTICALLY</span>
+    </div>
+  </section>
+
+  <section class="intro-strip" id="technology">
+    <p>ONE ENGINEERING MINDSET.</p>
+    <div class="strip-divider"></div>
+    <p>MULTIPLE DOMAINS.</p>
+    <div class="strip-divider"></div>
+    <p>REAL-WORLD SYSTEMS.</p>
+  </section>
+
+  <section class="products-section" id="products">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">THE SIVAXI ECOSYSTEM</div>
+        <h2>Technology with purpose.</h2>
+      </div>
+      <p>
+        From dependable backend systems to emerging AI experiences,
+        each project solves a different part of the puzzle.
+      </p>
+    </div>
+
+    <div class="product-grid">
+      <a class="product-card" href="http://vixi.localhost:4200">
+        <div class="card-topline">
+          <span class="product-icon">✳</span>
+          <span class="card-number">PRODUCT / 01</span>
+          <span class="card-arrow">↗</span>
+        </div>
+        <div class="card-content">
+          <h3>Vixi AI</h3>
+          <p>
+            Intelligent assistance and agentic workflows designed
+            to turn ideas into useful outcomes.
+          </p>
+        </div>
+        <div class="card-tags">
+          <span>GenAI</span><span>Agents</span><span>Automation</span>
+        </div>
+      </a>
+
+      <a class="product-card" href="http://portfolio.localhost:4200">
+        <div class="card-topline">
+          <span class="product-icon">⌘</span>
+          <span class="card-number">PLATFORM / 02</span>
+          <span class="card-arrow">↗</span>
+        </div>
+        <div class="card-content">
+          <h3>Engineering Portfolio</h3>
+          <p>
+            A home for software projects, engineering experiments,
+            and the systems behind them.
+          </p>
+        </div>
+        <div class="card-tags">
+          <span>Backend</span><span>Cloud</span><span>DevOps</span>
+        </div>
+      </a>
+
+      <article class="product-card future-card">
+        <div class="card-topline">
+          <span class="product-icon">⌁</span>
+          <span class="card-number">IN DEVELOPMENT / 03</span>
+        </div>
+        <div class="card-content">
+          <h3>What comes next</h3>
+          <p>
+            Exploring tools, infrastructure, and new ways to build
+            dependable software.
+          </p>
+        </div>
+        <div class="card-tags">
+          <span>Research</span><span>Systems</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="technology-section">
+    <div class="eyebrow">OUR ENGINEERING RANGE</div>
+    <h2>Different technologies.<br />One thoughtful approach.</h2>
+    <div class="technology-list">
+      <div><span>01</span><strong>Software engineering</strong><span>APIs · Distributed systems</span></div>
+      <div><span>02</span><strong>Intelligent applications</strong><span>GenAI · Agentic AI</span></div>
+      <div><span>03</span><strong>Infrastructure & delivery</strong><span>Cloud · DevOps · Observability</span></div>
+    </div>
+  </section>
 </main>
+
+<footer class="site-footer">
+  <a class="brand footer-brand" href="/">
+    <span class="brand-mark">S</span>
+    <span class="brand-name">SIVAXI</span>
+  </a>
+  <p>Thoughtfully engineered. Built for what's next.</p>
+  <span>© SIVAXI</span>
+</footer>
