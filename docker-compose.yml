@@ -1,0 +1,87 @@
+
+services:
+  # Reverse proxy
+  traefik:
+    image: traefik:v3
+    container_name: sivaxi-traefik
+    restart: unless-stopped
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=sivaxi
+      - --entrypoints.web.address=:4200
+      - --api.dashboard=false
+    ports:
+      - "4200:4200"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - sivaxi
+
+  # Main shell
+  shell:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    working_dir: /workspace
+    command: npx ng serve shell --host 0.0.0.0 --port 4200 --poll 1000
+    volumes:
+      - .:/workspace
+      - node_modules:/workspace/node_modules
+    expose:
+      - "4200"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.shell.rule=Host(`localhost`)
+      - traefik.http.routers.shell.entrypoints=web
+      - traefik.http.services.shell.loadbalancer.server.port=4200
+    networks:
+      - sivaxi
+
+  # Vixi frontend
+  vixi:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    working_dir: /workspace
+    command: npx ng serve vixi --host 0.0.0.0 --port 4200 --poll 1000
+    volumes:
+      - .:/workspace
+      - node_modules:/workspace/node_modules
+    expose:
+      - "4200"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.vixi.rule=Host(`vixi.localhost`)
+      - traefik.http.routers.vixi.entrypoints=web
+      - traefik.http.services.vixi.loadbalancer.server.port=4200
+    networks:
+      - sivaxi
+
+  # Portfolio frontend
+  portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    working_dir: /workspace
+    command: npx ng serve portfolio --host 0.0.0.0 --port 4200 --poll 1000
+    volumes:
+      - .:/workspace
+      - node_modules:/workspace/node_modules
+    expose:
+      - "4200"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.portfolio.rule=Host(`portfolio.localhost`)
+      - traefik.http.routers.portfolio.entrypoints=web
+      - traefik.http.services.portfolio.loadbalancer.server.port=4200
+    networks:
+      - sivaxi
+
+networks:
+  sivaxi:
+    name: sivaxi
+
+volumes:
+  node_modules:
+    name: sivaxi_node_modules

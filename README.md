@@ -1,59 +1,201 @@
-# Sivaxi
+# Sivaxi Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.5.
+Sivaxi is a multi-application Angular workspace designed to support independently developed frontend applications using a Micro-Frontend (MFE) architecture.
 
-## Development server
+The workspace uses Docker Compose for local development and Traefik for hostname-based routing. Angular applications are planned to integrate through Native Federation.
 
-To start a local development server, run:
+## Architecture
 
-```bash
-ng serve
+### Applications
+
+| Application | Role | Local URL |
+|---|---|---|
+| Shell | Host application and shared Sivaxi layout | http://localhost:4200 |
+| Vixi | AI assistant application | http://vixi.localhost:4200 |
+| Portfolio | Portfolio and engineering projects | http://portfolio.localhost:4200 |
+
+### Technology Stack
+
+- Angular 22
+- TypeScript
+- Native Federation — Angular Architects
+- Node.js 24
+- npm
+- Docker and Docker Compose
+- Traefik v3
+
+## Project Structure
+
+```text
+sivaxi/
+├── projects/
+│   ├── shell/
+│   ├── vixi/
+│   └── portfolio/
+├── Dockerfile.dev
+├── compose.yaml
+├── package.json
+├── package-lock.json
+└── README.md
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The exact application configuration files may vary as federation setup progresses.
 
-## Code scaffolding
+## Prerequisites
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Install the following tools:
 
-```bash
-ng generate component component-name
-```
+- Node.js 24 or a compatible supported version
+- npm
+- Docker Engine
+- Docker Compose
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The existing development environment uses Node.js 24 and npm.
 
-```bash
-ng generate --help
-```
+## Getting Started
 
-## Building
-
-To build the project run:
+### 1. Clone or open the workspace
 
 ```bash
-ng build
+cd ~/Desktop/sivaxi
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### 2. Start the development environment
 
 ```bash
-ng test
+docker compose up --build
 ```
 
-## Running end-to-end tests
+Docker Compose starts the following services:
 
-For end-to-end (e2e) testing, run:
+- Traefik reverse proxy
+- Shell Angular application
+- Vixi Angular application
+- Portfolio Angular application
+
+Open the applications in a browser using the URLs listed above.
+
+### 3. Run in the background
 
 ```bash
-ng e2e
+docker compose up -d
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### 4. View logs
 
-## Additional Resources
+```bash
+docker compose logs -f
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+To view logs for an individual service:
+
+```bash
+docker compose logs -f shell
+docker compose logs -f vixi
+docker compose logs -f portfolio
+```
+
+### 5. Stop the environment
+
+```bash
+docker compose down
+```
+
+Stopping the containers does not delete the source code.
+
+## Routing
+
+Traefik routes incoming HTTP requests according to the hostname:
+
+| Hostname | Destination |
+|---|---|
+| `localhost` | Shell |
+| `vixi.localhost` | Vixi |
+| `portfolio.localhost` | Portfolio |
+
+All three applications use port `4200` inside their respective containers. Traefik exposes port `4200` on the host.
+
+The `.localhost` hostnames are intended for local development and generally require no additional DNS configuration.
+
+## Micro-Frontend Design
+
+The intended integration model is:
+
+```text
+                    Browser
+                       |
+                    Traefik
+                       |
+                     Shell
+                    /     \
+               Vixi       Portfolio
+               Remote      Remote
+```
+
+### Shell — Host
+
+Responsibilities:
+
+- Provide the common Sivaxi layout and navigation.
+- Load remote applications through Native Federation.
+- Compose application routes.
+- Potentially manage shared UI components and cross-application navigation.
+
+### Vixi — Remote
+
+Responsibilities:
+
+- Own the Vixi application features and routes.
+- Maintain its own application code.
+- Expose selected routes or modules for Shell to load.
+
+### Portfolio — Remote
+
+Responsibilities:
+
+- Own portfolio pages and project-related features.
+- Maintain its own application code.
+- Expose selected routes or modules for Shell to load.
+
+Each remote should keep clear feature boundaries rather than placing all application logic inside Shell.
+
+## Federation Implementation Plan
+
+1. Configure Shell as the dynamic federation host.
+2. Configure Vixi as a federation remote.
+3. Configure Portfolio as a federation remote.
+4. Register remote entry points in the host's remote configuration.
+5. Load remote routes or modules from Shell.
+6. Configure compatible shared dependencies where appropriate.
+7. Verify integrated navigation and independent remote development.
+
+Federation configuration and application integration are still in progress. The initial Docker and hostname-routing setup has already been confirmed working.
+
+## Development Guidelines
+
+- Keep each application's features inside its own project.
+- Avoid unnecessary coupling between Shell and remote applications.
+- Share dependencies only when there is a clear benefit.
+- Keep Docker Compose responsible for local service orchestration.
+- Keep Traefik responsible for local hostname routing.
+- Prefer small, focused changes and avoid unnecessary testing.
+- Update this README when the federation configuration and deployment workflow change.
+
+## Current Status
+
+- [x] Angular workspace created.
+- [x] Shell, Vixi and Portfolio applications created.
+- [x] Docker Compose development environment configured.
+- [x] Traefik hostname routing working locally.
+- [x] Module Federation architecture selected.
+- [ ] Native Federation host configuration.
+- [ ] Vixi remote configuration.
+- [ ] Portfolio remote configuration.
+- [ ] Remote integration into Shell.
+- [ ] Production build and deployment configuration.
+
+## Future Deployment
+
+The local Docker setup is intended for development. Production deployment will require configuring the host and remote entry URLs for their deployed environments, ensuring remote assets are reachable, and defining an appropriate versioning and release strategy.
+
+Production hosting and deployment details will be documented when the deployment architecture is finalized.
