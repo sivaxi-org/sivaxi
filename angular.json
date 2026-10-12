@@ -156,6 +156,35 @@
       "prefix": "app",
       "architect": {
         "build": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "cacheExternalArtifacts": true,
+            "tsConfig": "projects/vixi/tsconfig.federation.json"
+          },
+          "configurations": {
+            "production": {
+              "target": "vixi:esbuild:production"
+            },
+            "development": {
+              "target": "vixi:esbuild:development",
+              "dev": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "vixi:serve-original:development",
+            "tsConfig": "projects/vixi/tsconfig.federation.json",
+            "rebuildDelay": 500,
+            "cacheExternalArtifacts": true,
+            "dev": true,
+            "devServer": true,
+            "port": 0
+          }
+        },
+        "esbuild": {
           "builder": "@angular/build:application",
           "options": {
             "browser": "projects/vixi/src/main.ts",
@@ -166,7 +195,8 @@
                 "input": "projects/vixi/public"
               }
             ],
-            "styles": ["projects/vixi/src/styles.css"]
+            "styles": ["projects/vixi/src/styles.css"],
+            "polyfills": ["es-module-shims"]
           },
           "configurations": {
             "production": {
@@ -192,17 +222,20 @@
           },
           "defaultConfiguration": "production"
         },
-        "serve": {
+        "serve-original": {
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "vixi:build:production"
+              "buildTarget": "vixi:esbuild:production"
             },
             "development": {
-              "buildTarget": "vixi:build:development"
+              "buildTarget": "vixi:esbuild:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4200
+          }
         }
       }
     },
@@ -239,6 +272,35 @@
       "prefix": "app",
       "architect": {
         "build": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "cacheExternalArtifacts": true,
+            "tsConfig": "projects/portfolio/tsconfig.federation.json"
+          },
+          "configurations": {
+            "production": {
+              "target": "portfolio:esbuild:production"
+            },
+            "development": {
+              "target": "portfolio:esbuild:development",
+              "dev": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "portfolio:serve-original:development",
+            "tsConfig": "projects/portfolio/tsconfig.federation.json",
+            "rebuildDelay": 500,
+            "cacheExternalArtifacts": true,
+            "dev": true,
+            "devServer": true,
+            "port": 0
+          }
+        },
+        "esbuild": {
           "builder": "@angular/build:application",
           "options": {
             "browser": "projects/portfolio/src/main.ts",
@@ -249,7 +311,8 @@
                 "input": "projects/portfolio/public"
               }
             ],
-            "styles": ["projects/portfolio/src/styles.css"]
+            "styles": ["projects/portfolio/src/styles.css"],
+            "polyfills": ["es-module-shims"]
           },
           "configurations": {
             "production": {
@@ -275,17 +338,20 @@
           },
           "defaultConfiguration": "production"
         },
-        "serve": {
+        "serve-original": {
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "portfolio:build:production"
+              "buildTarget": "portfolio:esbuild:production"
             },
             "development": {
-              "buildTarget": "portfolio:build:development"
+              "buildTarget": "portfolio:esbuild:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4200
+          }
         }
       }
     }
