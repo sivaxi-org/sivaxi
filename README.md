@@ -1,8 +1,11 @@
+
 # Sivaxi Frontend
 
-Sivaxi is a multi-application Angular workspace designed to support independently developed frontend applications using a Micro-Frontend (MFE) architecture.
+Sivaxi is a multi-application Angular workspace designed to support independently developed frontend applications through a Micro-Frontend (MFE) architecture.
 
 The workspace uses Docker Compose for local development, Traefik for hostname-based routing, and Native Federation for integrating Angular applications.
+
+The Shell provides the shared Sivaxi landing page and navigation, while Vixi and Portfolio remain independently developed applications.
 
 ## Architecture
 
@@ -10,7 +13,7 @@ The workspace uses Docker Compose for local development, Traefik for hostname-ba
 
 | Application | Role | Local URL |
 |---|---|---|
-| Shell | Host application and shared Sivaxi layout | http://localhost:4200 |
+| Shell | Sivaxi landing page, shared layout, and MFE host | http://localhost:4200 |
 | Vixi | AI assistant application | http://vixi.localhost:4200 |
 | Portfolio | Portfolio and engineering projects | http://portfolio.localhost:4200 |
 
@@ -23,6 +26,7 @@ The workspace uses Docker Compose for local development, Traefik for hostname-ba
 - npm
 - Docker and Docker Compose
 - Traefik v3
+- Tailwind CSS for the Shell landing page styling
 
 ## Project Structure
 
@@ -34,6 +38,19 @@ sivaxi/
 │   │   │   └── federation.manifest.json
 │   │   ├── src/
 │   │   │   └── app/
+│   │   │       ├── home/
+│   │   │       │   ├── home.ts
+│   │   │       │   ├── home.html
+│   │   │       │   └── components/
+│   │   │       │       ├── site-header/
+│   │   │       │       ├── hero-section/
+│   │   │       │       ├── engineering-principles/
+│   │   │       │       ├── products-section/
+│   │   │       │       ├── technology-section/
+│   │   │       │       └── site-footer/
+│   │   │       ├── app.ts
+│   │   │       ├── app.html
+│   │   │       ├── app.config.ts
 │   │   │       └── app.routes.ts
 │   │   └── federation.config.mjs
 │   ├── vixi/
@@ -55,7 +72,7 @@ sivaxi/
 └── README.md
 ```
 
-*Note: The structure above highlights the files relevant to the current federation setup. Other workspace configuration files are omitted.*
+*Note: This tree highlights the files relevant to the current frontend and federation setup. Other workspace configuration files are omitted.*
 
 ## Prerequisites
 
@@ -66,7 +83,7 @@ Install the following tools:
 - Docker Engine
 - Docker Compose
 
-The existing development environment uses Node.js 24 and npm.
+The current development environment uses Node.js 24 and npm.
 
 ## Getting Started
 
@@ -89,7 +106,7 @@ Docker Compose starts the following services:
 - Vixi Angular application
 - Portfolio Angular application
 
-Open the applications in your browser using the URLs listed above.
+Open the applications using the local URLs listed in the Architecture section.
 
 ### 3. Run in the background
 
@@ -99,11 +116,13 @@ docker compose up -d
 
 ### 4. View logs
 
+View logs for all services:
+
 ```bash
 docker compose logs -f
 ```
 
-To view logs for an individual service:
+View logs for an individual service:
 
 ```bash
 docker compose logs -f shell
@@ -113,13 +132,15 @@ docker compose logs -f portfolio
 
 ### 5. Restart a service
 
-If a remote's federation configuration changes but its exposed-module metadata appears stale, restart that service:
+If federation configuration changes but exposed-module metadata appears stale, restart the affected service:
 
 ```bash
 docker compose restart portfolio
 ```
 
-Use `vixi` or `shell` instead when restarting those services. A restart may be needed after certain configuration changes; ordinary source edits should generally trigger automatic rebuilds.
+Use `vixi` or `shell` when restarting those services instead.
+
+Ordinary source edits should generally trigger automatic rebuilds. Some configuration changes may require a service restart.
 
 ### 6. Stop the environment
 
@@ -131,7 +152,7 @@ Stopping the containers does not delete the source code.
 
 ## Routing
 
-Traefik routes incoming HTTP requests according to the hostname:
+Traefik routes incoming HTTP requests according to the hostname.
 
 | Hostname | Destination |
 |---|---|
@@ -143,32 +164,93 @@ All three Angular development servers use port `4200` inside their respective co
 
 The `.localhost` hostnames are intended for local development and generally require no additional DNS configuration.
 
+### Shell navigation
+
+The Shell also provides application-level routes:
+
+| Shell route | Destination |
+|---|---|
+| `/` | Sivaxi landing page |
+| `/vixi` | Vixi remote |
+| `/portfolio` | Portfolio remote |
+
+These paths are handled by Angular Router inside the Shell. They are distinct from the standalone remote hostnames managed by Traefik.
+
+## Sivaxi Landing Page
+
+The Shell contains the main Sivaxi landing page. Its sections are implemented as focused standalone Angular components to keep the page maintainable and make future changes easier.
+
+### Component Structure
+
+| Component | Responsibility |
+|---|---|
+| `SiteHeader` | Sivaxi branding and primary navigation |
+| `HeroSection` | Main introduction, messaging, and calls to action |
+| `EngineeringPrinciples` | Engineering philosophy and guiding principles |
+| `ProductsSection` | Vixi AI, Engineering Portfolio, and future projects |
+| `TechnologySection` | Software engineering, AI, infrastructure, and connected systems |
+| `SiteFooter` | Brand information, GitHub link, and copyright |
+
+The `Home` component composes these sections in page order.
+
+### Home Composition
+
+The intended page composition is:
+
+```html
+<app-site-header />
+
+<main>
+  <app-hero-section />
+  <app-engineering-principles />
+  <app-products-section />
+  <app-technology-section />
+</main>
+
+<app-site-footer />
+```
+
+Each section owns its own template and can be updated without placing the entire landing page in a single HTML file.
+
+### Styling
+
+The landing page uses Tailwind CSS utility classes alongside shared Sivaxi theme variables and custom artwork styles.
+
+The current brand accent is Mineral Jade (`#3D8C78`).
+
+Shared styling should remain in the existing global stylesheet where appropriate, particularly styles for the abstract hero artwork, theme variables, and common design elements.
+
+Navigation anchors should use unique section IDs to avoid ambiguous in-page navigation.
+
 ## Micro-Frontend Design
 
 ```text
                          Browser
                             |
                          Traefik
-                            |
-                          Shell
-                      (Host Application)
-                        /         \
-                       /           \
-                    Vixi          Portfolio
-                  (Remote)         (Remote)
-                       \           /
-                  Native Federation
+                   /         |          \
+                  /          |           \
+               Shell        Vixi       Portfolio
+              (Host)       (Remote)     (Remote)
+                |
+         Sivaxi Landing Page
+                |
+       Native Federation
+         /           \
+      Vixi          Portfolio
+    (Routes)         (Routes)
 ```
 
 ### Shell — Host
 
 Responsibilities:
 
-- Provide the common Sivaxi layout and navigation.
+- Provide the shared Sivaxi landing page and navigation.
 - Initialize Native Federation using the federation manifest.
 - Register remote entry URLs.
 - Load remote route configurations dynamically.
-- Compose the applications under Shell's routing structure.
+- Compose remote applications under Shell's routing structure.
+- Keep shared layout and navigation separate from remote-specific features.
 
 ### Vixi — Remote
 
@@ -177,6 +259,7 @@ Responsibilities:
 - Own Vixi-specific features and routes.
 - Maintain its own application code.
 - Expose its route configuration for Shell to load.
+- Support independent development within the shared workspace.
 
 ### Portfolio — Remote
 
@@ -185,14 +268,15 @@ Responsibilities:
 - Own portfolio pages and project-related features.
 - Maintain its own application code.
 - Expose its route configuration for Shell to load.
+- Support independent development within the shared workspace.
 
-Each remote maintains its own feature boundaries rather than placing all application logic inside Shell.
+Each remote maintains its own feature boundaries instead of placing all application logic inside Shell.
 
 ## Native Federation Implementation
 
 ### Shell remote manifest
 
-The Shell's `federation.manifest.json` registers the remote entry points:
+The Shell's `federation.manifest.json` registers the remote entry points.
 
 ```json
 {
@@ -201,11 +285,13 @@ The Shell's `federation.manifest.json` registers the remote entry points:
 }
 ```
 
+The URLs above are intended for local development. Production deployments will need the appropriate deployed remote URLs.
+
 ### Remote route exposure
 
 Vixi and Portfolio expose their route configurations through their respective `federation.config.mjs` files.
 
-The current exposure pattern is:
+The exposure pattern for Vixi is:
 
 ```javascript
 exposes: {
@@ -229,19 +315,26 @@ export const routes: Routes = [
 ];
 ```
 
+This is the current intended exposure pattern. Keep the paths aligned with the actual workspace and federation configuration.
+
 ### Shell route loading
 
-Shell loads the remote route configurations using `loadRemoteModule` and `loadChildren`:
+The Shell loads remote route configurations using `loadRemoteModule` and `loadChildren`.
+
+The landing page should be the default route, while the remotes are available through `/vixi` and `/portfolio`.
+
+The following illustrates the intended route structure. Adapt the `Home` import to the actual file and exported class names in the workspace.
 
 ```typescript
 import { Routes } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/native-federation';
+import { Home } from './home/home';
 
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'vixi',
+    component: Home,
   },
   {
     path: 'vixi',
@@ -253,16 +346,10 @@ export const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule('portfolio', './Routes').then((m) => m.routes),
   },
-  {
-    path: '**',
-    redirectTo: 'vixi',
-  },
 ];
 ```
 
-This allows Shell to compose the remote applications through their route configurations.
-
-> The snippets document the current intended configuration. If the files change during subsequent development, keep this README synchronized with the actual workspace.
+This route structure keeps the Sivaxi landing page accessible at the Shell root without removing the integrated remote applications.
 
 ## Docker Development Environment
 
@@ -276,21 +363,29 @@ This allows Shell to compose the remote applications through their route configu
 ## Development Guidelines
 
 - Keep each application's features inside its own project.
+- Keep the Shell landing page separate from remote-specific application logic.
 - Avoid unnecessary coupling between Shell and the remotes.
 - Expose only the routes or modules that other applications need.
 - Share dependencies only when there is a clear benefit.
 - Keep Docker Compose responsible for local service orchestration.
 - Keep Traefik responsible for local hostname routing.
 - Prefer small, focused changes and avoid unnecessary testing.
+- Keep section IDs unique.
+- Preserve existing shared theme variables and artwork styles when refactoring templates.
 - Update this README when federation or deployment configuration changes.
 
 ## Current Status
 
+### Workspace and development environment
+
 - [x] Angular workspace created.
-- [x] Shell, Vixi and Portfolio applications created.
+- [x] Shell, Vixi, and Portfolio applications created.
 - [x] Docker Compose development environment configured.
 - [x] Traefik hostname routing working locally.
 - [x] Native Federation package installed in the development environment.
+
+### Micro-frontend integration
+
 - [x] Shell configured with a remote federation manifest.
 - [x] Vixi route exposure configured.
 - [x] Portfolio route exposure configured.
@@ -298,17 +393,41 @@ This allows Shell to compose the remote applications through their route configu
 - [x] Federation metadata issue resolved by restarting the affected container.
 - [ ] Verify navigation into both remotes from Shell after the latest changes.
 - [ ] Confirm clean browser console output during integrated navigation.
+
+### Sivaxi landing page
+
+- [x] Landing page sections identified and separated into standalone components.
+- [x] Header component created.
+- [x] Hero section component created.
+- [x] Engineering principles component created.
+- [x] Products section component created.
+- [x] Technology section component created.
+- [x] Footer component created.
+- [ ] Confirm all components are connected through `Home`.
+- [ ] Confirm Shell root routing displays the landing page.
+- [ ] Verify responsive layouts and in-page navigation.
+- [ ] Verify product links and remote navigation in the integrated environment.
+
+### Production readiness
+
 - [ ] Production builds and deployment configuration.
 - [ ] Production remote URL and asset configuration.
+- [ ] Dependency compatibility and versioning strategy.
+- [ ] Independent remote deployment and release workflow.
+
+The checkboxes describe the intended development progress and should be updated to match the actual workspace state.
 
 ## Future Deployment
 
-The current Docker setup is intended for local development. Production deployment will require:
+The current Docker setup is intended for local development.
+
+Production deployment will require:
 
 - Configuring the host and remote entry URLs for deployed environments.
 - Ensuring remote assets are reachable from the host application.
 - Defining dependency compatibility and versioning practices.
 - Establishing a deployment and release strategy for independently developed remotes.
 - Verifying production builds and integrated routing.
+- Confirming that routing, refresh behavior, and asset loading work in the production environment.
 
 Production hosting and deployment details will be documented once the deployment architecture is finalized.
