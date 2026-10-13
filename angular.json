@@ -159,7 +159,7 @@
         "build": {
           "builder": "@angular-architects/native-federation:build",
           "options": {
-            "cacheExternalArtifacts": true,
+            "cacheExternalArtifacts": false,
             "tsConfig": "projects/vixi/tsconfig.federation.json"
           },
           "configurations": {
@@ -179,7 +179,7 @@
             "target": "vixi:serve-original:development",
             "tsConfig": "projects/vixi/tsconfig.federation.json",
             "rebuildDelay": 500,
-            "cacheExternalArtifacts": true,
+            "cacheExternalArtifacts": false,
             "dev": true,
             "devServer": true,
             "port": 0
