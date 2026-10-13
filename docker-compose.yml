@@ -1,4 +1,3 @@
-
 services:
   # Reverse proxy
   traefik:
@@ -9,10 +8,10 @@ services:
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --providers.docker.network=sivaxi
-      - --entrypoints.web.address=:4200
+      - --entrypoints.web.address=:80
       - --api.dashboard=false
     ports:
-      - "4200:4200"
+      - "80:80"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
@@ -24,7 +23,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     working_dir: /workspace
-    command: npx ng serve shell --port 4200
+    command: ["npx", "ng", "serve", "shell"]
     volumes:
       - .:/workspace
       - node_modules:/workspace/node_modules
@@ -32,7 +31,7 @@ services:
       - "4200"
     labels:
       - traefik.enable=true
-      - traefik.http.routers.shell.rule=Host(`localhost`)
+      - traefik.http.routers.shell.rule=Host(`shell.sivaxi.test`)
       - traefik.http.routers.shell.entrypoints=web
       - traefik.http.services.shell.loadbalancer.server.port=4200
     networks:
@@ -44,7 +43,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     working_dir: /workspace
-    command: npx ng serve vixi --port 4200
+    command: ["npx", "ng", "serve", "vixi"]
     volumes:
       - .:/workspace
       - node_modules:/workspace/node_modules
@@ -52,7 +51,7 @@ services:
       - "4200"
     labels:
       - traefik.enable=true
-      - traefik.http.routers.vixi.rule=Host(`vixi.localhost`)
+      - traefik.http.routers.vixi.rule=Host(`vixi.sivaxi.test`)
       - traefik.http.routers.vixi.entrypoints=web
       - traefik.http.services.vixi.loadbalancer.server.port=4200
     networks:
@@ -64,7 +63,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     working_dir: /workspace
-    command: npx ng serve portfolio --port 4200
+    command: ["npx", "ng", "serve", "portfolio"]
     volumes:
       - .:/workspace
       - node_modules:/workspace/node_modules
@@ -72,7 +71,7 @@ services:
       - "4200"
     labels:
       - traefik.enable=true
-      - traefik.http.routers.portfolio.rule=Host(`portfolio.localhost`)
+      - traefik.http.routers.portfolio.rule=Host(`portfolio.sivaxi.test`)
       - traefik.http.routers.portfolio.entrypoints=web
       - traefik.http.services.portfolio.loadbalancer.server.port=4200
     networks:
