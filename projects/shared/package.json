@@ -1,0 +1,14 @@
+{
+  "name": "shared",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^22.2.0",
+    "@angular/core": "^22.2.0",
+    "keycloak-angular": "^22.0.0",
+    "keycloak-js": "^26.2.4"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

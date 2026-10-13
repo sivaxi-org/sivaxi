@@ -1,0 +1,38 @@
+/* Sivaxi — shared design tokens */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --sivaxi-accent: #3D8C78;
+  --sivaxi-accent-hover: #4B9F89;
+  --sivaxi-accent-soft: #203D35;
+
+  --sivaxi-bg: #111318;
+  --sivaxi-surface: #1B1D24;
+  --sivaxi-surface-raised: #252630;
+
+  --sivaxi-text: #F4F2ED;
+  --sivaxi-text-muted: #A8A9B2;
+
+  --sivaxi-border: #30313A;
+  --sivaxi-focus: #75B9A5;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --sivaxi-accent: #3D8C78;
+  --sivaxi-accent-hover: #327663;
+  --sivaxi-accent-soft: #E0F0E9;
+
+  --sivaxi-bg: #F7F7F4;
+  --sivaxi-surface: #FFFFFF;
+  --sivaxi-surface-raised: #ECEEEA;
+
+  --sivaxi-text: #202520;
+  --sivaxi-text-muted: #626B66;
+
+  --sivaxi-border: #D9DED9;
+  --sivaxi-focus: #276B59;
+}

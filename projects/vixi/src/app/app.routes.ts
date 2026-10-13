@@ -1,3 +1,12 @@
-import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+import { Routes } from '@angular/router';
+import { Home } from '../features/home/home';
+import { authGuard } from 'shared';
+
+export const routes: Routes = [
+  {
+    path: '',
+    canActivate: [authGuard],
+    component: Home,
+  },
+];
