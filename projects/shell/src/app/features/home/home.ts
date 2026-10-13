@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 
-import { SiteHeader } from './components/site-header/site-header';
+
 import { HeroSection } from './components/hero-section/hero-section';
 import { EngineeringPrinciples } from './components/engineering-principles/engineering-principles';
 import { ProductsSection } from './components/products-section/products-section';
 import { TechnologySection } from './components/technology-section/technology-section';
-import { SiteFooter } from './components/site-footer/site-footer';
+import { SiteFooter } from 'shared';
+import { SiteHeader } from 'shared';
 
 @Component({
   selector: 'app-home',

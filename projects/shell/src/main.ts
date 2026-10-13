@@ -1,12 +1,25 @@
-import('./bootstrap').catch((err) => console.error(err));
+
 import { initFederation } from '@angular-architects/native-federation';
 
-initFederation(
-  {},
-  {
-    hostRemoteEntry: { url: './remoteEntry.json' },
-  },
-)
-  .catch((err) => console.error(err))
+const hostname = window.location.hostname;
+
+const isLocal =
+  hostname.endsWith('.sivaxi.test') ||
+  hostname === 'localhost' ||
+  hostname === '127.0.0.1';
+
+const protocol = isLocal ? 'http' : 'https';
+const domain = isLocal ? 'sivaxi.test' : 'sivaxi.com';
+
+const remotes = {
+  vixi: `${protocol}://vixi.${domain}/remoteEntry.json`,
+  portfolio: `${protocol}://portfolio.${domain}/remoteEntry.json`,
+};
+
+initFederation(remotes, {
+  hostRemoteEntry: { url: './remoteEntry.json' },
+})
   .then(() => import('./bootstrap'))
-  .catch((err) => console.error(err));
+  .catch((error) => {
+    console.error('Failed to initialize Sivaxi federation:', error);
+  });

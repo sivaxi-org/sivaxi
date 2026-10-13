@@ -1,0 +1,56 @@
+
+<header
+  class="flex min-h-20.5 items-center justify-between gap-6 border-b border-(--sivaxi-border) px-[clamp(20px,6vw,88px)] max-[560px]:min-h-[70px] max-[560px]:gap-3 max-[560px]:px-[18px]"
+>
+  <!-- Brand -->
+  <a
+    class="flex shrink-0 items-center no-underline"
+    href="/"
+    aria-label="Sivaxi home"
+  >
+    <img
+      [src]="logoUrl"
+      alt="Sivaxi"
+      class="block h-auto w-[clamp(112px,14vw,172px)] object-contain"
+    />
+  </a>
+
+  <!-- Main navigation -->
+  <nav
+    class="flex items-center gap-[clamp(14px,2.5vw,32px)] max-[560px]:gap-3"
+    aria-label="Main navigation"
+  >
+    <a
+      class="whitespace-nowrap text-[13px] text-(--sivaxi-text-muted) no-underline transition-colors duration-200 hover:text-(--sivaxi-text) max-[560px]:text-[11px]"
+      href="#technology"
+    >
+      Technology
+    </a>
+
+    <a
+      class="whitespace-nowrap text-[13px] text-(--sivaxi-text-muted) no-underline transition-colors duration-200 hover:text-(--sivaxi-text) max-[560px]:text-[11px]"
+      href="#products"
+    >
+      Products
+    </a>
+
+    <a
+      class="whitespace-nowrap text-[13px] text-(--sivaxi-text-muted) no-underline transition-colors duration-200 hover:text-(--sivaxi-text) max-[560px]:text-[11px]"
+      href="#about"
+    >
+      About
+    </a>
+  </nav>
+
+  <!-- Actions -->
+  <div class="flex shrink-0 items-center gap-4 max-[560px]:gap-2">
+    <a
+      class="whitespace-nowrap rounded-lg border border-(--sivaxi-border) px-4 py-2.5 text-[13px] text-(--sivaxi-text) no-underline transition-colors duration-200 hover:bg-(--sivaxi-surface) max-[560px]:hidden"
+      href="#products"
+    >
+      Explore Sivaxi <span aria-hidden="true">↗</span>
+    </a>
+
+    <lib-theme></lib-theme>
+  </div>
+</header>

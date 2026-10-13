@@ -119,7 +119,10 @@
           "defaultConfiguration": "development",
           "options": {
             "port": 4200,
-            "host": "0.0.0.0"
+            "host": "0.0.0.0",
+              "allowedHosts": [
+    "shell.sivaxi.test"
+  ]
           }
         }
       }
@@ -236,7 +239,10 @@
           "defaultConfiguration": "development",
           "options": {
             "port": 4200,
-            "host": "0.0.0.0"
+            "host": "0.0.0.0",
+              "allowedHosts": [
+    "vixi.sivaxi.test"
+  ]
           }
         }
       }
@@ -353,7 +359,10 @@
           "defaultConfiguration": "development",
           "options": {
             "port": 4200,
-            "host": "0.0.0.0"
+            "host": "0.0.0.0",
+              "allowedHosts": [
+    "portfolio.sivaxi.test"
+  ]
           }
         }
       }

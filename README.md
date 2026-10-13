@@ -1,4 +1,3 @@
-
 # Sivaxi Frontend
 
 Sivaxi is a multi-application Angular workspace designed to support independently developed frontend applications through a Micro-Frontend (MFE) architecture.
@@ -13,9 +12,9 @@ The Shell provides the shared Sivaxi landing page and navigation, while Vixi and
 
 | Application | Role | Local URL |
 |---|---|---|
-| Shell | Sivaxi landing page, shared layout, and MFE host | http://localhost:4200 |
-| Vixi | AI assistant application | http://vixi.localhost:4200 |
-| Portfolio | Portfolio and engineering projects | http://portfolio.localhost:4200 |
+| Shell | Sivaxi landing page and MFE host | `http://shell.sivaxi.test` |
+| Vixi | AI assistant application | `http://vixi.sivaxi.test` |
+| Portfolio | Portfolio and engineering projects | `http://portfolio.sivaxi.test` |
 
 ### Technology Stack
 
@@ -26,7 +25,8 @@ The Shell provides the shared Sivaxi landing page and navigation, while Vixi and
 - npm
 - Docker and Docker Compose
 - Traefik v3
-- Tailwind CSS for the Shell landing page styling
+- Tailwind CSS
+- Shared Angular libraries and branding assets
 
 ## Project Structure
 
@@ -37,6 +37,7 @@ sivaxi/
 │   │   ├── public/
 │   │   │   └── federation.manifest.json
 │   │   ├── src/
+│   │   │   ├── main.ts
 │   │   │   └── app/
 │   │   │       ├── home/
 │   │   │       │   ├── home.ts
@@ -59,12 +60,19 @@ sivaxi/
 │   │   │       ├── app.ts
 │   │   │       └── app.routes.ts
 │   │   └── federation.config.mjs
-│   └── portfolio/
-│       ├── src/
-│       │   └── app/
-│       │       ├── app.ts
-│       │       └── app.routes.ts
-│       └── federation.config.mjs
+│   ├── portfolio/
+│   │   ├── src/
+│   │   │   └── app/
+│   │   │       ├── app.ts
+│   │   │       └── app.routes.ts
+│   │   └── federation.config.mjs
+│   └── shared/
+│       ├── public/
+│       │   └── assets/
+│       │       └── logos/
+│       └── src/
+│           ├── lib/
+│           └── public-api.ts
 ├── Dockerfile.dev
 ├── compose.yaml
 ├── package.json
@@ -72,7 +80,7 @@ sivaxi/
 └── README.md
 ```
 
-*Note: This tree highlights the files relevant to the current frontend and federation setup. Other workspace configuration files are omitted.*
+*This tree highlights the files relevant to the current frontend and federation setup. Other workspace configuration files are omitted.*
 
 ## Prerequisites
 
@@ -93,7 +101,19 @@ The current development environment uses Node.js 24 and npm.
 cd ~/Desktop/sivaxi
 ```
 
-### 2. Start the development environment
+### 2. Configure local hostnames
+
+Add the following entries to `/etc/hosts`:
+
+```text
+127.0.0.1 shell.sivaxi.test
+127.0.0.1 vixi.sivaxi.test
+127.0.0.1 portfolio.sivaxi.test
+```
+
+These entries resolve the local application hostnames to the development machine. Traefik uses the hostname to route requests to the corresponding container.
+
+### 3. Start the development environment
 
 ```bash
 docker compose up --build
@@ -108,13 +128,13 @@ Docker Compose starts the following services:
 
 Open the applications using the local URLs listed in the Architecture section.
 
-### 3. Run in the background
+### 4. Run in the background
 
 ```bash
 docker compose up -d
 ```
 
-### 4. View logs
+### 5. View logs
 
 View logs for all services:
 
@@ -130,19 +150,19 @@ docker compose logs -f vixi
 docker compose logs -f portfolio
 ```
 
-### 5. Restart a service
+### 6. Restart a service
 
-If federation configuration changes but exposed-module metadata appears stale, restart the affected service:
+Restart the affected service when configuration changes require a fresh development-server startup:
 
 ```bash
 docker compose restart portfolio
 ```
 
-Use `vixi` or `shell` when restarting those services instead.
+Replace `portfolio` with `shell` or `vixi` when appropriate.
 
-Ordinary source edits should generally trigger automatic rebuilds. Some configuration changes may require a service restart.
+Ordinary source changes should generally trigger automatic rebuilds. Some federation or build configuration changes may require restarting or rebuilding the affected container.
 
-### 6. Stop the environment
+### 7. Stop the environment
 
 ```bash
 docker compose down
@@ -152,33 +172,39 @@ Stopping the containers does not delete the source code.
 
 ## Routing
 
-Traefik routes incoming HTTP requests according to the hostname.
+Traefik routes incoming HTTP requests according to their hostname.
 
 | Hostname | Destination |
 |---|---|
-| `localhost` | Shell |
-| `vixi.localhost` | Vixi |
-| `portfolio.localhost` | Portfolio |
+| `shell.sivaxi.test` | Shell |
+| `vixi.sivaxi.test` | Vixi |
+| `portfolio.sivaxi.test` | Portfolio |
 
-All three Angular development servers use port `4200` inside their respective containers. Traefik exposes port `4200` on the host and forwards requests to the appropriate service.
+All three Angular development servers listen on port `4200` inside their respective containers. Traefik exposes port `4200` on the host and forwards requests to the appropriate service.
 
-The `.localhost` hostnames are intended for local development and generally require no additional DNS configuration.
+The `.sivaxi.test` domains are intended for local development. Unlike the special `.localhost` domain, custom `.test` hostnames need local hostname resolution, such as the `/etc/hosts` entries above.
 
-### Shell navigation
+## Shell Navigation
 
-The Shell also provides application-level routes:
+The Shell provides both its own landing page and routes for integrated remote applications.
 
 | Shell route | Destination |
 |---|---|
 | `/` | Sivaxi landing page |
-| `/vixi` | Vixi remote |
-| `/portfolio` | Portfolio remote |
+| `/vixi` | Vixi remote route |
+| `/portfolio/home` | Portfolio home route |
 
-These paths are handled by Angular Router inside the Shell. They are distinct from the standalone remote hostnames managed by Traefik.
+These paths are handled by Angular Router inside the Shell. They are different from the standalone application domains managed by Traefik.
+
+Portfolio can also be accessed independently:
+
+- `http://portfolio.sivaxi.test/home`
+
+Use Angular `routerLink` for navigation within the Shell. Use an absolute application URL with `href` when navigating to a different standalone application.
 
 ## Sivaxi Landing Page
 
-The Shell contains the main Sivaxi landing page. Its sections are implemented as focused standalone Angular components to keep the page maintainable and make future changes easier.
+The Shell contains the main Sivaxi landing page. Its sections are implemented as focused Angular components to keep the page maintainable and make future changes easier.
 
 ### Component Structure
 
@@ -189,28 +215,9 @@ The Shell contains the main Sivaxi landing page. Its sections are implemented as
 | `EngineeringPrinciples` | Engineering philosophy and guiding principles |
 | `ProductsSection` | Vixi AI, Engineering Portfolio, and future projects |
 | `TechnologySection` | Software engineering, AI, infrastructure, and connected systems |
-| `SiteFooter` | Brand information, GitHub link, and copyright |
+| `SiteFooter` | Branding, footer navigation, GitHub link, and copyright |
 
 The `Home` component composes these sections in page order.
-
-### Home Composition
-
-The intended page composition is:
-
-```html
-<app-site-header />
-
-<main>
-  <app-hero-section />
-  <app-engineering-principles />
-  <app-products-section />
-  <app-technology-section />
-</main>
-
-<app-site-footer />
-```
-
-Each section owns its own template and can be updated without placing the entire landing page in a single HTML file.
 
 ### Styling
 
@@ -218,9 +225,103 @@ The landing page uses Tailwind CSS utility classes alongside shared Sivaxi theme
 
 The current brand accent is Mineral Jade (`#3D8C78`).
 
-Shared styling should remain in the existing global stylesheet where appropriate, particularly styles for the abstract hero artwork, theme variables, and common design elements.
+Shared styling should remain in the existing global stylesheet where appropriate, particularly for theme variables, abstract hero artwork, and common design elements.
 
-Navigation anchors should use unique section IDs to avoid ambiguous in-page navigation.
+Navigation anchors should use unique section IDs to support reliable in-page navigation.
+
+The header and footer are designed to provide:
+
+- Responsive layouts for desktop and mobile screens.
+- Consistent spacing, typography, and theme variables.
+- Official Sivaxi logo assets.
+- Theme-aware logo selection.
+- Consistent navigation and branding.
+
+## Shared Branding and Assets
+
+Sivaxi maintains a centralized logo collection in:
+
+```text
+projects/shared/public/assets/logos/
+```
+
+The collection includes 24 PNG logo variants, including:
+
+- Horizontal and stacked primary wordmarks.
+- Light and dark logo variants.
+- Symbols and outline symbols.
+- Application icons and favicons.
+- Monochrome and single-color variants.
+- Background-specific and photo-overlay artwork.
+
+### Branding Constants
+
+Shared branding references are maintained in:
+
+```text
+projects/shared/src/lib/branding.ts
+```
+
+The `SIVAXI_BRANDING` constant provides named references to the logo files, allowing application components to use descriptive names instead of repeating filenames.
+
+Example:
+
+```typescript
+import { SIVAXI_BRANDING } from 'shared';
+
+export class SiteFooter {
+  readonly branding = SIVAXI_BRANDING;
+}
+```
+
+Example template usage:
+
+```html
+<img
+  [src]="branding.logos.primaryHorizontalDark"
+  alt="Sivaxi"
+/>
+```
+
+The branding constants should be exported through `projects/shared/src/public-api.ts` so consumers can import them through the shared library's public API.
+
+### Centralized Asset Serving
+
+Centralized branding definitions and centralized asset hosting are separate concerns.
+
+The files currently reside in the shared project's `public/assets/logos/` directory. That directory is not automatically served by every application merely because it belongs to the shared project.
+
+The intended architecture is to provide a common asset base URL so Shell, Vixi, and Portfolio do not need separate copies of the same logos.
+
+The local and production asset URLs must be configured to point to locations that actually serve those files. The centralized asset-serving configuration remains to be completed and verified.
+
+Avoid hardcoding application-specific asset paths throughout component templates.
+
+### Theme-Aware Branding
+
+The header and footer should select the appropriate logo variant according to the active theme exposed by `ThemeService`.
+
+For example:
+
+- Light-colored logo for dark backgrounds.
+- Dark-colored logo for light backgrounds.
+
+Components should use the actual theme-service API rather than independently inferring theme state. This keeps logo selection consistent with the application's theme.
+
+## Environment-Aware Application Links
+
+Application URLs are centralized separately from Shell routes.
+
+- **Application links** point to standalone applications.
+- **Shell routes** point to pages integrated into the Shell through Native Federation.
+
+For example, application-link constants can represent the standalone Vixi and Portfolio domains, while Shell route constants represent `/vixi` and `/portfolio/home`.
+
+Local development uses the `.sivaxi.test` domains. Production is intended to use the corresponding Sivaxi production domains.
+
+Environment detection and URL selection should remain centralized rather than being repeated across components.
+
+Production hostnames and remote URLs must be verified against the actual deployment configuration before release.
 
 ## Micro-Frontend Design
 
@@ -231,14 +332,14 @@ Navigation anchors should use unique section IDs to avoid ambiguous in-page navi
                    /         |          \
                   /          |           \
                Shell        Vixi       Portfolio
-              (Host)       (Remote)     (Remote)
+              (Host)      (Remote)      (Remote)
                 |
-         Sivaxi Landing Page
+        Sivaxi Landing Page
                 |
-       Native Federation
-         /           \
-      Vixi          Portfolio
-    (Routes)         (Routes)
+        Native Federation
+           /         \
+        Vixi       Portfolio
+       (Routes)     (Routes)
 ```
 
 ### Shell — Host
@@ -246,7 +347,7 @@ Navigation anchors should use unique section IDs to avoid ambiguous in-page navi
 Responsibilities:
 
 - Provide the shared Sivaxi landing page and navigation.
-- Initialize Native Federation using the federation manifest.
+- Initialize Native Federation.
 - Register remote entry URLs.
 - Load remote route configurations dynamically.
 - Compose remote applications under Shell's routing structure.
@@ -274,20 +375,26 @@ Each remote maintains its own feature boundaries instead of placing all applicat
 
 ## Native Federation Implementation
 
-### Shell remote manifest
+Native Federation enables the Shell to load application routes exposed by Vixi and Portfolio.
 
-The Shell's `federation.manifest.json` registers the remote entry points.
+### Shell Initialization
 
-```json
-{
-  "vixi": "http://vixi.localhost:4200/remoteEntry.json",
-  "portfolio": "http://portfolio.localhost:4200/remoteEntry.json"
-}
-```
+The Shell initializes federation before importing its application bootstrap.
 
-The URLs above are intended for local development. Production deployments will need the appropriate deployed remote URLs.
+The current runtime configuration determines whether local or production remote entry URLs should be used.
 
-### Remote route exposure
+Conceptually, the remote registrations are:
+
+| Remote name | Local remote entry |
+|---|---|
+| `vixi` | `http://vixi.sivaxi.test/remoteEntry.json` |
+| `portfolio` | `http://portfolio.sivaxi.test/remoteEntry.json` |
+
+The production configuration must use the actual deployed remote entry URLs.
+
+Federation initialization must complete before the Shell bootstraps so remote modules can be resolved during routing.
+
+### Remote Route Exposure
 
 Vixi and Portfolio expose their route configurations through their respective `federation.config.mjs` files.
 
@@ -295,47 +402,26 @@ The exposure pattern for Vixi is:
 
 ```javascript
 exposes: {
+  './Component': './projects/vixi/src/app/app.ts',
   './Routes': './projects/vixi/src/app/app.routes.ts',
 },
 ```
 
-Portfolio uses the equivalent path for its own `app.routes.ts`.
+Portfolio uses the equivalent paths for its own application component and route configuration.
 
-Each remote route file statically imports its root component and supplies it to Angular Router:
+Keep these exposure paths aligned with the actual workspace file locations and exported symbols.
 
-```typescript
-import { Routes } from '@angular/router';
-import { App } from './app';
+### Shell Route Loading
 
-export const routes: Routes = [
-  {
-    path: '',
-    component: App,
-  },
-];
-```
+The Shell uses `loadRemoteModule` and `loadChildren` to load remote route configurations.
 
-This is the current intended exposure pattern. Keep the paths aligned with the actual workspace and federation configuration.
-
-### Shell route loading
-
-The Shell loads remote route configurations using `loadRemoteModule` and `loadChildren`.
-
-The landing page should be the default route, while the remotes are available through `/vixi` and `/portfolio`.
-
-The following illustrates the intended route structure. Adapt the `Home` import to the actual file and exported class names in the workspace.
+The intended route structure is:
 
 ```typescript
 import { Routes } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/native-federation';
-import { Home } from './home/home';
 
 export const routes: Routes = [
-  {
-    path: '',
-    pathMatch: 'full',
-    component: Home,
-  },
   {
     path: 'vixi',
     loadChildren: () =>
@@ -349,73 +435,89 @@ export const routes: Routes = [
 ];
 ```
 
-This route structure keeps the Sivaxi landing page accessible at the Shell root without removing the integrated remote applications.
+The actual Shell route configuration should also include the landing-page route and any required redirects.
+
+The Portfolio remote currently defines a `home` route. Consequently, its home page is available at `/portfolio/home` when integrated into the Shell, unless an additional redirect is configured.
+
+Remote routes should remain owned by their respective applications rather than being duplicated in the Shell.
 
 ## Docker Development Environment
 
 - `Dockerfile.dev` provides the Node.js development environment.
 - Docker Compose runs the Angular applications and Traefik.
-- The workspace source is mounted into the development containers so code changes can trigger rebuilds.
+- Workspace source is mounted into development containers so source changes can trigger rebuilds.
 - A named `node_modules` volume is used for container dependencies.
 - Angular development servers bind to an address accessible from other containers.
 - Traefik routes browser requests to the correct Angular service.
+
+The `.sivaxi.test` hostnames are used for browser access, while the Docker service configuration determines how Traefik reaches the containers.
 
 ## Development Guidelines
 
 - Keep each application's features inside its own project.
 - Keep the Shell landing page separate from remote-specific application logic.
 - Avoid unnecessary coupling between Shell and the remotes.
-- Expose only the routes or modules that other applications need.
+- Expose only the routes or modules other applications need.
 - Share dependencies only when there is a clear benefit.
 - Keep Docker Compose responsible for local service orchestration.
 - Keep Traefik responsible for local hostname routing.
-- Prefer small, focused changes and avoid unnecessary testing.
+- Use `routerLink` for internal Shell navigation.
+- Use application URLs for navigation between standalone applications.
+- Centralize branding references in the shared library.
+- Centralize environment-aware URL selection.
+- Avoid duplicating shared logos across applications.
+- Preserve existing theme variables and artwork styles when refactoring templates.
 - Keep section IDs unique.
-- Preserve existing shared theme variables and artwork styles when refactoring templates.
-- Update this README when federation or deployment configuration changes.
+- Update this README when federation, asset hosting, or deployment configuration changes.
 
 ## Current Status
 
-### Workspace and development environment
+### Workspace and Development Environment
 
 - [x] Angular workspace created.
 - [x] Shell, Vixi, and Portfolio applications created.
 - [x] Docker Compose development environment configured.
-- [x] Traefik hostname routing working locally.
-- [x] Native Federation package installed in the development environment.
+- [x] Traefik hostname routing working locally with `.sivaxi.test` domains.
+- [x] Shell and Portfolio accessible through their local domains.
+- [x] Portfolio home page accessible at `http://portfolio.sivaxi.test/home`.
 
-### Micro-frontend integration
+### Micro-Frontend Integration
 
-- [x] Shell configured with a remote federation manifest.
-- [x] Vixi route exposure configured.
-- [x] Portfolio route exposure configured.
-- [x] Shell configured to load both remote route configurations.
-- [x] Federation metadata issue resolved by restarting the affected container.
-- [ ] Verify navigation into both remotes from Shell after the latest changes.
-- [ ] Confirm clean browser console output during integrated navigation.
+- [x] Shell configured to initialize Native Federation.
+- [x] Portfolio remote entry verified locally.
+- [x] Portfolio route accessible through the Shell at `/portfolio/home`.
+- [x] Portfolio route accessible independently.
+- [ ] Resolve and verify Vixi's local `remoteEntry.json` endpoint.
+- [ ] Verify integrated navigation into both remotes after the latest changes.
+- [ ] Confirm clean browser-console output during integrated navigation.
 
-### Sivaxi landing page
+### Landing Page and Branding
 
-- [x] Landing page sections identified and separated into standalone components.
+- [x] Landing page sections separated into focused components.
 - [x] Header component created.
 - [x] Hero section component created.
 - [x] Engineering principles component created.
 - [x] Products section component created.
 - [x] Technology section component created.
 - [x] Footer component created.
-- [ ] Confirm all components are connected through `Home`.
-- [ ] Confirm Shell root routing displays the landing page.
+- [x] Sivaxi logo collection added to the shared project's public directory.
+- [x] Centralized branding constants introduced.
+- [x] Header and footer templates refined for responsive layouts.
+- [ ] Verify that all landing-page components are connected through `Home`.
+- [ ] Verify logo switching against the actual `ThemeService` implementation.
+- [ ] Configure and verify centralized asset serving.
 - [ ] Verify responsive layouts and in-page navigation.
-- [ ] Verify product links and remote navigation in the integrated environment.
+- [ ] Verify product links in the integrated environment.
 
-### Production readiness
+### Production Readiness
 
 - [ ] Production builds and deployment configuration.
 - [ ] Production remote URL and asset configuration.
 - [ ] Dependency compatibility and versioning strategy.
 - [ ] Independent remote deployment and release workflow.
+- [ ] Production routing, refresh, and asset-loading verification.
 
-The checkboxes describe the intended development progress and should be updated to match the actual workspace state.
+Status should be updated as changes are tested and confirmed.
 
 ## Future Deployment
 
@@ -423,11 +525,12 @@ The current Docker setup is intended for local development.
 
 Production deployment will require:
 
-- Configuring the host and remote entry URLs for deployed environments.
+- Configuring host and remote entry URLs for deployed environments.
 - Ensuring remote assets are reachable from the host application.
+- Establishing a shared asset-serving strategy.
 - Defining dependency compatibility and versioning practices.
 - Establishing a deployment and release strategy for independently developed remotes.
 - Verifying production builds and integrated routing.
-- Confirming that routing, refresh behavior, and asset loading work in the production environment.
+- Confirming routing, refresh behavior, and asset loading in production.
 
 Production hosting and deployment details will be documented once the deployment architecture is finalized.

@@ -1,0 +1,72 @@
+
+<footer
+  id="footer"
+  class="border-t border-(--sivaxi-border) px-[clamp(20px,6vw,88px)] py-8"
+>
+  <!-- Main footer row -->
+  <div
+    class="flex flex-wrap items-center justify-between gap-x-8 gap-y-5 max-[640px]:flex-col max-[640px]:items-start"
+  >
+    <!-- Brand -->
+    <a
+      class="inline-flex shrink-0 items-center no-underline"
+      href="/"
+      aria-label="Sivaxi home"
+    >
+      <img
+  [src]="logoUrl"
+  alt="Sivaxi"
+  class="block h-auto w-[clamp(120px,14vw,156px)] object-contain"
+/>
+    </a>
+
+    <!-- Tagline -->
+    <p
+      class="m-0 text-xs leading-relaxed text-(--sivaxi-text-muted)"
+    >
+      Independent thinking. Connected technology.
+    </p>
+
+    <!-- Links -->
+    <nav
+      class="flex items-center gap-6"
+      aria-label="Footer navigation"
+    >
+      <a
+        class="text-xs text-(--sivaxi-text-muted) no-underline transition-colors duration-200 hover:text-(--sivaxi-text)"
+        href="https://github.com/sivaxi-org/sivaxi"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub <span aria-hidden="true">↗</span>
+      </a>
+
+      <a
+        class="text-xs text-(--sivaxi-text-muted) no-underline transition-colors duration-200 hover:text-(--sivaxi-text)"
+        href="#technology"
+      >
+        Technology
+      </a>
+
+      <a
+        class="text-xs text-(--sivaxi-text-muted) no-underline transition-colors duration-200 hover:text-(--sivaxi-text)"
+        href="#products"
+      >
+        Products
+      </a>
+    </nav>
+  </div>
+
+  <!-- Copyright row -->
+  <div
+    class="mt-7 flex items-center justify-between gap-4 border-t border-(--sivaxi-border) pt-5 max-[560px]:flex-col max-[560px]:items-start"
+  >
+    <p class="m-0 text-[11px] text-(--sivaxi-text-muted)">
+      © {{ currentYear }} Sivaxi. All rights reserved.
+    </p>
+
+    <p class="m-0 text-[11px] text-(--sivaxi-text-muted)">
+      Built with purpose.
+    </p>
+  </div>
+</footer>
