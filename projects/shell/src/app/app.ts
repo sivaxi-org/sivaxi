@@ -1,4 +1,3 @@
-
 import { Component, inject } from '@angular/core';
 import {
   NavigationEnd,
@@ -27,33 +26,41 @@ export class App {
   private updateSeo(): void {
     const path = this.router.url.split('?')[0].split('#')[0];
 
+    // Sivaxi — the parent technology brand
     if (path === '/') {
-      this.seo.update({
-        title: 'Sivaxi — Software Engineering, AI & Technology',
-        description:
-          'Explore Sivaxi: AI assistants, agentic AI systems, modern web applications, backend services, and developer tools.',
-        canonicalUrl: 'https://sivaxi.com/',
-      });
-      return;
-    }
-
+  this.seo.update({
+    title: 'Sivaxi | SaaS Products & Custom Software Development',
+    description:
+      'Sivaxi builds SaaS products and delivers custom software development services for businesses. Explore AI-powered solutions, agentic AI, web applications, backend systems, API integrations, and scalable software engineering.',
+    canonicalUrl: 'https://sivaxi.com/',
+  });
+  return;
+}
+    // Vixi — a personalized AI assistant platform
     if (path === '/vixi' || path.startsWith('/vixi/')) {
       this.seo.update({
-        title: 'Vixi AI — Intelligent AI Assistant | Sivaxi',
+        title: 'Vixi AI | Personalized AI Assistant & Intelligent Workflows',
         description:
-          'Discover Vixi, an AI assistant built with modern AI technologies and agentic workflows by Sivaxi.',
+          'Meet Vixi, Sivaxi’s AI assistant platform designed for personalized conversations, contextual memory, intelligent tools, web search, and AI-powered workflows tailored to each user.',
         canonicalUrl: `https://sivaxi.com${path}`,
         robots: 'noindex, follow',
       });
       return;
     }
 
+    // Portfolio — a multi-user portfolio publishing platform
     if (path === '/portfolio' || path.startsWith('/portfolio/')) {
+      const isPrivateArea =
+        path.includes('/dashboard') ||
+        path.endsWith('/login') ||
+        path.endsWith('/register');
+
       this.seo.update({
-        title: 'Developer Portfolio | Sivaxi',
+        title: 'Sivaxi Portfolio | Create & Showcase Your Professional Profile',
         description:
-          'Explore software engineering portfolios, projects, technical skills, and development experience on Sivaxi.',
+          'Build and share your own professional portfolio with Sivaxi Portfolio. Showcase your projects, technical skills, work experience, achievements, and professional identity through a dedicated online profile.',
         canonicalUrl: `https://sivaxi.com${path}`,
+        robots: isPrivateArea ? 'noindex, nofollow' : 'index, follow',
       });
     }
   }
