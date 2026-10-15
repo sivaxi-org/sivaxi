@@ -16,36 +16,128 @@ pipeline {
     }
 
     stages {
-            stage('Checkout') {
-        steps {
-            checkout scm
-        }
-    }
-
-    stage('Validate Branch') {
-        steps {
-            script {
-                def currentBranch = sh(
-                    script: 'git branch --show-current',
-                    returnStdout: true
-                ).trim()
-
-                if (currentBranch != 'main') {
-                    error(
-                        "Pipeline aborted: deployments are allowed only from main. " +
-                        "Current branch: ${currentBranch ?: 'unknown'}"
-                    )
-                }
-
-                echo 'Branch validation passed: main'
+        stage('Checkout') {
+            steps {
+                checkout scm
             }
         }
-    }
 
-    stage('Detect Changes') {
-        // Keep your existing Detect Changes stage here.
-    }
+        stage('Validate Branch') {
+            steps {
+                script {
+                    def currentBranch = sh(
+                        script: 'git branch --show-current',
+                        returnStdout: true
+                    ).trim()
 
+                    if (!currentBranch) {
+                        currentBranch = sh(
+                            script: 'git branch -r --contains HEAD',
+                            returnStdout: true
+                        ).trim()
+                    }
+
+                    if (currentBranch.readLines().any {
+                        it.trim().replaceFirst(/^origin\//, '') == 'main'
+                    }) {
+                        currentBranch = 'main'
+                    }
+
+                    if (currentBranch != 'main') {
+                        error(
+                            "Pipeline aborted: only main is allowed. " +
+                            "Detected branch: ${currentBranch ?: 'unknown'}"
+                        )
+                    }
+
+                    echo 'Branch validation passed: main'
+                }
+            }
+        }
+
+        stage('Detect Changes') {
+            steps {
+                script {
+                    def base = env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                    def changedFiles = []
+                    boolean deployAll = false
+
+                    if (!base ||
+                        sh(
+                            returnStatus: true,
+                            script: "git cat-file -e '${base}^{commit}'"
+                        ) != 0 ||
+                        sh(
+                            returnStatus: true,
+                            script: "git merge-base --is-ancestor '${base}' HEAD"
+                        ) != 0) {
+
+                        // First build or unavailable comparison: deploy everything.
+                        deployAll = true
+                    } else {
+                        def output = sh(
+                            returnStdout: true,
+                            script: "git diff --name-only '${base}' HEAD"
+                        ).trim()
+
+                        if (output) {
+                            changedFiles = output.readLines()
+                        }
+                    }
+
+                    def apps = [] as Set
+
+                    changedFiles.each { file ->
+                        if (
+                            file ==~ /(?i).*\\.(md|mdx)$/ ||
+                            file.startsWith('docs/') ||
+                            file.startsWith('.github/') ||
+                            file == 'LICENSE' ||
+                            file == '.gitignore' ||
+                            file == 'Jenkinsfile'
+                        ) {
+                            // These files do not directly require a frontend deployment.
+                        } else if (
+                            file.startsWith('projects/shared/') ||
+                            file in [
+                                'package.json',
+                                'package-lock.json',
+                                'angular.json',
+                                'tsconfig.json',
+                                'tsconfig.app.json',
+                                'firebase.json',
+                                '.firebaserc'
+                            ] ||
+                            file.startsWith('tsconfig.') ||
+                            file.endsWith('.config.mjs')
+                        ) {
+                            deployAll = true
+                        } else if (file.startsWith('projects/shell/')) {
+                            apps.add('shell')
+                        } else if (file.startsWith('projects/vixi/')) {
+                            apps.add('vixi')
+                        } else if (file.startsWith('projects/portfolio/')) {
+                            apps.add('portfolio')
+                        } else {
+                            // Unknown application/build-related changes: deploy all.
+                            deployAll = true
+                        }
+                    }
+
+                    if (deployAll) {
+                        apps = ['shell', 'vixi', 'portfolio'] as Set
+                    }
+
+                    env.DEPLOY_APPS = apps.toList().sort().join(',')
+
+                    echo "Project: ${env.PROJECT_NAME}"
+                    echo "Branch: main"
+                    echo "Firebase project: ${env.FIREBASE_PROJECT}"
+                    echo "Changed files: ${changedFiles}"
+                    echo "Applications selected: ${env.DEPLOY_APPS ?: 'none'}"
+                }
+            }
+        }
 
         stage('Install Dependencies') {
             when {
