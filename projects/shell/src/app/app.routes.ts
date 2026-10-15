@@ -6,6 +6,7 @@ import { Home } from './features/home/home';
 export const routes: Routes = [
   {
     path: '',
+    title: "Sivaxi",
     pathMatch: 'full',
     component: Home,
   },
