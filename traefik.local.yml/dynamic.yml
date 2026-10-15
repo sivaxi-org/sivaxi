@@ -1,4 +1,44 @@
+http:
+  routers:
+    shell:
+      rule: "Host(`shell.sivaxi.test`)"
+      entryPoints:
+        - websecure
+      service: shell
+      tls: {}
+
+    vixi:
+      rule: "Host(`vixi.sivaxi.test`)"
+      entryPoints:
+        - websecure
+      service: vixi
+      tls: {}
+
+    portfolio:
+      rule: "Host(`portfolio.sivaxi.test`)"
+      entryPoints:
+        - websecure
+      service: portfolio
+      tls: {}
+
+  services:
+    shell:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:4200"
+
+    vixi:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:4201"
+
+    portfolio:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:4202"
+
 tls:
   certificates:
     - certFile: /etc/traefik/dynamic/certs/sivaxi.test.pem
       keyFile: /etc/traefik/dynamic/certs/sivaxi.test-key.pem
+

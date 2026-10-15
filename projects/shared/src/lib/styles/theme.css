@@ -1,38 +1,491 @@
-/* Sivaxi — shared design tokens */
+
+/* ==========================================================================
+   SIVAXI — SHARED DESIGN SYSTEM
+   Mineral Jade · Dark / Light / System
+   ========================================================================== */
+
+
+/* ==========================================================================
+   DARK THEME — DEFAULT
+   ========================================================================== */
 
 :root,
-[data-theme="dark"] {
+html.dark,
+html[data-theme="dark"] {
   color-scheme: dark;
 
+  /* Brand */
   --sivaxi-accent: #3D8C78;
   --sivaxi-accent-hover: #4B9F89;
   --sivaxi-accent-soft: #203D35;
+  --sivaxi-accent-secondary: #75B9A5;
 
+  /* Surfaces */
   --sivaxi-bg: #111318;
   --sivaxi-surface: #1B1D24;
   --sivaxi-surface-raised: #252630;
 
+  /* Typography */
   --sivaxi-text: #F4F2ED;
   --sivaxi-text-muted: #A8A9B2;
+  --sivaxi-text-faint: #6B6D78;
+  --sivaxi-on-accent: #FFFFFF;
 
+  /* Borders and focus */
   --sivaxi-border: #30313A;
+  --sivaxi-border-soft: rgba(255, 255, 255, 0.08);
   --sivaxi-focus: #75B9A5;
+
+  /* Glass */
+  --sivaxi-glass: rgba(255, 255, 255, 0.03);
+  --sivaxi-glass-strong: rgba(255, 255, 255, 0.12);
+  --sivaxi-glass-border: rgba(255, 255, 255, 0.14);
+
+  /* Effects */
+  --sivaxi-shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.35);
+
+  /* Backdrop and video scrim */
+  --sivaxi-scrim-top: rgba(17, 19, 24, 0.40);
+  --sivaxi-scrim-bottom: rgba(17, 19, 24, 0.82);
 }
 
-[data-theme="light"] {
+
+/* ==========================================================================
+   LIGHT THEME
+   ========================================================================== */
+
+html.light,
+html[data-theme="light"] {
   color-scheme: light;
 
+  /* Brand */
   --sivaxi-accent: #3D8C78;
   --sivaxi-accent-hover: #327663;
   --sivaxi-accent-soft: #E0F0E9;
+  --sivaxi-accent-secondary: #276B59;
 
+  /* Surfaces */
   --sivaxi-bg: #F7F7F4;
   --sivaxi-surface: #FFFFFF;
   --sivaxi-surface-raised: #ECEEEA;
 
+  /* Typography */
   --sivaxi-text: #202520;
   --sivaxi-text-muted: #626B66;
+  --sivaxi-text-faint: #858D87;
+  --sivaxi-on-accent: #FFFFFF;
 
+  /* Borders and focus */
   --sivaxi-border: #D9DED9;
+  --sivaxi-border-soft: rgba(32, 37, 32, 0.09);
   --sivaxi-focus: #276B59;
+
+  /* Glass */
+  --sivaxi-glass: rgba(255, 255, 255, 0.48);
+  --sivaxi-glass-strong: rgba(255, 255, 255, 0.82);
+  --sivaxi-glass-border: rgba(32, 37, 32, 0.12);
+
+  /* Effects */
+  --sivaxi-shadow-glass: 0 8px 32px rgba(32, 37, 32, 0.08);
+
+  /* Backdrop and video scrim */
+  --sivaxi-scrim-top: rgba(247, 247, 244, 0.45);
+  --sivaxi-scrim-bottom: rgba(247, 247, 244, 0.82);
+}
+
+
+/* ==========================================================================
+   SYSTEM PREFERENCE
+   Applies only when neither an explicit theme attribute nor class exists.
+   ========================================================================== */
+
+@media (prefers-color-scheme: light) {
+  html:not([data-theme]):not(.light):not(.dark) {
+    color-scheme: light;
+
+    --sivaxi-accent: #3D8C78;
+    --sivaxi-accent-hover: #327663;
+    --sivaxi-accent-soft: #E0F0E9;
+    --sivaxi-accent-secondary: #276B59;
+
+    --sivaxi-bg: #F7F7F4;
+    --sivaxi-surface: #FFFFFF;
+    --sivaxi-surface-raised: #ECEEEA;
+
+    --sivaxi-text: #202520;
+    --sivaxi-text-muted: #626B66;
+    --sivaxi-text-faint: #858D87;
+    --sivaxi-on-accent: #FFFFFF;
+
+    --sivaxi-border: #D9DED9;
+    --sivaxi-border-soft: rgba(32, 37, 32, 0.09);
+    --sivaxi-focus: #276B59;
+
+    --sivaxi-glass: rgba(255, 255, 255, 0.48);
+    --sivaxi-glass-strong: rgba(255, 255, 255, 0.82);
+    --sivaxi-glass-border: rgba(32, 37, 32, 0.12);
+
+    --sivaxi-shadow-glass: 0 8px 32px rgba(32, 37, 32, 0.08);
+
+    --sivaxi-scrim-top: rgba(247, 247, 244, 0.45);
+    --sivaxi-scrim-bottom: rgba(247, 247, 244, 0.82);
+  }
+}
+
+
+/* ==========================================================================
+   TAILWIND CSS v4 — COLOR UTILITY MAPPING
+   Enables bg-accent, text-primary, border-border, etc.
+   ========================================================================== */
+
+@theme inline {
+  /* Brand */
+  --color-accent: var(--sivaxi-accent);
+  --color-accent-hover: var(--sivaxi-accent-hover);
+  --color-accent-soft: var(--sivaxi-accent-soft);
+  --color-accent-secondary: var(--sivaxi-accent-secondary);
+
+  /* Backgrounds and surfaces */
+  --color-bg: var(--sivaxi-bg);
+  --color-bg-base: var(--sivaxi-bg);
+  --color-bg-elev: var(--sivaxi-surface);
+  --color-surface: var(--sivaxi-surface);
+  --color-surface-raised: var(--sivaxi-surface-raised);
+
+  /* Text */
+  --color-primary: var(--sivaxi-text);
+  --color-muted: var(--sivaxi-text-muted);
+  --color-faint: var(--sivaxi-text-faint);
+  --color-on-accent: var(--sivaxi-on-accent);
+
+  /* Borders and focus */
+  --color-border: var(--sivaxi-border);
+  --color-border-soft: var(--sivaxi-border-soft);
+  --color-focus: var(--sivaxi-focus);
+
+  /* Glass */
+  --color-glass: var(--sivaxi-glass);
+  --color-glass-strong: var(--sivaxi-glass-strong);
+  --color-glass-border: var(--sivaxi-glass-border);
+
+  /* Backward-compatible color names */
+  --color-text-primary: var(--sivaxi-text);
+  --color-text-muted: var(--sivaxi-text-muted);
+  --color-text-faint: var(--sivaxi-text-faint);
+  --color-accent-1: var(--sivaxi-accent);
+  --color-accent-2: var(--sivaxi-accent-secondary);
+  --color-glass-fill: var(--sivaxi-glass);
+  --color-glass-fill-strong: var(--sivaxi-glass-strong);
+  --color-glass-border-soft: var(--sivaxi-border-soft);
+}
+
+
+/* ==========================================================================
+   BACKWARD-COMPATIBLE CSS VARIABLES
+   Keep existing components working while migrating to Sivaxi tokens.
+   ========================================================================== */
+
+:root {
+  --bg-base: var(--sivaxi-bg);
+  --bg-elev: var(--sivaxi-surface);
+
+  --text-primary: var(--sivaxi-text);
+  --text-muted: var(--sivaxi-text-muted);
+  --text-faint: var(--sivaxi-text-faint);
+
+  --accent-1: var(--sivaxi-accent);
+  --accent-2: var(--sivaxi-accent-secondary);
+
+  --glass-fill: var(--sivaxi-glass);
+  --glass-fill-strong: var(--sivaxi-glass-strong);
+  --glass-border: var(--sivaxi-glass-border);
+  --glass-border-soft: var(--sivaxi-border-soft);
+
+  --on-accent: var(--sivaxi-on-accent);
+  --shadow-glass: var(--sivaxi-shadow-glass);
+}
+
+
+/* ==========================================================================
+   BASE STYLES
+   ========================================================================== */
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+
+  background-color: var(--sivaxi-bg);
+  color: var(--sivaxi-text);
+
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+html {
+  color-scheme: light dark;
+  background-color: var(--sivaxi-bg);
+}
+
+html.dark,
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html.light,
+html[data-theme="light"] {
+  color-scheme: light;
+}
+
+body {
+  min-height: 100vh;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+
+/* ==========================================================================
+   TYPOGRAPHY UTILITIES
+   ========================================================================== */
+
+.font-display {
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+
+/* ==========================================================================
+   LEGACY UTILITY CLASSES
+   Keep these until old components are migrated to Tailwind utilities.
+   ========================================================================== */
+
+.bg-bg-base {
+  background-color: var(--sivaxi-bg);
+}
+
+.bg-bg-elev {
+  background-color: var(--sivaxi-surface);
+}
+
+.text-text-primary {
+  color: var(--sivaxi-text);
+}
+
+.text-text-muted {
+  color: var(--sivaxi-text-muted);
+}
+
+.text-text-faint {
+  color: var(--sivaxi-text-faint);
+}
+
+.bg-accent-1 {
+  background-color: var(--sivaxi-accent);
+}
+
+.bg-accent-2 {
+  background-color: var(--sivaxi-accent-secondary);
+}
+
+.text-accent-1 {
+  color: var(--sivaxi-accent);
+}
+
+.text-accent-2 {
+  color: var(--sivaxi-accent-secondary);
+}
+
+.bg-glass-fill {
+  background-color: var(--sivaxi-glass);
+}
+
+.bg-glass-fill-strong {
+  background-color: var(--sivaxi-glass-strong);
+}
+
+.border-glass-border {
+  border-color: var(--sivaxi-glass-border);
+}
+
+.border-glass-border-soft {
+  border-color: var(--sivaxi-border-soft);
+}
+
+.text-on-accent {
+  color: var(--sivaxi-on-accent);
+}
+
+.shadow-glass {
+  box-shadow: var(--sivaxi-shadow-glass);
+}
+
+
+/* ==========================================================================
+   GLASS EFFECT
+   ========================================================================== */
+
+.glass {
+  background-color: var(--sivaxi-glass);
+  border: 1px solid var(--sivaxi-border-soft);
+  box-shadow: var(--sivaxi-shadow-glass);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drift1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate(5vw, 6vh) scale(1.1);
+  }
+}
+
+@keyframes drift2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate(-6vw, 4vh) scale(0.92);
+  }
+}
+
+@keyframes drift3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate(3vw, -5vh) scale(1.08);
+  }
+}
+
+@keyframes scan {
+  0%, 100% {
+    top: 18%;
+  }
+
+  50% {
+    top: 78%;
+  }
+}
+
+@keyframes spinslow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ==========================================================================
+   ANIMATION UTILITIES
+   ========================================================================== */
+
+.animate-reveal {
+  animation: reveal 0.6s ease forwards;
+}
+
+.animate-drift1 {
+  animation: drift1 30s ease-in-out infinite;
+}
+
+.animate-drift2 {
+  animation: drift2 36s ease-in-out infinite;
+}
+
+.animate-drift3 {
+  animation: drift3 32s ease-in-out infinite;
+}
+
+.animate-scan {
+  animation: scan 5s ease-in-out infinite;
+}
+
+.animate-spinslow {
+  animation: spinslow 24s linear infinite;
+}
+
+
+/* ==========================================================================
+   BACKDROP MESH
+   ========================================================================== */
+
+#backdrop-mesh span {
+  opacity: 0.15;
+}
+
+
+/* ==========================================================================
+   VIDEO BACKGROUND SCRIM
+   ========================================================================== */
+
+.video-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: -15;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    180deg,
+    var(--sivaxi-scrim-top) 0%,
+    var(--sivaxi-scrim-bottom) 100%
+  );
+}
+
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

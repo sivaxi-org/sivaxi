@@ -1,0 +1,58 @@
+
+<app-navbar></app-navbar>
+
+@if (project(); as project) {
+  <main class="max-w-5xl mt-10 mx-auto px-6 py-16">
+
+    <div class="mb-8">
+      <p class="text-sm text-text-secondary mb-2">
+        Project
+      </p>
+
+      <h1 class="text-4xl md:text-5xl font-semibold tracking-tight">
+        {{ project.title }}
+      </h1>
+    </div>
+
+    <p class="text-lg text-text-secondary leading-relaxed max-w-3xl">
+      {{ project.summary }}
+    </p>
+
+    <div class="flex flex-wrap gap-4 mt-8">
+
+      @if (project.liveUrl) {
+        <a
+          [href]="project.liveUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-5 py-3 rounded-lg border border-border"
+        >
+          View Live Project
+        </a>
+      }
+
+      @if (project.sourceUrl) {
+        <a
+          [href]="project.sourceUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-5 py-3 rounded-lg border border-border"
+        >
+          View Source
+        </a>
+      }
+
+    </div>
+
+    
+    <div class="h-6"></div>
+
+    @for (block of project.items; track $index) {
+        <div class="h-4"></div>
+        <app-content-block-renderer [block]="block" ></app-content-block-renderer>
+    }
+
+    <!-- Project blocks/items UI will go here later -->
+
+  </main>
+}

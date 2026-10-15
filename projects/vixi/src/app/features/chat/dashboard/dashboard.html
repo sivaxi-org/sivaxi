@@ -1,164 +1,312 @@
 
- 
-   <lib-draggable-float>
-     <lib-theme></lib-theme>
-   </lib-draggable-float>
+<!-- Floating theme controls -->
+<lib-draggable-float>
+  <lib-theme></lib-theme>
+</lib-draggable-float>
 
 <div
-  class="flex h-screen overflow-hidden bg-[var(--sivaxi-bg)] text-[var(--sivaxi-text)] antialiased selection:bg-[var(--sivaxi-accent)]/20"
+  class="flex h-screen overflow-hidden bg-bg text-primary antialiased
+         selection:bg-accent/20"
 >
-  <!-- ===================== SIDEBAR ===================== -->
+  <!-- Sidebar -->
   @if (sidebarOpen()) {
-  <app-sidebar
-  [sidebarOpen]="sidebarOpen()"
-  [projects]="projects()"
-  [selectedProject]="selectedProject()"
-  [expandedProjects]="expandedProjects()"
-  [projectChats]="projectChats()"
-  [loadingProjects]="loadingProjects()"
-  [loadingProjectChats]="loadingProjectChats()"
-  [creatingProject]="creatingProject()"
-  [normalChats]="normalChats()"
-  [loadingNormalChats]="loadingNormalChats()"
-  [selectedChat]="selectedChat()"
-  (toggleSidebarEvent)="toggleSidebar()"
-  (startGeneralChatEvent)="startGeneralChat()"
-  (createProjectEvent)="createProject()"
-  (toggleProjectEvent)="toggleProject($event)"
-  (startProjectChatEvent)="startProjectChat($event)"
-  (selectChatEvent)="selectChat($event.chat, $event.project)"
-  (deleteChatEvent)="deleteChat($event.chat, $event.project)"
-  (selectNormalChatEvent)="selectNormalChat($event)"
-  (deleteNormalChatEvent)="deleteNormalChat($event)"
-  (logoutEvent)="logout()"
-></app-sidebar>
+    <app-sidebar
+      [sidebarOpen]="sidebarOpen()"
+      [projects]="projects()"
+      [selectedProject]="selectedProject()"
+      [expandedProjects]="expandedProjects()"
+      [projectChats]="projectChats()"
+      [loadingProjects]="loadingProjects()"
+      [loadingProjectChats]="loadingProjectChats()"
+      [creatingProject]="creatingProject()"
+      [normalChats]="normalChats()"
+      [loadingNormalChats]="loadingNormalChats()"
+      [selectedChat]="selectedChat()"
+      (toggleSidebarEvent)="toggleSidebar()"
+      (startGeneralChatEvent)="startGeneralChat()"
+      (createProjectEvent)="createProject()"
+      (toggleProjectEvent)="toggleProject($event)"
+      (startProjectChatEvent)="startProjectChat($event)"
+      (selectChatEvent)="selectChat($event.chat, $event.project)"
+      (deleteChatEvent)="deleteChat($event.chat, $event.project)"
+      (selectNormalChatEvent)="selectNormalChat($event)"
+      (deleteNormalChatEvent)="deleteNormalChat($event)"
+      (logoutEvent)="logout()"
+    />
   }
 
-  <!-- ===================== MAIN ===================== -->
-  <main class="flex min-w-0 flex-1 flex-col">
-    <!-- Top bar -->
-    <header
-      class="flex h-14 shrink-0 items-center gap-2 border-b border-[var(--sivaxi-border)] px-4"
-    >
-      @if (!sidebarOpen()) {
-        <button
-          type="button"
-          (click)="toggleSidebar()"
-          class="rounded-md p-1.5 text-[var(--sivaxi-text-muted)] transition hover:bg-[var(--sivaxi-surface-raised)] hover:text-[var(--sivaxi-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--sivaxi-focus)]"
-          title="Open sidebar"
-          aria-label="Open sidebar"
-        >
-          <svg
-            class="h-[18px] w-[18px]"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-          >
-            <rect x="3.5" y="4.5" width="17" height="15" rx="3" />
-            <path stroke-linecap="round" d="M9.5 4.5v15" />
-          </svg>
-        </button>
-      }
+  <!-- Main workspace -->
+  <main class="relative flex min-w-0 flex-1 flex-col overflow-hidden">
 
-      <div class="flex min-w-0 items-center gap-2 text-sm">
-        @if (selectedProject()) {
-          <span class="truncate text-[var(--sivaxi-text-muted)]">
-            {{ selectedProject()?.name }}
-          </span>
-          <svg
-            class="h-3.5 w-3.5 shrink-0 text-[var(--sivaxi-text-muted)]"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
+    <!-- Top navigation -->
+    <header
+      class="z-10 flex h-14 shrink-0 items-center justify-between gap-4
+             border-b border-border bg-bg/80 px-4 backdrop-blur-xl sm:px-6"
+    >
+      <div class="flex min-w-0 items-center gap-3">
+        @if (!sidebarOpen()) {
+          <button
+            type="button"
+            (click)="toggleSidebar()"
+            class="flex size-9 shrink-0 items-center justify-center rounded-xl
+                   text-muted transition-colors hover:bg-surface-raised
+                   hover:text-primary focus-visible:outline
+                   focus-visible:outline-2 focus-visible:outline-focus"
+            title="Open sidebar"
+            aria-label="Open sidebar"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
+            <svg
+              class="size-[18px]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+            >
+              <rect x="3.5" y="4.5" width="17" height="15" rx="3" />
+              <path stroke-linecap="round" d="M9.5 4.5v15" />
+            </svg>
+          </button>
         }
-        <span class="truncate font-medium">
-          {{ selectedChat()?.title || 'New chat' }}
+
+        <div class="flex min-w-0 items-center gap-2.5 text-sm">
+          @if (selectedProject()) {
+            <div
+              class="flex min-w-0 items-center gap-2 rounded-lg
+                     bg-surface px-2.5 py-1.5"
+            >
+              <svg
+                class="size-4 shrink-0 text-accent"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5v-10Z"
+                />
+              </svg>
+
+              <span class="max-w-36 truncate text-muted">
+                {{ selectedProject()?.name }}
+              </span>
+            </div>
+
+            <svg
+              class="size-3.5 shrink-0 text-faint"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m9 18 6-6-6-6"
+              />
+            </svg>
+          }
+
+          <h1 class="truncate font-semibold text-primary">
+            {{ selectedChat()?.title || 'New conversation' }}
+          </h1>
+        </div>
+      </div>
+
+      <div class="flex shrink-0 items-center gap-2">
+        <span
+          class="hidden items-center gap-1.5 rounded-full border border-border
+                 bg-surface px-2.5 py-1 text-[11px] font-medium text-muted
+                 sm:inline-flex"
+        >
+          <span class="size-1.5 rounded-full bg-accent"></span>
+          Vixi AI
         </span>
       </div>
     </header>
 
+    <!-- Conversation area -->
     <section class="flex min-h-0 flex-1 flex-col">
+
       <!-- Empty state -->
       @if (!selectedChat() && messages().length === 0) {
-        <div class="flex flex-1 flex-col items-center justify-center px-6 pb-10">
-          <app-logo-icon></app-logo-icon>
+        <div
+          class="relative flex flex-1 flex-col items-center justify-center
+                 overflow-y-auto px-5 pb-12"
+        >
+          <!-- Subtle decorative accent -->
+          <div
+            class="pointer-events-none absolute left-1/2 top-1/2 size-72
+                   -translate-x-1/2 -translate-y-1/2 rounded-full
+                   bg-accent/5 blur-3xl"
+          ></div>
 
-          <h1 class="text-center text-[28px] font-semibold tracking-tight">
-            What are you working on?
-          </h1>
+          <div class="relative flex max-w-xl flex-col items-center text-center">
+            <div
+              class="mb-7 flex size-[68px] items-center justify-center
+                     rounded-[22px] border border-glass-border bg-glass
+                     shadow-glass"
+            >
+              <app-logo-icon />
+            </div>
 
-          <p class="mt-2 max-w-sm text-center text-sm leading-6 text-[var(--sivaxi-text-muted)]">
-            @if (selectedProject()) {
-              This chat will be saved in
-              <span class="font-medium text-[var(--sivaxi-accent)]">
-                {{ selectedProject()?.name }} </span
-              >.
-            } @else {
-              Ask anything, or pick a project to keep related chats together.
-            }
-          </p>
+            <p
+              class="mb-3 text-[10px] font-semibold uppercase
+                     tracking-[0.24em] text-accent"
+            >
+              Your AI workspace
+            </p>
+
+            <h2
+              class="text-balance text-3xl font-semibold tracking-tight
+                     text-primary sm:text-4xl"
+            >
+              What are you working on?
+            </h2>
+
+            <p class="mt-4 max-w-md text-sm leading-7 text-muted">
+              @if (selectedProject()) {
+                Start a conversation and keep everything organized in
+                <span class="font-semibold text-accent">
+                  {{ selectedProject()?.name }}
+                </span>.
+              } @else {
+                Explore an idea, solve a problem, or build something new.
+                Your conversations are ready when you are.
+              }
+            </p>
+
+            <div
+              class="mt-8 flex flex-wrap items-center justify-center gap-2"
+            >
+              <span
+                class="rounded-full border border-border bg-surface/70
+                       px-3 py-1.5 text-xs text-muted"
+              >
+                Ask a question
+              </span>
+              <span
+                class="rounded-full border border-border bg-surface/70
+                       px-3 py-1.5 text-xs text-muted"
+              >
+                Write code
+              </span>
+              <span
+                class="rounded-full border border-border bg-surface/70
+                       px-3 py-1.5 text-xs text-muted"
+              >
+                Explore an idea
+              </span>
+            </div>
+          </div>
         </div>
       }
 
       <!-- Messages -->
       @if (selectedChat() || messages().length > 0) {
-        <div class="chat-scroll flex-1 overflow-y-auto">
-          <div class="mx-auto w-full max-w-[720px] px-5 pb-6 pt-4">
+        <div class="chat-scroll min-h-0 flex-1 overflow-y-auto">
+          <div class="mx-auto w-full max-w-[800px] px-4 pb-8 pt-8 sm:px-7">
+
             @if (loadingMessages()) {
-              <div class="flex items-center justify-center py-16">
+              <div class="flex items-center justify-center py-20">
                 <div
-                  class="h-5 w-5 animate-spin rounded-full border-2 border-(--sivaxi-border) border-t-[var(--sivaxi-accent)]"
+                  class="size-6 animate-spin rounded-full border-2
+                         border-border border-t-accent"
+                  role="status"
+                  aria-label="Loading messages"
                 ></div>
               </div>
             } @else {
-              <div class="space-y-7">
+              <div class="space-y-8">
                 @for (message of messages(); track message.id) {
+
+                  <!-- User message -->
                   @if (message.role === 'user') {
                     <div class="flex justify-end">
-                      <div
-                        class="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-[var(--sivaxi-surface-raised)] px-4 py-2.5 text-[14.5px] leading-6 text-[var(--sivaxi-text)]"
-                      >
-                        {{ message.content?.content || message.content }}
+                      <div class="max-w-[88%] sm:max-w-[80%]">
+                        <div
+                          class="mb-1.5 text-right text-[10px] font-medium
+                                 uppercase tracking-wider text-faint"
+                        >
+                          You
+                        </div>
+
+                        <div
+                          class="whitespace-pre-wrap break-words rounded-2xl
+                                 rounded-br-md border border-border
+                                 bg-surface-raised px-4 py-3
+                                 text-[14px] leading-7 text-primary
+                                 shadow-sm sm:px-5"
+                        >
+                          {{ message.content?.content || message.content }}
+                        </div>
                       </div>
                     </div>
                   }
 
+                  <!-- Assistant message -->
                   @if (message.role === 'assistant') {
-                    <div class="flex items-start gap-3.5">
-                      <app-logo-icon></app-logo-icon>
-
+                    <article class="flex items-start gap-3.5 sm:gap-4">
                       <div
-                        class="chat-prose min-w-0 flex-1 text-[14.5px] leading-7 text-(--sivaxi-text)"
-                        [innerHTML]="renderAssistantMessage(message)"
-                        (click)="handleMarkdownClick($event)"
-                      ></div>
-                    </div>
+                        class="mt-0.5 flex size-8 shrink-0 items-center
+                               justify-center rounded-xl border
+                               border-glass-border bg-glass"
+                      >
+                        <app-logo-icon />
+                      </div>
+
+                      <div class="min-w-0 flex-1 pt-0.5">
+                        <div
+                          class="mb-2 text-[10px] font-semibold uppercase
+                                 tracking-[0.16em] text-accent"
+                        >
+                          Vixi
+                        </div>
+
+                        <div
+                          class="chat-prose min-w-0 break-words
+                                 text-[14px] leading-7 text-primary"
+                          [innerHTML]="renderAssistantMessage(message)"
+                          (click)="handleMarkdownClick($event)"
+                        ></div>
+                      </div>
+                    </article>
                   }
                 }
 
+                <!-- Assistant typing indicator -->
                 @if (sendingMessage()) {
-                  <div class="flex items-start gap-3.5">
+                  <div class="flex items-start gap-3.5 sm:gap-4">
                     <div
-                      class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[var(--sivaxi-accent)] text-[11px] font-bold text-white"
+                      class="mt-0.5 flex size-8 shrink-0 items-center
+                             justify-center rounded-xl border
+                             border-glass-border bg-glass"
                     >
-                      V
+                      <app-logo-icon />
                     </div>
 
-                    <div class="flex items-center gap-1 pt-2.5" aria-label="Vixi AI is typing">
-                      <span
-                        class="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--sivaxi-accent)]/60"
-                      ></span>
-                      <span
-                        class="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--sivaxi-accent)]/60 [animation-delay:150ms]"
-                      ></span>
-                      <span
-                        class="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--sivaxi-accent)]/60 [animation-delay:300ms]"
-                      ></span>
+                    <div class="pt-1">
+                      <p
+                        class="mb-2 text-[10px] font-semibold uppercase
+                               tracking-[0.16em] text-accent"
+                      >
+                        Vixi is thinking
+                      </p>
+
+                      <div
+                        class="flex items-center gap-1.5 py-1"
+                        role="status"
+                        aria-label="Vixi AI is typing"
+                      >
+                        <span class="size-1.5 animate-bounce rounded-full bg-accent/60"></span>
+                        <span
+                          class="size-1.5 animate-bounce rounded-full
+                                 bg-accent/60 [animation-delay:150ms]"
+                        ></span>
+                        <span
+                          class="size-1.5 animate-bounce rounded-full
+                                 bg-accent/60 [animation-delay:300ms]"
+                        ></span>
+                      </div>
                     </div>
                   </div>
                 }
@@ -169,10 +317,17 @@
       }
 
       <!-- Composer -->
-      <div class="shrink-0 px-5 pb-5 pt-2">
-        <div class="mx-auto w-full max-w-[720px]">
+      <div
+        class="shrink-0 border-t border-border/60
+               bg-bg/75 px-3 pb-3 pt-4 backdrop-blur-xl
+               sm:px-6 sm:pb-5"
+      >
+        <div class="mx-auto w-full max-w-[800px]">
           <div
-            class="relative rounded-2xl bg-[var(--sivaxi-surface)] shadow-[0_8px_30px_rgba(0,0,0,0.12)] ring-1 ring-inset ring-[var(--sivaxi-border)] transition focus-within:ring-[var(--sivaxi-focus)]"
+            class="group relative overflow-hidden rounded-2xl border
+                   border-border bg-surface shadow-lg
+                   transition-colors duration-200
+                   focus-within:border-focus"
           >
             <textarea
               rows="1"
@@ -180,33 +335,61 @@
               (input)="updateMessageInput($event)"
               (keydown)="handleComposerKeydown($event)"
               [disabled]="sendingMessage()"
-              placeholder="Message Vixi AI"
-              aria-label="Message"
-              class="block max-h-48 min-h-[56px] w-full resize-none bg-transparent py-[18px] pl-5 pr-16 text-[14.5px] leading-5 text-[var(--sivaxi-text)] outline-none placeholder:text-[var(--sivaxi-text-muted)] disabled:cursor-not-allowed disabled:opacity-60 [field-sizing:content]"
+              placeholder="Message Vixi AI..."
+              aria-label="Message Vixi AI"
+              class="block max-h-48 min-h-[58px] w-full resize-none
+                     bg-transparent py-[18px] pl-4 pr-16
+                     text-sm leading-6 text-primary outline-none
+                     placeholder:text-muted disabled:cursor-not-allowed
+                     disabled:opacity-60 sm:pl-5
+                     [field-sizing:content]"
             ></textarea>
 
-            <button
-              type="button"
-              (click)="sendMessage()"
-              [disabled]="!messageInput().trim() || sendingMessage()"
-              class="absolute bottom-2.5 right-2.5 flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--sivaxi-accent)] text-white transition hover:bg-[var(--sivaxi-accent-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sivaxi-focus)] disabled:cursor-not-allowed disabled:opacity-40"
-              title="Send message"
-              aria-label="Send message"
+            <div
+              class="flex items-center justify-between gap-3
+                     border-t border-border/60 px-3 py-2"
             >
-              <svg
-                class="h-4 w-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.25"
+              <p class="truncate text-[10px] text-muted sm:text-xs">
+                <span class="font-medium text-primary">Enter</span>
+                to send
+                <span class="mx-1 text-faint">·</span>
+                <span class="font-medium text-primary">Shift + Enter</span>
+                for a new line
+              </p>
+
+              <button
+                type="button"
+                (click)="sendMessage()"
+                [disabled]="!messageInput().trim() || sendingMessage()"
+                class="flex size-9 shrink-0 items-center justify-center
+                       rounded-xl bg-accent text-white
+                       transition-all hover:bg-accent-hover
+                       active:scale-95 focus-visible:outline
+                       focus-visible:outline-2 focus-visible:outline-offset-2
+                       focus-visible:outline-focus
+                       disabled:cursor-not-allowed disabled:opacity-40"
+                title="Send message"
+                aria-label="Send message"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 19V5M5 12l7-7 7 7" />
-              </svg>
-            </button>
+                <svg
+                  class="size-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 19V5m-7 7 7-7 7 7"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
 
-          <p class="mt-2.5 text-center text-xs text-[var(--sivaxi-text-muted)]">
-            Vixi AI can make mistakes. Check important information.
+          <p class="mt-3 text-center text-[10px] leading-5 text-muted sm:text-xs">
+            Vixi AI can make mistakes. Verify important information.
           </p>
         </div>
       </div>

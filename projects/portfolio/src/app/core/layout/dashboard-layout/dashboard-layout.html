@@ -54,19 +54,6 @@
 
           <div class="flex h-8 w-8 items-center justify-center">
 
-            @if (themeService.theme() === 'dark') {
-              <img
-                [src]="images.LOGO.SYMBOL_LIGHT"
-                alt="Sivaxi"
-                class="h-8 w-8 object-contain"
-              />
-            } @else {
-              <img
-                [src]="images.LOGO.SYMBOL_DARK"
-                alt="Sivaxi"
-                class="h-8 w-8 object-contain"
-              />
-            }
 
           </div>
 
@@ -134,7 +121,7 @@
 
 
         <!-- Overview -->
-        <a [routerLink]="['/portfolio', authService.username]"
+        <a [routerLink]="['/portfolio', authService.getUsername()]"
           routerLinkActive="bg-glass-fill-strong text-text-primary"
           [routerLinkActiveOptions]="{ exact: true }"
           (click)="closeMobileMenu()"
@@ -439,7 +426,7 @@
   >
 
     <!-- Avatar -->
-    <div
+    <!-- <div
       class="
         flex h-9 w-9 shrink-0
         items-center justify-center
@@ -453,11 +440,11 @@
       "
     >
       {{ authService.username?.charAt(0)?.toUpperCase() || '?' }}
-    </div>
+    </div> -->
 
 
     <!-- User Details -->
-    <div class="min-w-0 flex-1">
+    <!-- <div class="min-w-0 flex-1">
 
       <p
         class="
@@ -482,7 +469,7 @@
         {{ authService.email || 'No email available' }}
       </p>
 
-    </div>
+    </div> -->
 
   </div>
 
@@ -596,14 +583,6 @@
 
         </div>
 
-
-        <!-- Header Right -->
-        <div class="flex items-center gap-2">
-
-          <!-- Theme -->
-          <app-theme-switcher />
-
-        </div>
 
       </header>
 

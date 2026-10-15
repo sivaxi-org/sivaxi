@@ -1,221 +1,317 @@
-@if (sidebarOpen()) {
-  <aside class="flex w-68 shrink-0 flex-col border-r border-[var(--sivaxi-border)] bg-[var(--sivaxi-surface)] h-screen">
-    <div class="flex h-14 items-center justify-between px-4">
-      <div class="flex items-center gap-2.5">
-        <app-logo-icon />
-        <span class="text-[15px] font-semibold tracking-tight">Vixi AI</span>
+
+<aside
+  class="glass relative flex h-screen w-68 shrink-0 flex-col overflow-hidden
+         border-r border-glass-border text-primary transition-all duration-200"
+  [class.w-0]="!sidebarOpen()"
+  [class.border-r-0]="!sidebarOpen()"
+  [attr.aria-hidden]="!sidebarOpen()"
+>
+  <!-- Brand -->
+  <header class="flex h-16 shrink-0 items-center gap-3 px-4">
+    <app-logo-icon />
+
+    <div class="min-w-0 flex-1">
+      <p class="text-base font-semibold tracking-tight text-primary">Sivaxi</p>
+      <p class="text-[10px] font-medium uppercase tracking-[0.16em] text-muted">
+        AI workspace
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="flex size-8 shrink-0 items-center justify-center rounded-lg
+             text-muted transition-colors hover:bg-surface-raised hover:text-primary"
+      aria-label="Close sidebar"
+      title="Close sidebar"
+      (click)="toggleSidebarEvent.emit()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="1.8" class="size-4">
+        <rect x="3" y="4" width="18" height="16" rx="3" />
+        <path d="M9 4v16" />
+      </svg>
+    </button>
+  </header>
+
+  <div class="mx-4 border-t border-border"></div>
+
+  <!-- Main actions -->
+  <div class="space-y-2 px-3 pb-5 pt-4">
+    <button
+      type="button"
+      class="flex w-full items-center justify-center gap-2 rounded-xl
+             bg-accent px-4 py-3 text-sm font-semibold text-white
+             shadow-sm transition-colors hover:bg-accent-hover
+             active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+      (click)="startGeneralChatEvent.emit()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" class="size-4">
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+      New conversation
+    </button>
+
+    <button
+      type="button"
+      class="flex w-full items-center gap-3 rounded-xl border border-border
+             bg-surface/60 px-3 py-2.5 text-sm text-muted transition-colors
+             hover:bg-surface-raised hover:text-primary"
+      (click)="createProjectEvent.emit()"
+      [disabled]="creatingProject()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="1.8" class="size-4 shrink-0">
+        <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5v-10Z" />
+      </svg>
+      <span class="flex-1 text-left">
+        {{ creatingProject() ? 'Creating project…' : 'Create project' }}
+      </span>
+      @if (creatingProject()) {
+        <span class="size-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+      }
+    </button>
+  </div>
+
+  <!-- Scrollable content -->
+  <div class="min-h-0 flex-1 space-y-6 overflow-y-auto px-3 pb-4">
+
+    <!-- Projects -->
+    <section>
+      <div class="flex items-center justify-between px-2 pb-2">
+        <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted">
+          Projects
+        </p>
+
+        <span class="rounded-md bg-surface-raised px-1.5 py-0.5 text-[10px] text-muted">
+          {{ projects().length }}
+        </span>
       </div>
 
-      <button
-        type="button"
-        (click)="toggleSidebarEvent.emit()"
-        class="rounded-md p-1.5 text-[var(--sivaxi-text-muted)] transition hover:bg-[var(--sivaxi-surface-raised)] hover:text-[var(--sivaxi-text)]"
-        title="Close sidebar"
-        aria-label="Close sidebar"
-      >
-        <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-          <rect x="3.5" y="4.5" width="17" height="15" rx="3" />
-          <path stroke-linecap="round" d="M9.5 4.5v15" />
-        </svg>
-      </button>
-    </div>
-
-    <div class="px-3 pb-2 pt-1">
-      <button
-        type="button"
-        (click)="startGeneralChatEvent.emit()"
-        class="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium ring-1 ring-inset ring-[var(--sivaxi-border)] transition hover:bg-[var(--sivaxi-surface-raised)]"
-      >
-        <svg class="h-4 w-4 text-[var(--sivaxi-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14" />
-        </svg>
-        New chat
-      </button>
-    </div>
-
-    <div class="sidebar-scroll flex-1 overflow-y-auto px-3 pb-4">
-      <section class="mt-4">
-        <div class="mb-1 flex items-center justify-between px-2">
-          <span class="text-xs font-medium text-[var(--sivaxi-text-muted)]">Projects</span>
+      @if (loadingProjects()) {
+        <div class="space-y-2 px-2 py-3" aria-label="Loading projects">
+          <div class="h-3 w-3/4 animate-pulse rounded bg-surface-raised"></div>
+          <div class="h-3 w-1/2 animate-pulse rounded bg-surface-raised"></div>
+          <div class="h-3 w-2/3 animate-pulse rounded bg-surface-raised"></div>
+        </div>
+      } @else if (projects().length === 0) {
+        <div class="rounded-xl border border-dashed border-border px-3 py-4 text-center">
+          <p class="text-xs text-muted">No projects yet</p>
           <button
             type="button"
+            class="mt-2 text-xs font-semibold text-accent hover:underline"
             (click)="createProjectEvent.emit()"
             [disabled]="creatingProject()"
-            class="rounded-md p-1 text-[var(--sivaxi-text-muted)] hover:bg-[var(--sivaxi-surface-raised)] disabled:opacity-40"
-            title="Create project"
-            aria-label="Create project"
-          >
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14" />
-            </svg>
-          </button>
-        </div>
-
-        @if (loadingProjects()) {
-          <div class="space-y-1.5 px-1 py-1">
-            <div class="h-8 animate-pulse rounded-lg bg-[var(--sivaxi-surface-raised)]"></div>
-            <div class="h-8 animate-pulse rounded-lg bg-[var(--sivaxi-surface-raised)]"></div>
-          </div>
-        } @else if (projects().length === 0) {
-          <button
-            type="button"
-            (click)="createProjectEvent.emit()"
-            class="w-full rounded-lg px-2 py-2 text-left text-[13px] text-[var(--sivaxi-text-muted)] hover:bg-[var(--sivaxi-surface-raised)]"
           >
             Create your first project
           </button>
-        } @else {
-          <div class="space-y-0.5">
-            @for (project of projects(); track project.id) {
-              <div>
-                <div
-                  class="group flex items-center rounded-lg transition hover:bg-[var(--sivaxi-surface-raised)]"
-                  [class.bg-[var(--sivaxi-accent-soft)]]="selectedProject()?.id === project.id && !selectedChat()"
+        </div>
+      } @else {
+        <div class="space-y-1">
+          @for (project of projects(); track project.id) {
+            <div class="group overflow-hidden rounded-xl">
+              <div
+                class="flex items-center gap-1 rounded-xl transition-colors"
+                [class.bg-accent-soft]="selectedProject()?.id === project.id"
+              >
+                <button
+                  type="button"
+                  class="flex min-w-0 flex-1 items-center gap-3 px-3 py-2.5
+                         text-left text-sm transition-colors hover:text-primary"
+                  [class.text-accent]="selectedProject()?.id === project.id"
+                  [class.text-muted]="selectedProject()?.id !== project.id"
+                  [attr.aria-expanded]="isProjectExpanded(project.id)"
+                  (click)="toggleProjectEvent.emit(project)"
                 >
-                  <button
-                    type="button"
-                    (click)="toggleProjectEvent.emit(project)"
-                    class="flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left"
-                    [attr.aria-expanded]="isProjectExpanded(project.id)"
-                  >
-                    <svg
-                      class="h-3.5 w-3.5 shrink-0 text-[var(--sivaxi-text-muted)] transition-transform duration-150"
-                      [class.rotate-90]="isProjectExpanded(project.id)"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2.5"
-                    >
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.8"
+                    class="size-[18px] shrink-0">
+                    <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5v-10Z" />
+                  </svg>
 
-                    <span
-                      class="truncate text-[13.5px]"
-                      [class.font-medium]="selectedProject()?.id === project.id"
-                      [class.text-[var(--sivaxi-accent)]]="selectedProject()?.id === project.id"
-                      [class.text-[var(--sivaxi-text)]]="selectedProject()?.id !== project.id"
-                    >
-                      {{ project.name }}
-                    </span>
-                  </button>
+                  <span class="min-w-0 flex-1 truncate">
+                    {{ project.name }}
+                  </span>
 
-                  <button
-                    type="button"
-                    (click)="startProjectChatEvent.emit(project)"
-                    class="mr-1 rounded-md p-1 text-[var(--sivaxi-text-muted)] opacity-0 transition hover:bg-[var(--sivaxi-border)] hover:text-[var(--sivaxi-accent)] group-hover:opacity-100"
-                    title="New chat in this project"
-                    aria-label="New chat in this project"
-                  >
-                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14" />
-                    </svg>
-                  </button>
-                </div>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.8"
+                    class="size-3.5 shrink-0 transition-transform"
+                    [class.rotate-90]="isProjectExpanded(project.id)">
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </button>
 
-                @if (isProjectExpanded(project.id)) {
-                  <div class="ml-3.5 mt-0.5 space-y-0.5 border-l border-[var(--sivaxi-border)] pl-2">
-                    @if (isLoadingProjectChats(project.id)) {
-                      <div class="px-2 py-1.5 text-xs text-[var(--sivaxi-text-muted)]">Loading…</div>
-                    } @else if (getProjectChats(project.id).length === 0) {
-                      <div class="px-2 py-1.5 text-xs text-[var(--sivaxi-text-muted)]">No chats yet</div>
-                    }
+                <button
+                  type="button"
+                  class="mr-1 flex size-7 shrink-0 items-center justify-center rounded-lg
+                         text-muted transition-colors hover:bg-surface-raised
+                         hover:text-accent"
+                  title="Start chat in project"
+                  [attr.aria-label]="'Start chat in ' + project.name"
+                  (click)="startProjectChatEvent.emit(project)"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.8" class="size-4">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
 
+              @if (isProjectExpanded(project.id)) {
+                <div class="ml-5 mt-1 space-y-1 border-l border-border pl-3">
+                  @if (isLoadingProjectChats(project.id)) {
+                    <div class="space-y-2 px-2 py-3">
+                      <div class="h-3 w-3/4 animate-pulse rounded bg-surface-raised"></div>
+                      <div class="h-3 w-1/2 animate-pulse rounded bg-surface-raised"></div>
+                    </div>
+                  } @else if (getProjectChats(project.id).length === 0) {
+                    <p class="px-2 py-2 text-xs text-muted">No conversations</p>
+                  } @else {
                     @for (chat of getProjectChats(project.id); track chat.id) {
                       <div
-                        class="group/chat flex items-center rounded-lg transition hover:bg-[var(--sivaxi-surface-raised)]"
-                        [class.bg-[var(--sivaxi-accent-soft)]]="selectedChat()?.id === chat.id"
+                        class="group/chat flex items-center gap-1 rounded-lg"
+                        [class.bg-surface-raised]="selectedChat()?.id === chat.id"
                       >
                         <button
                           type="button"
-                          (click)="selectChatEvent.emit({ chat, project })"
-                          class="min-w-0 flex-1 truncate rounded-lg px-2 py-1.5 text-left text-[13px]"
-                          [class.text-[var(--sivaxi-accent)]]="selectedChat()?.id === chat.id"
-                          [class.text-[var(--sivaxi-text-muted)]]="selectedChat()?.id !== chat.id"
+                          class="min-w-0 flex-1 truncate rounded-lg px-2 py-2
+                                 text-left text-xs transition-colors hover:text-primary"
+                          [class.text-accent]="selectedChat()?.id === chat.id"
+                          [class.text-muted]="selectedChat()?.id !== chat.id"
+                          (click)="selectChatEvent.emit({ chat: chat, project: project })"
+                          [title]="chat.title"
                         >
-                          {{ chat.title || 'New chat' }}
+                          {{ chat.title }}
                         </button>
 
                         <button
                           type="button"
-                          (click)="deleteChatEvent.emit({ chat, project })"
-                          class="mr-1 rounded-md p-1 text-[var(--sivaxi-text-muted)] opacity-0 transition hover:bg-red-500/10 hover:text-red-500 group-hover/chat:opacity-100"
+                          class="mr-1 flex size-6 shrink-0 items-center justify-center
+                                 rounded-md text-muted opacity-0 transition-all
+                                 hover:bg-red-500/10 hover:text-red-500
+                                 group-hover/chat:opacity-100 focus:opacity-100"
+                          [attr.aria-label]="'Delete chat ' + chat.title"
                           title="Delete chat"
-                          aria-label="Delete chat"
+                          (click)="deleteChatEvent.emit({ chat: chat, project: project })"
                         >
-                          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4h8v2m-7 0v14m6-14v14M5 6l1 15h12l1-15" />
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="1.8"
+                            class="size-3.5">
+                            <path d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14M10 10v6m4-6v6" />
                           </svg>
                         </button>
                       </div>
                     }
-                  </div>
-                }
-              </div>
-            }
-          </div>
-        }
-      </section>
-
-      <section class="mt-6">
-        <div class="mb-1 px-2">
-          <span class="text-xs font-medium text-[var(--sivaxi-text-muted)]">Recent chats</span>
+                  }
+                </div>
+              }
+            </div>
+          }
         </div>
+      }
+    </section>
 
-        @if (loadingNormalChats()) {
-          <div class="space-y-1.5 px-1 py-1">
-            <div class="h-8 animate-pulse rounded-lg bg-[var(--sivaxi-surface-raised)]"></div>
-            <div class="h-8 animate-pulse rounded-lg bg-[var(--sivaxi-surface-raised)]"></div>
-          </div>
-        } @else if (normalChats().length === 0) {
-          <div class="px-2 py-2 text-[13px] text-[var(--sivaxi-text-muted)]">
-            Chats outside projects appear here
-          </div>
-        } @else {
-          <div class="space-y-0.5">
-            @for (chat of normalChats(); track chat.id) {
-              <div
-                class="group/chat flex items-center rounded-lg transition hover:bg-[var(--sivaxi-surface-raised)]"
-                [class.bg-[var(--sivaxi-accent-soft)]]="selectedChat()?.id === chat.id && selectedProject() === null"
+    <!-- General conversations -->
+    <section>
+      <div class="flex items-center justify-between px-2 pb-2">
+        <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted">
+          Recent conversations
+        </p>
+
+        <span class="rounded-md bg-surface-raised px-1.5 py-0.5 text-[10px] text-muted">
+          {{ normalChats().length }}
+        </span>
+      </div>
+
+      @if (loadingNormalChats()) {
+        <div class="space-y-2 px-2 py-3" aria-label="Loading conversations">
+          <div class="h-3 w-3/4 animate-pulse rounded bg-surface-raised"></div>
+          <div class="h-3 w-2/3 animate-pulse rounded bg-surface-raised"></div>
+          <div class="h-3 w-1/2 animate-pulse rounded bg-surface-raised"></div>
+        </div>
+      } @else if (normalChats().length === 0) {
+        <p class="px-3 py-3 text-xs leading-5 text-muted">
+          Your conversations will appear here.
+        </p>
+      } @else {
+        <div class="space-y-1">
+          @for (chat of normalChats(); track chat.id) {
+            <div
+              class="group/chat flex items-center gap-1 rounded-xl transition-colors"
+              [class.bg-accent-soft]="selectedChat()?.id === chat.id"
+            >
+              <button
+                type="button"
+                class="flex min-w-0 flex-1 items-center gap-3 rounded-xl
+                       px-3 py-2.5 text-left text-sm transition-colors
+                       hover:text-primary"
+                [class.text-accent]="selectedChat()?.id === chat.id"
+                [class.text-muted]="selectedChat()?.id !== chat.id"
+                [title]="chat.title"
+                (click)="selectNormalChatEvent.emit(chat)"
               >
-                <button
-                  type="button"
-                  (click)="selectNormalChatEvent.emit(chat)"
-                  class="min-w-0 flex-1 truncate rounded-lg px-2 py-1.5 text-left text-[13.5px]"
-                  [class.text-[var(--sivaxi-accent)]]="selectedChat()?.id === chat.id && selectedProject() === null"
-                  [class.text-[var(--sivaxi-text-muted)]]="!(selectedChat()?.id === chat.id && selectedProject() === null)"
-                >
-                  {{ chat.title || 'New chat' }}
-                </button>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.8"
+                  class="size-4 shrink-0">
+                  <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-3 2v-5.2A7.5 7.5 0 1 1 20 11.5Z" />
+                </svg>
 
-                <button
-                  type="button"
-                  (click)="deleteNormalChatEvent.emit(chat)"
-                  class="mr-1 rounded-md p-1 text-[var(--sivaxi-text-muted)] opacity-0 transition hover:bg-red-500/10 hover:text-red-500 group-hover/chat:opacity-100"
-                  title="Delete chat"
-                  aria-label="Delete chat"
-                >
-                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4h8v2m-7 0v14m6-14v14M5 6l1 15h12l1-15" />
-                  </svg>
-                </button>
-              </div>
-            }
-          </div>
-        }
-      </section>
-    </div>
+                <span class="min-w-0 flex-1 truncate">{{ chat.title }}</span>
+              </button>
 
-    <div class="mt-auto border-t border-[var(--sivaxi-border)] p-4">
-      <button
-        type="button"
-        (click)="logoutEvent.emit()"
-        class="group flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-[var(--sivaxi-text-muted)] transition-all duration-200 hover:bg-red-500/10 hover:text-red-500"
-      >
-        <svg class="h-5 w-5 transition-colors group-hover:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-        </svg>
-        <span>Logout</span>
-      </button>
+              <button
+                type="button"
+                class="mr-1 flex size-7 shrink-0 items-center justify-center
+                       rounded-lg text-muted opacity-0 transition-all
+                       hover:bg-red-500/10 hover:text-red-500
+                       group-hover/chat:opacity-100 focus:opacity-100"
+                [attr.aria-label]="'Delete chat ' + chat.title"
+                title="Delete conversation"
+                (click)="deleteNormalChatEvent.emit(chat)"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="1.8"
+                  class="size-3.5">
+                  <path d="M3 6h18M8 6V4h8v2m-9 2 1 12h8l1-12M10 11v5m4-5v5" />
+                </svg>
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer class="shrink-0 border-t border-border p-3">
+    <button
+      type="button"
+      class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5
+             text-sm text-muted transition-colors hover:bg-surface-raised
+             hover:text-primary"
+      (click)="logoutEvent.emit()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="1.8" class="size-[18px]">
+        <path d="M10 17l5-5-5-5M15 12H3" />
+        <path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6" />
+      </svg>
+      <span>Sign out</span>
+    </button>
+
+    <div class="mt-2 flex items-center gap-3 rounded-xl border border-border
+                bg-surface/70 p-3">
+      <div class="flex size-9 shrink-0 items-center justify-center rounded-full
+                  bg-accent-soft text-xs font-bold text-accent">
+        AM
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-sm font-semibold text-primary">Sivaxi user</p>
+        <p class="mt-0.5 truncate text-xs text-muted">Personal workspace</p>
+      </div>
+
+      <span class="size-2 rounded-full bg-accent" title="Workspace active"></span>
     </div>
-  </aside>
-}
+  </footer>
+</aside>

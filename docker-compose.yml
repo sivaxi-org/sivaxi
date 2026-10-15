@@ -1,9 +1,10 @@
+
 services:
-  # Reverse proxy
   traefik:
     image: traefik:v3
     container_name: sivaxi-traefik
     restart: unless-stopped
+
     command:
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
@@ -15,82 +16,21 @@ services:
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
       - --entrypoints.web.http.redirections.entrypoint.scheme=https
       - --api.dashboard=false
+
     ports:
       - "80:80"
       - "443:443"
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik.local.yml:/etc/traefik/dynamic:ro
-    networks:
-      - sivaxi
 
-  # Main shell
-  shell:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    working_dir: /workspace
-    command: ["npx", "ng", "serve", "shell"]
-    volumes:
-      - .:/workspace
-      - node_modules:/workspace/node_modules
-    expose:
-      - "4200"
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.shell.rule=Host(`shell.sivaxi.test`)
-      - traefik.http.routers.shell.entrypoints=websecure
-      - traefik.http.routers.shell.tls=true
-      - traefik.http.services.shell.loadbalancer.server.port=4200
-    networks:
-      - sivaxi
-
-  # Vixi frontend
-  vixi:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    working_dir: /workspace
-    command: ["npx", "ng", "serve", "vixi"]
-    volumes:
-      - .:/workspace
-      - node_modules:/workspace/node_modules
-    expose:
-      - "4200"
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.vixi.rule=Host(`vixi.sivaxi.test`)
-      - traefik.http.routers.vixi.entrypoints=websecure
-      - traefik.http.routers.vixi.tls=true
-      - traefik.http.services.vixi.loadbalancer.server.port=4200
-    networks:
-      - sivaxi
-
-  # Portfolio frontend
-  portfolio:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    working_dir: /workspace
-    command: ["npx", "ng", "serve", "portfolio"]
-    volumes:
-      - .:/workspace
-      - node_modules:/workspace/node_modules
-    expose:
-      - "4200"
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.portfolio.rule=Host(`portfolio.sivaxi.test`)
-      - traefik.http.routers.portfolio.entrypoints=websecure
-      - traefik.http.routers.portfolio.tls=true
-      - traefik.http.services.portfolio.loadbalancer.server.port=4200
     networks:
       - sivaxi
 
 networks:
   sivaxi:
     name: sivaxi
-
-volumes:
-  node_modules:
-    name: sivaxi_node_modules
