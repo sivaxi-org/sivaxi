@@ -61,7 +61,6 @@
         }
       ]
     },
-    
     {
       "target": "portfolio",
       "public": "dist/portfolio/browser",
