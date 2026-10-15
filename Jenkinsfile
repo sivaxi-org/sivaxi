@@ -15,7 +15,6 @@ pipeline {
         FIREBASE_CREDENTIALS_ID = 'firebase-service-account-json'
         FIREBASE_TOOLS_VERSION = '15.28.1'
         SKIP_PIPELINE = 'false'
-        DEPLOY_APPS = ''
     }
 
     stages {
@@ -30,12 +29,8 @@ pipeline {
                 script {
                     def currentBranch = env.BRANCH_NAME?.trim()
 
-                    if (!currentBranch) {
-                        error('Cannot determine branch name. This must run as a Multibranch Pipeline.')
-                    }
-
                     if (currentBranch != 'master') {
-                        echo "Skipping pipeline: '${currentBranch}' is not master."
+                        echo "Skipping pipeline: '${currentBranch ?: 'unknown'}' is not master."
                         env.SKIP_PIPELINE = 'true'
                         currentBuild.result = 'NOT_BUILT'
                     } else {
@@ -45,28 +40,24 @@ pipeline {
             }
         }
 
-        
-stage('Detect Changes') {
-    when {
-        expression { env.SKIP_PIPELINE != 'true' }
-    }
-    steps {
-        script {
-            env.DEPLOY_APPS = 'shell,vixi,portfolio'
+        stage('Select Applications') {
+            when {
+                expression { env.SKIP_PIPELINE != 'true' }
+            }
+            steps {
+                script {
+                    // Every master build deploys all three applications.
+                    env.DEPLOY_APPS = 'shell,vixi,portfolio'
 
-            echo 'Deploy-all mode enabled.'
-            echo 'Applications selected: shell,vixi,portfolio'
+                    echo 'Full deployment mode enabled.'
+                    echo "Applications selected: ${env.DEPLOY_APPS}"
+                }
+            }
         }
-    }
-}
-
 
         stage('Install Dependencies') {
             when {
-                expression {
-                    env.SKIP_PIPELINE != 'true' &&
-                    env.DEPLOY_APPS?.trim()
-                }
+                expression { env.SKIP_PIPELINE != 'true' }
             }
             steps {
                 sh '''
@@ -80,14 +71,13 @@ stage('Detect Changes') {
 
         stage('Build Applications') {
             when {
-                expression {
-                    env.SKIP_PIPELINE != 'true' &&
-                    env.DEPLOY_APPS?.trim()
-                }
+                expression { env.SKIP_PIPELINE != 'true' }
             }
             steps {
                 script {
-                    env.DEPLOY_APPS.split(',').each { app ->
+                    def apps = ['shell', 'vixi', 'portfolio']
+
+                    for (app in apps) {
                         echo "Building ${app}"
 
                         sh """
@@ -101,14 +91,13 @@ stage('Detect Changes') {
 
         stage('Verify Build Artifacts') {
             when {
-                expression {
-                    env.SKIP_PIPELINE != 'true' &&
-                    env.DEPLOY_APPS?.trim()
-                }
+                expression { env.SKIP_PIPELINE != 'true' }
             }
             steps {
                 script {
-                    env.DEPLOY_APPS.split(',').each { app ->
+                    def apps = ['shell', 'vixi', 'portfolio']
+
+                    for (app in apps) {
                         echo "Verifying ${app} artifacts"
 
                         sh """
@@ -129,10 +118,7 @@ stage('Detect Changes') {
 
         stage('Deploy to Firebase Hosting') {
             when {
-                expression {
-                    env.SKIP_PIPELINE != 'true' &&
-                    env.DEPLOY_APPS?.trim()
-                }
+                expression { env.SKIP_PIPELINE != 'true' }
             }
             steps {
                 withCredentials([
@@ -142,7 +128,9 @@ stage('Detect Changes') {
                     )
                 ]) {
                     script {
-                        env.DEPLOY_APPS.split(',').each { app ->
+                        def apps = ['shell', 'vixi', 'portfolio']
+
+                        for (app in apps) {
                             echo "Deploying ${app} to Firebase project ${env.FIREBASE_PROJECT}"
 
                             sh """
@@ -160,11 +148,18 @@ stage('Detect Changes') {
 
     post {
         success {
-            echo "${env.PROJECT_NAME} pipeline completed. Applications: ${env.DEPLOY_APPS ?: 'none'}"
+            script {
+                if (env.SKIP_PIPELINE == 'true') {
+                    echo 'Pipeline skipped because this is not master.'
+                } else {
+                    echo 'Sivaxi Frontend pipeline completed successfully.'
+                    echo 'Applications processed: shell, vixi, portfolio'
+                }
+            }
         }
 
         failure {
-            echo "${env.PROJECT_NAME} pipeline failed. Check the stage logs."
+            echo 'Sivaxi Frontend pipeline failed. Check the stage logs.'
         }
 
         always {
