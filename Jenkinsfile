@@ -6,7 +6,7 @@ pipeline {
         skipDefaultCheckout(true)
         timestamps()
         disableConcurrentBuilds()
-        timeout(time: 30, unit: 'MINUTES')
+        timeout(time: 45, unit: 'MINUTES')
     }
 
     environment {
@@ -46,10 +46,7 @@ pipeline {
             }
             steps {
                 script {
-                    // Every master build deploys all three applications.
                     env.DEPLOY_APPS = 'shell,vixi,portfolio'
-
-                    echo 'Full deployment mode enabled.'
                     echo "Applications selected: ${env.DEPLOY_APPS}"
                 }
             }
@@ -60,12 +57,16 @@ pipeline {
                 expression { env.SKIP_PIPELINE != 'true' }
             }
             steps {
-                sh '''
-                    set -eu
-                    node --version
-                    npm --version
-                    npm ci
-                '''
+                script {
+                    docker.image('node:24-bookworm').inside {
+                        sh '''
+                            set -eu
+                            node --version
+                            npm --version
+                            npm ci
+                        '''
+                    }
+                }
             }
         }
 
@@ -75,15 +76,15 @@ pipeline {
             }
             steps {
                 script {
-                    def apps = ['shell', 'vixi', 'portfolio']
+                    docker.image('node:24-bookworm').inside {
+                        for (app in ['shell', 'vixi', 'portfolio']) {
+                            echo "Building ${app}"
 
-                    for (app in apps) {
-                        echo "Building ${app}"
-
-                        sh """
-                            set -eu
-                            npx ng build ${app} --configuration production
-                        """
+                            sh """
+                                set -eu
+                                npx ng build ${app} --configuration production
+                            """
+                        }
                     }
                 }
             }
@@ -95,21 +96,18 @@ pipeline {
             }
             steps {
                 script {
-                    def apps = ['shell', 'vixi', 'portfolio']
-
-                    for (app in apps) {
-                        echo "Verifying ${app} artifacts"
+                    for (app in ['shell', 'vixi', 'portfolio']) {
+                        echo "Verifying ${app}"
 
                         sh """
                             set -eu
-
                             test -f dist/${app}/browser/index.html
 
                             if [ "${app}" != "shell" ]; then
                                 test -f dist/${app}/browser/remoteEntry.json
                             fi
 
-                            echo "Verified ${app} build artifacts"
+                            echo "Verified ${app} artifacts"
                         """
                     }
                 }
@@ -128,17 +126,17 @@ pipeline {
                     )
                 ]) {
                     script {
-                        def apps = ['shell', 'vixi', 'portfolio']
+                        docker.image('node:24-bookworm').inside {
+                            for (app in ['shell', 'vixi', 'portfolio']) {
+                                echo "Deploying ${app}"
 
-                        for (app in apps) {
-                            echo "Deploying ${app} to Firebase project ${env.FIREBASE_PROJECT}"
+                                sh """
+                                    set -eu
+                                    export CI=true
 
-                            sh """
-                                set -eu
-                                export CI=true
-
-                                npx --yes firebase-tools@${FIREBASE_TOOLS_VERSION} deploy --only hosting:${app} --project ${FIREBASE_PROJECT} --non-interactive
-                            """
+                                    npx --yes firebase-tools@${FIREBASE_TOOLS_VERSION} deploy --only hosting:${app} --project ${FIREBASE_PROJECT} --non-interactive
+                                """
+                            }
                         }
                     }
                 }
@@ -150,7 +148,7 @@ pipeline {
         success {
             script {
                 if (env.SKIP_PIPELINE == 'true') {
-                    echo 'Pipeline skipped because this is not master.'
+                    echo 'Pipeline skipped: non-master branch.'
                 } else {
                     echo 'Sivaxi Frontend pipeline completed successfully.'
                     echo 'Applications processed: shell, vixi, portfolio'
