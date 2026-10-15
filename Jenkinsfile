@@ -27,6 +27,7 @@ pipeline {
         stage('Validate Branch') {
             steps {
                 script {
+                    // Multibranch Pipeline provides BRANCH_NAME, e.g. master or feature/setup.
                     def currentBranch = env.BRANCH_NAME?.trim()
 
                     if (!currentBranch) {
@@ -35,11 +36,12 @@ pipeline {
                             returnStdout: true
                         ).trim()
 
-                        if (currentBranch.readLines().size() == 1) {
-                            currentBranch = currentBranch.readLines()[0]
-                                .trim()
-                                .replaceFirst(/^origin\//, '')
-                        }
+                        def branches = currentBranch
+                            .readLines()
+                            .collect { it.trim().replaceFirst(/^origin\//, '') }
+                            .unique()
+
+                        currentBranch = branches.size() == 1 ? branches[0] : ''
                     }
 
                     if (currentBranch != 'master') {
@@ -72,7 +74,8 @@ pipeline {
                             returnStatus: true,
                             script: "git merge-base --is-ancestor '${base}' HEAD"
                         ) != 0) {
-                        // First build or unavailable comparison: deploy everything.
+
+                        // First build or unavailable comparison: deploy all apps.
                         deployAll = true
                     } else {
                         def output = sh(
@@ -96,7 +99,7 @@ pipeline {
                             file == '.gitignore' ||
                             file == 'Jenkinsfile'
                         ) {
-                            // No frontend deployment required.
+                            // These changes do not require a frontend deployment.
                         } else if (
                             file.startsWith('projects/shared/') ||
                             file in [
@@ -119,6 +122,7 @@ pipeline {
                         } else if (file.startsWith('projects/portfolio/')) {
                             apps.add('portfolio')
                         } else {
+                            // Unclassified source/configuration changes: deploy all.
                             deployAll = true
                         }
                     }
@@ -130,7 +134,7 @@ pipeline {
                     env.DEPLOY_APPS = apps.toList().sort().join(',')
 
                     echo "Project: ${env.PROJECT_NAME}"
-                    echo "Branch: ${env.BRANCH_NAME}"
+                    echo "Branch: ${currentBuild.number ? (env.BRANCH_NAME ?: 'master') : 'master'}"
                     echo "Firebase project: ${env.FIREBASE_PROJECT}"
                     echo "Changed files: ${changedFiles}"
                     echo "Applications selected: ${env.DEPLOY_APPS ?: 'none'}"
