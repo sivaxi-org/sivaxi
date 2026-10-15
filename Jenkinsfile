@@ -3,18 +3,15 @@ pipeline {
     agent any
 
     options {
-        skipDefaultCheckout(true)
         timestamps()
-        disableConcurrentBuilds()
         timeout(time: 45, unit: 'MINUTES')
+        disableConcurrentBuilds()
     }
 
     environment {
-        PROJECT_NAME = 'Sivaxi Frontend'
         FIREBASE_PROJECT = 'sivaxi-ui'
         FIREBASE_CREDENTIALS_ID = 'firebase-service-account-json'
-        FIREBASE_TOOLS_VERSION = '15.28.1'
-        SKIP_PIPELINE = 'false'
+        NODE_IMAGE = 'node:24-bookworm'
     }
 
     stages {
@@ -27,14 +24,13 @@ pipeline {
         stage('Validate Branch') {
             steps {
                 script {
-                    def currentBranch = env.BRANCH_NAME?.trim()
-
-                    if (currentBranch != 'master') {
-                        echo "Skipping pipeline: '${currentBranch ?: 'unknown'}' is not master."
-                        env.SKIP_PIPELINE = 'true'
+                    if (env.BRANCH_NAME != 'master') {
+                        echo "Skipping deployment for branch: ${env.BRANCH_NAME}"
                         currentBuild.result = 'NOT_BUILT'
+                        env.SKIP_DEPLOYMENT = 'true'
                     } else {
-                        echo 'Branch validation passed: master'
+                        echo "Branch validation passed: master"
+                        env.SKIP_DEPLOYMENT = 'false'
                     }
                 }
             }
@@ -42,7 +38,7 @@ pipeline {
 
         stage('Select Applications') {
             when {
-                expression { env.SKIP_PIPELINE != 'true' }
+                expression { env.SKIP_DEPLOYMENT != 'true' }
             }
             steps {
                 script {
@@ -54,11 +50,11 @@ pipeline {
 
         stage('Install Dependencies') {
             when {
-                expression { env.SKIP_PIPELINE != 'true' }
+                expression { env.SKIP_DEPLOYMENT != 'true' }
             }
             steps {
                 script {
-                    docker.image('node:24-bookworm').inside {
+                    docker.image(env.NODE_IMAGE).inside {
                         sh '''
                             set -eu
                             node --version
@@ -70,21 +66,43 @@ pipeline {
             }
         }
 
-        stage('Build Applications') {
+        stage('Build Shared Library') {
             when {
-                expression { env.SKIP_PIPELINE != 'true' }
+                expression { env.SKIP_DEPLOYMENT != 'true' }
             }
             steps {
                 script {
-                    docker.image('node:24-bookworm').inside {
-                        for (app in ['shell', 'vixi', 'portfolio']) {
-                            echo "Building ${app}"
+                    docker.image(env.NODE_IMAGE).inside {
+                        sh '''
+                            set -eu
+                            npx ng build shared --configuration production
+                            test -f dist/shared/package.json
+                            echo "Shared library built successfully."
+                        '''
+                    }
+                }
+            }
+        }
 
-                            sh """
-                                set -eu
-                                npx ng build ${app} --configuration production
-                            """
-                        }
+        stage('Build Applications') {
+            when {
+                expression { env.SKIP_DEPLOYMENT != 'true' }
+            }
+            steps {
+                script {
+                    docker.image(env.NODE_IMAGE).inside {
+                        sh '''
+                            set -eu
+
+                            echo "Building shell..."
+                            npx ng build shell --configuration production
+
+                            echo "Building vixi..."
+                            npx ng build vixi --configuration production
+
+                            echo "Building portfolio..."
+                            npx ng build portfolio --configuration production
+                        '''
                     }
                 }
             }
@@ -92,51 +110,53 @@ pipeline {
 
         stage('Verify Build Artifacts') {
             when {
-                expression { env.SKIP_PIPELINE != 'true' }
+                expression { env.SKIP_DEPLOYMENT != 'true' }
             }
             steps {
-                script {
-                    for (app in ['shell', 'vixi', 'portfolio']) {
-                        echo "Verifying ${app}"
+                sh '''
+                    set -eu
 
-                        sh """
-                            set -eu
-                            test -f dist/${app}/browser/index.html
+                    echo "Checking shell build..."
+                    test -f dist/shell/browser/index.html
 
-                            if [ "${app}" != "shell" ]; then
-                                test -f dist/${app}/browser/remoteEntry.json
-                            fi
+                    echo "Checking vixi build..."
+                    test -f dist/vixi/browser/remoteEntry.json
 
-                            echo "Verified ${app} artifacts"
-                        """
-                    }
-                }
+                    echo "Checking portfolio build..."
+                    test -f dist/portfolio/browser/remoteEntry.json
+
+                    echo "All expected build artifacts exist."
+                '''
             }
         }
 
         stage('Deploy to Firebase Hosting') {
             when {
-                expression { env.SKIP_PIPELINE != 'true' }
+                expression { env.SKIP_DEPLOYMENT != 'true' }
             }
             steps {
-                withCredentials([
-                    file(
-                        credentialsId: env.FIREBASE_CREDENTIALS_ID,
-                        variable: 'GOOGLE_APPLICATION_CREDENTIALS'
-                    )
-                ]) {
-                    script {
-                        docker.image('node:24-bookworm').inside {
-                            for (app in ['shell', 'vixi', 'portfolio']) {
-                                echo "Deploying ${app}"
+                script {
+                    docker.image(env.NODE_IMAGE).inside {
+                        withCredentials([
+                            file(
+                                credentialsId: env.FIREBASE_CREDENTIALS_ID,
+                                variable: 'GOOGLE_APPLICATION_CREDENTIALS'
+                            )
+                        ]) {
+                            sh '''
+                                set -eu
 
-                                sh """
-                                    set -eu
-                                    export CI=true
+                                for app in shell vixi portfolio; do
+                                    echo "Deploying ${app} to Firebase Hosting..."
 
-                                    npx --yes firebase-tools@${FIREBASE_TOOLS_VERSION} deploy --only hosting:${app} --project ${FIREBASE_PROJECT} --non-interactive
-                                """
-                            }
+                                    npx --yes firebase-tools@15.28.1 deploy \
+                                        --only "hosting:${app}" \
+                                        --project "${FIREBASE_PROJECT}" \
+                                        --non-interactive
+                                done
+
+                                echo "All Firebase deployments completed."
+                            '''
                         }
                     }
                 }
@@ -146,18 +166,11 @@ pipeline {
 
     post {
         success {
-            script {
-                if (env.SKIP_PIPELINE == 'true') {
-                    echo 'Pipeline skipped: non-master branch.'
-                } else {
-                    echo 'Sivaxi Frontend pipeline completed successfully.'
-                    echo 'Applications processed: shell, vixi, portfolio'
-                }
-            }
+            echo 'Sivaxi frontend pipeline completed successfully.'
         }
 
         failure {
-            echo 'Sivaxi Frontend pipeline failed. Check the stage logs.'
+            echo 'Sivaxi frontend pipeline failed. Check the stage logs.'
         }
 
         always {
