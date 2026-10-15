@@ -606,9 +606,9 @@ export class Dashboard {
     return this.markdownRenderer.render(content);
   }
 
-  handleMarkdownClick(event: Event): void {
-    // this.markdownRenderer.handleClick(event);
-  }
+ handleMarkdownClick(event: Event): void {
+  this.markdownRenderer.handleClick(event);
+}
 
   // ============================================================
   // Logout
