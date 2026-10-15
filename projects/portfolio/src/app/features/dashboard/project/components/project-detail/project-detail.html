@@ -1,0 +1,178 @@
+<div class="space-y-8">
+
+  <!-- Header -->
+
+  <div class="flex items-center justify-between gap-4">
+    <div>
+      <button
+        type="button"
+        (click)="back()"
+        class="mb-3 text-sm text-text-muted transition hover:text-text-primary"
+      >
+        ← Back to Projects
+      </button>
+
+
+  <h1 class="text-2xl font-semibold tracking-tight text-text-primary">
+    Project Details
+  </h1>
+
+  <p class="mt-1 text-sm text-text-muted">
+    Manage the project, tags, and content blocks.
+  </p>
+</div>
+
+
+  </div>
+
+  <!-- Loading -->
+
+@if (loading()) {
+
+
+<div
+  class="rounded-2xl border border-glass-border-soft bg-glass-fill p-8 text-center"
+>
+  <p class="text-sm text-text-muted">
+    Loading project...
+  </p>
+</div>
+
+
+} @else if (project(); as current) {
+
+
+
+  <app-project-form
+    [project]="current"
+    (submitted)="saveProject($event)"
+    (cancelled)="back()"
+  />
+
+
+
+<!-- Tags -->
+<section
+  class="rounded-2xl border border-glass-border-soft bg-glass-fill p-6 mt-8"
+>
+  <div class="mb-6">
+    <h2 class="text-lg font-semibold text-text-primary">
+      Tags
+    </h2>
+
+    <p class="mt-1 text-sm text-text-muted">
+      Add technologies, frameworks, or other tags related to this project.
+    </p>
+  </div>
+
+
+  @if (tagsLoading()) {
+
+    <div
+      class="rounded-xl border border-glass-border-soft bg-glass-fill-strong p-6 text-center"
+    >
+      <p class="text-sm text-text-muted">
+        Loading tags...
+      </p>
+    </div>
+
+  } @else {
+
+    <!-- Existing Tags -->
+    @if (tags().length > 0) {
+
+      <div class="flex flex-wrap gap-2">
+        @for (tag of tags(); track tag) {
+
+          <div
+            class="flex items-center gap-2 rounded-lg border border-glass-border-soft bg-glass-fill-strong px-3 py-2"
+          >
+            <span class="text-sm text-text-primary">
+              {{ tag }}
+            </span>
+
+            <button
+              type="button"
+              (click)="removeTag(tag)"
+              class="text-text-faint transition hover:text-text-primary"
+              aria-label="Remove tag"
+            >
+              ×
+            </button>
+          </div>
+
+        }
+      </div>
+
+    } @else {
+
+      <div
+        class="rounded-xl border border-glass-border-soft bg-glass-fill-strong p-5"
+      >
+        <p class="text-sm text-text-muted">
+          No tags added yet.
+        </p>
+      </div>
+
+    }
+
+
+    <!-- Add Tag -->
+    <div class="mt-5 flex flex-col gap-3 sm:flex-row">
+
+      <input
+        type="text"
+        [value]="newTag()"
+        (input)="updateNewTag($any($event.target).value)"
+        (keydown.enter)="addTag()"
+        placeholder="e.g. Spring Boot"
+        class="min-w-0 flex-1 rounded-lg border border-glass-border-soft bg-glass-fill-strong px-3 py-2.5 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-glass-border"
+      />
+
+      <button
+        type="button"
+        (click)="addTag()"
+        class="rounded-lg bg-accent-1 px-4 py-2.5 text-sm font-medium text-on-accent transition hover:opacity-90"
+      >
+        Add Tag
+      </button>
+
+    </div>
+
+
+    <!-- Save Tags -->
+    <div class="mt-5 flex justify-end">
+
+      <button
+        type="button"
+        (click)="saveTags()"
+        [disabled]="tagsSaving()"
+        class="rounded-lg bg-accent-1 px-5 py-2.5 text-sm font-medium text-on-accent transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        @if (tagsSaving()) {
+          Saving...
+        } @else {
+          Save Tags
+        }
+      </button>
+
+    </div>
+
+  }
+
+</section>
+
+
+<!-- Content Blocks -->
+<section
+  class="rounded-2xl border border-glass-border-soft bg-glass-fill p-6"
+>
+  <app-content-block-manager
+    [url]="'/api/projects/' + current.id + '/blocks'"
+  />
+</section>
+
+
+}
+
+</div>

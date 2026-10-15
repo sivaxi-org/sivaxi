@@ -1,0 +1,66 @@
+<section id="contact" class="px-6 py-14">
+  <div class="max-w-6xl mx-auto">
+
+    <div
+      class="glass-panel rounded-[22px] p-8 sm:p-10 lg:p-14 text-center
+             bg-glass-fill border border-glass-border
+             backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass"
+    >
+
+      <h2
+        class="text-[clamp(1.5rem,3.6vw,2.2rem)] font-semibold
+               tracking-[-0.01em] max-w-[22ch] mx-auto"
+      >
+        Have something worth building?
+      </h2>
+
+      <p class="text-text-muted mt-3">
+        Generally responsive within a day or two.
+      </p>
+
+      @if (contactsData()?.contacts?.length) {
+        <div class="mt-7 flex gap-3.5 justify-center flex-wrap">
+
+          @for (
+            contact of contactsData()?.contacts;
+            track contact.id
+          ) {
+            <a
+              [href]="contact.link"
+              [attr.target]="contact.link.startsWith('http') ? '_blank' : null"
+              [attr.rel]="contact.link.startsWith('http') ? 'noopener noreferrer' : null"
+              [attr.aria-label]="contact.title"
+              class="inline-flex items-center gap-2 px-6 py-3.5 rounded-[11px]
+                     text-[0.92rem] font-medium
+                     bg-glass-fill border border-glass-border
+                     text-text-primary
+                     transition-all duration-200
+                     hover:-translate-y-0.5 hover:bg-glass-fill-strong"
+            >
+
+              @if (contact.icon) {
+                <app-icon [svg]="contact.icon"></app-icon>
+              } @else {
+                <span
+                  class="w-4 h-4 rounded-full border border-glass-border
+                         flex items-center justify-center
+                         text-[0.55rem] font-semibold"
+                >
+                  {{ contact.title.charAt(0).toUpperCase() }}
+                </span>
+              }
+
+              <span>
+                {{ contact.title }}
+              </span>
+
+            </a>
+          }
+
+        </div>
+      }
+
+    </div>
+
+  </div>
+</section>

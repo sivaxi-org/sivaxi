@@ -1,0 +1,32 @@
+@switch (data().level) {
+  @case (1) {
+    <h1 class="text-2xl font-semibold text-text-primary">
+      <text-line-clamp [text]="data().text" [clamp]="2" [buttonName]="'Show more'" [buttonColor]="'var(--accent-2)'" />
+    </h1>
+  }
+  @case (2) {
+    <h2 class="text-xl font-semibold text-text-prmary">
+      <text-line-clamp [text]="data().text" [clamp]="2" [buttonName]="'Show more'" [buttonColor]="'var(--accent-2)'" />
+    </h2>
+  }
+  @case (3) {
+    <h3 class="text-lg font-semibold text-text-primary">
+      <text-line-clamp [text]="data().text" [clamp]="2" [buttonName]="'Show more'" [buttonColor]="'var(--accent-2)'" />
+    </h3>
+  }
+  @case (4) {
+    <h4 class="text-base font-semibold text-text-primary">
+      <text-line-clamp [text]="data().text" [clamp]="2" [buttonName]="'Show more'" [buttonColor]="'var(--accent-2)'" />
+    </h4>
+  }
+  @case (5) {
+    <h5 class="text-sm font-semibold text-text-primary">
+      <text-line-clamp [text]="data().text" [clamp]="2" [buttonName]="'Show more'" [buttonColor]="'var(--accent-2)'" />
+    </h5>
+  }
+  @case (6) {
+    <h6 class="text-xs font-semibold text-text-primary">
+      <text-line-clamp [text]="data().text" [clamp]="2" [buttonName]="'Show more'" [buttonColor]="'var(--accent-2)'" />
+    </h6>
+  }
+}

@@ -1,0 +1,151 @@
+@if (selectedType() === null) {
+
+  <div
+    class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass mb-6"
+  >
+
+    <div class="mb-6 flex items-start justify-between gap-4">
+
+      <div>
+
+        <p
+          class="text-xs font-medium uppercase tracking-wider text-accent-2"
+        >
+          Add Content
+        </p>
+
+        <h2 class="mt-2 text-xl font-semibold text-text-primary">
+          Choose Block Type
+        </h2>
+
+        <p class="mt-1 text-sm text-text-muted">
+          Select the type of content you want to add.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        (click)="close()"
+        class="rounded-lg border border-glass-border-soft px-3 py-2 text-sm text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+      >
+        Cancel
+      </button>
+
+    </div>
+
+
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+
+      @for (
+        definition of definitions;
+        track definition.type
+      ) {
+
+        <button
+          type="button"
+          (click)="selectType(definition.type)"
+          class="rounded-xl border border-glass-border-soft bg-glass-fill p-4 text-left transition hover:border-accent-1 hover:bg-glass-fill-strong"
+        >
+
+          <div class="mb-2">
+
+            <span class="text-sm font-medium text-text-primary">
+              {{ definition.label }}
+            </span>
+
+          </div>
+
+          <p class="text-xs leading-5 text-text-muted">
+            {{ definition.description }}
+          </p>
+
+        </button>
+
+      }
+
+    </div>
+
+  </div>
+
+}
+
+@else {
+
+<div class=" mb-6">
+    @switch (selectedType()) {
+
+    @case ('TEXT') {
+
+      <app-text-block-form
+        (cancelled)="back()"
+        (submitted)="submitBlock($event)"
+      />
+
+    }
+
+
+    @case ('HEADING') {
+
+      <app-heading-block-form
+        (cancelled)="back()"
+        (submitted)="submitBlock($event)"
+      />
+
+    }
+
+
+    @case ('IMAGE') {
+
+      <app-image-block-form
+        (cancelled)="back()"
+        (submitted)="submitBlock($event)"
+      />
+
+    }
+
+
+    @case ('RICH_TEXT') {
+
+      <app-rich-text-block-form
+        (cancelled)="back()"
+        (submitted)="submitBlock($event)"
+      />
+
+    }
+
+
+    @case ('SKILLS') {
+
+      <app-skills-block-form
+        (cancelled)="back()"
+        (submitted)="submitBlock($event)"
+      />
+
+    }
+
+
+    @case ('TITLE_BULLETS') {
+
+      <app-title-bullets-block-form
+        (cancelled)="back()"
+        (submitted)="submitBlock($event)"
+      />
+
+    }
+
+
+    @case ('CUSTOM') {
+
+      <app-custom-block-form
+        (cancelled)="back()"
+        (submitted)="submitBlock($event)"
+      />
+
+    }
+
+  }
+</div>
+
+}

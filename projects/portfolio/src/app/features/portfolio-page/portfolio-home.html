@@ -1,0 +1,39 @@
+<div class="relative bg-bg-base text-text-primary font-display leading-relaxed overflow-x-hidden antialiased">
+
+  <video
+    #backgroundVideo
+    scrollScrub
+    mode="static"
+    [cycles]="1"
+    [smoothing]="0.1"
+    [src]="backgroundVideoSrc"
+    muted
+    loop
+    playsinline
+    preload="auto"
+    class="fixed inset-0  h-full w-full object-cover"
+  ></video>
+
+  <div class="relative">
+
+    <app-hero
+      [portfolioData]="portfolio()?.portfolioData"
+      [contacts]="portfolio()?.contactsData?.contacts ?? []"
+      [stats]="portfolio()?.statsData?.stats ?? []"
+    />
+
+    <app-skills [skillsData]="portfolio()?.skillsData.categories"></app-skills>
+    <app-work [username]="username" [projectsData]="portfolio()?.projectsData"></app-work>
+    <app-experience [experienceData]="portfolio()?.experienceData" />
+    <app-blog></app-blog>
+    <app-testimonials [testimonialsData]="portfolio()?.testimonialsData"></app-testimonials>
+    <app-about
+      [portfolioData]="portfolio()?.portfolioData"
+      [aboutData]="portfolio()?.aboutData"
+    />
+    <app-contact [contactsData]="portfolio()?.contactsData"></app-contact>
+    <app-footer></app-footer>
+
+  </div>
+
+</div>

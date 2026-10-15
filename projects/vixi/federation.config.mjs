@@ -8,7 +8,7 @@ export default withNativeFederation({
 
   exposes: {
    './Component': './projects/vixi/src/app/app.ts',
-  './Routes': './projects/vixi/src/app/app.routes.ts',
+   './Routes': './projects/vixi/src/app/app.routes.ts',
   },
 
   shared: fromPackageJson({

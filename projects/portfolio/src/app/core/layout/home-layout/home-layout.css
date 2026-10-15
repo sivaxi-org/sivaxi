@@ -1,0 +1,10 @@
+
+.theme-fab {
+  right: 24px;
+  bottom: 24px;
+  transition:
+    box-shadow 200ms ease,
+    transform 200ms ease;
+  user-select: none;
+  -webkit-user-select: none;
+}

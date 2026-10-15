@@ -1,0 +1,84 @@
+<div class="space-y-8">
+
+  <!-- Header -->
+
+  <div>
+
+
+<button
+  type="button"
+  (click)="back()"
+  class="mb-3 text-sm text-text-muted transition hover:text-text-primary"
+>
+  ← Back to Experience
+</button>
+
+<h1 class="text-2xl font-semibold tracking-tight text-text-primary">
+  Experience Details
+</h1>
+
+<p class="mt-1 text-sm text-text-muted">
+  Manage this experience and its content.
+</p>
+
+
+  </div>
+
+  <!-- Loading -->
+
+@if (loading()) {
+
+
+<div
+  class="rounded-2xl border border-glass-border-soft bg-glass-fill p-8 text-center"
+>
+  <p class="text-sm text-text-muted">
+    Loading experience...
+  </p>
+</div>
+
+
+} @else if (experience(); as current) {
+
+
+<!-- Experience -->
+<section
+  class="rounded-2xl border border-glass-border-soft bg-glass-fill p-6"
+>
+
+  <div class="mb-6">
+
+    <h2 class="text-lg font-semibold text-text-primary">
+      Experience
+    </h2>
+
+    <p class="mt-1 text-sm text-text-muted">
+      Update the professional experience details.
+    </p>
+
+  </div>
+
+  <app-experience-form
+    [experience]="current"
+    (submitted)="saveExperience($event)"
+    (cancelled)="back()"
+  />
+
+</section>
+
+
+<!-- Content Blocks -->
+<section
+  class="rounded-2xl border border-glass-border-soft bg-glass-fill p-6"
+>
+
+  <app-content-block-manager
+    [url]="'/api/experiences/' + current.id + '/blocks'"
+  />
+
+</section>
+
+
+}
+
+</div>

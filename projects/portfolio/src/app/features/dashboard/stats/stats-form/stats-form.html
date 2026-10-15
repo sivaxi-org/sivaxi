@@ -1,0 +1,135 @@
+
+<div class="space-y-5">
+
+  <div>
+    <h3 class="text-lg font-semibold text-text-primary">
+      {{ editMode ? 'Edit Stat' : 'Add Stat' }}
+    </h3>
+
+    <p class="mt-1 text-sm text-text-muted">
+      {{ editMode
+        ? 'Update the statistic details.'
+        : 'Add a statistic to your portfolio.'
+      }}
+    </p>
+  </div>
+
+  <div class="space-y-4">
+
+    <!-- Label -->
+    <div>
+      <label
+        for="stat-label"
+        class="mb-1.5 block text-sm font-medium text-text-primary"
+      >
+        Label
+      </label>
+
+      <input
+        id="stat-label"
+        type="text"
+        maxlength="150"
+        [value]="label()"
+        (input)="label.set($any($event.target).value)"
+        placeholder="Projects"
+        class="w-full rounded-lg border border-glass-border-soft bg-glass-fill px-3 py-2.5 text-sm text-text-primary outline-none transition focus:border-accent-1"
+      />
+    </div>
+
+    <!-- Value -->
+    <div>
+      <label
+        for="stat-value"
+        class="mb-1.5 block text-sm font-medium text-text-primary"
+      >
+        Value
+      </label>
+
+      <input
+        id="stat-value"
+        type="text"
+        maxlength="100"
+        [value]="value()"
+        (input)="value.set($any($event.target).value)"
+        placeholder="20+"
+        class="w-full rounded-lg border border-glass-border-soft bg-glass-fill px-3 py-2.5 text-sm text-text-primary outline-none transition focus:border-accent-1"
+      />
+    </div>
+
+    <!-- Icon -->
+    <div>
+      <label
+        for="stat-icon"
+        class="mb-1.5 block text-sm font-medium text-text-primary"
+      >
+        Icon
+      </label>
+
+      <input
+        id="stat-icon"
+        type="text"
+        [value]="icon()"
+        (input)="icon.set($any($event.target).value)"
+        placeholder="folder"
+        class="w-full rounded-lg border border-glass-border-soft bg-glass-fill px-3 py-2.5 text-sm text-text-primary outline-none transition focus:border-accent-1"
+      />
+    </div>
+
+    <!-- Sort Order -->
+    <div>
+      <label
+        for="stat-sort-order"
+        class="mb-1.5 block text-sm font-medium text-text-primary"
+      >
+        Sort Order
+      </label>
+
+      <input
+        id="stat-sort-order"
+        type="number"
+        min="0"
+        [value]="sortOrder()"
+        (input)="sortOrder.set(+$any($event.target).value)"
+        class="w-full rounded-lg border border-glass-border-soft bg-glass-fill px-3 py-2.5 text-sm text-text-primary outline-none transition focus:border-accent-1"
+      />
+    </div>
+
+    <!-- Visible -->
+    <label class="flex cursor-pointer items-center gap-3">
+      <input
+        type="checkbox"
+        [checked]="visible()"
+        (change)="visible.set($any($event.target).checked)"
+        class="h-4 w-4"
+      />
+
+      <span class="text-sm text-text-primary">
+        Visible
+      </span>
+    </label>
+
+  </div>
+
+  <!-- Actions -->
+  <div class="flex items-center justify-end gap-3 border-t border-glass-border-soft pt-4">
+
+    <button
+      type="button"
+      (click)="cancel()"
+      class="rounded-lg border border-glass-border-soft px-4 py-2 text-sm text-text-muted transition hover:text-text-primary"
+    >
+      Cancel
+    </button>
+
+    <button
+      type="button"
+      (click)="submit()"
+      class="rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent transition hover:opacity-90"
+    >
+      {{ editMode ? 'Update' : 'Add' }}
+    </button>
+
+  </div>
+
+</div>
+

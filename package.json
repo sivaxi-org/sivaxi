@@ -19,9 +19,12 @@
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
     "es-module-shims": "^2.8.0",
+    "highlight.js": "^11.12.0",
     "keycloak-angular": "^22.0.0",
     "keycloak-js": "^26.2.4",
+    "marked": "^18.1.1",
     "rxjs": "~7.8.0",
+    "text-line-clamp": "^1.0.3",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -33,7 +36,7 @@
     "jsdom": "^30.0.0",
     "ng-packagr": "^22.2.0",
     "postcss": "^8.5.3",
-    "prettier": "^3.8.1",
+    "prettier": "^2.8.8",
     "tailwindcss": "^4.1.12",
     "typescript": "~6.0.2",
     "vitest": "^5.0.0"

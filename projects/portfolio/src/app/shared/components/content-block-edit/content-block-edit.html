@@ -1,0 +1,73 @@
+@switch (block().blockType) {
+
+  @case ('TEXT') {
+
+    <app-text-block-form
+      [data]="textBlock"
+      (cancelled)="cancel()"
+      (submitted)="submitBlock($event)"
+    />
+
+  }
+
+  @case ('HEADING') {
+
+    <app-heading-block-form
+      [data]="headingBlock"
+      (cancelled)="cancel()"
+      (submitted)="submitBlock($event)"
+    />
+
+  }
+
+  @case ('IMAGE') {
+
+    <app-image-block-form
+      [data]="imageBlock"
+      (cancelled)="cancel()"
+      (submitted)="submitBlock($event)"
+    />
+
+  }
+
+  @case ('RICH_TEXT') {
+
+    <app-rich-text-block-form
+      [data]="richTextBlock"
+      (cancelled)="cancel()"
+      (submitted)="submitBlock($event)"
+    />
+
+  }
+
+  @case ('SKILLS') {
+
+    <app-skills-block-form
+      [data]="skillsBlock"
+      (cancelled)="cancel()"
+      (submitted)="submitBlock($event)"
+    />
+
+  }
+
+  @case ('TITLE_BULLETS') {
+
+    <app-title-bullets-block-form
+      [data]="titleBulletsBlock"
+      (cancelled)="cancel()"
+      (submitted)="submitBlock($event)"
+    />
+
+  }
+
+  @case ('CUSTOM') {
+
+    <app-custom-block-form
+      [data]="customBlock"
+      (cancelled)="cancel()"
+      (submitted)="submitBlock($event)"
+    />
+
+  }
+
+}

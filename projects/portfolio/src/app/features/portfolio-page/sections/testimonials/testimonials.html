@@ -1,0 +1,73 @@
+<section id="testimonials" class="px-6 py-14">
+  <div class="max-w-6xl mx-auto">
+
+    @if (testimonialsData()?.testimonials?.length) {
+      <div class="mb-9">
+        <h2
+          class="text-[clamp(1.4rem,2.8vw,1.85rem)] font-semibold tracking-[-0.01em]"
+        >
+          What people say
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        @for (
+          testimonial of testimonialsData()?.testimonials;
+          track testimonial.id
+        ) {
+          <div
+            class="glass-panel rounded-2xl p-6 flex flex-col justify-between min-h-[200px] bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass"
+          >
+
+            <p
+              class="text-text-primary text-[0.95rem] leading-relaxed"
+            >
+              "{{ testimonial.content }}"
+            </p>
+
+            <div class="mt-4">
+
+              <div class="flex items-center gap-3">
+
+                @if (testimonial.authorAvatarUrl) {
+                  <img
+                    [src]="testimonial.authorAvatarUrl"
+                    [alt]="testimonial.authorName"
+                    class="w-9 h-9 rounded-full object-cover border border-glass-border"
+                  />
+                } @else {
+                  <div
+                    class="w-9 h-9 rounded-full border border-glass-border flex items-center justify-center text-[0.75rem] font-semibold text-text-primary"
+                  >
+                    {{ testimonial.authorName.charAt(0).toUpperCase() }}
+                  </div>
+                }
+
+                <div>
+                  <div class="font-medium text-[0.9rem]">
+                    {{ testimonial.authorName }}
+                  </div>
+
+                  @if (testimonial.authorRole) {
+                    <div class="text-text-faint text-[0.8rem] mt-0.5">
+                      {{ testimonial.authorRole }}
+                    </div>
+                  }
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        }
+
+      </div>
+    } @else {
+      <div class="py-10 text-center text-text-faint text-sm">
+        No testimonials available.
+      </div>
+    }
+
+  </div>
+</section>

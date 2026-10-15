@@ -1,0 +1,59 @@
+  <section id="blog" class="px-6 py-14">
+    <div class="max-w-6xl mx-auto">
+      <div class="mb-9 flex items-baseline justify-between gap-5 flex-wrap">
+        <div>
+          <h2 class="text-[clamp(1.4rem,2.8vw,1.85rem)] font-semibold tracking-[-0.01em]">Blog</h2>
+          <p class="text-text-muted max-w-[44ch] text-[0.95rem] mt-1">Notes on distributed systems, infrastructure, and things I learned the hard way.</p>
+        </div>
+        <span class="font-mono text-[0.8rem] text-text-faint">03 posts</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <a href="#" class="group glass-panel rounded-[18px] p-6 flex flex-col gap-3.5 bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1">
+          <span class="font-mono w-fit text-[0.72rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-accent-2">Engineering</span>
+          <h3 class="text-[1.12rem] font-semibold tracking-[-0.01em] leading-snug">Idempotency keys at scale</h3>
+          <p class="text-text-muted text-[0.89rem] leading-relaxed flex-1">How Ledger guarantees exactly-once billing across retried requests — the difference between a dedup table and a distributed lock, and why we picked the boring option.</p>
+          <div class="font-mono flex items-center justify-between text-[0.78rem] text-text-faint pt-3.5 border-t border-glass-border-soft">
+            <span>Mar 12, 2026 · 7 min</span>
+            <span class="inline-flex items-center gap-1.5 text-text-muted transition-transform group-hover:translate-x-0.5">Read <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+          </div>
+        </a>
+
+        <a href="#" class="group glass-panel rounded-[18px] p-6 flex flex-col gap-3.5 bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1">
+          <span class="font-mono w-fit text-[0.72rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-accent-2">Systems</span>
+          <h3 class="text-[1.12rem] font-semibold tracking-[-0.01em] leading-snug">Backpressure without dropping data</h3>
+          <p class="text-text-muted text-[0.89rem] leading-relaxed flex-1">A walk through bounded queues, load shedding, and signaling backpressure upstream — and what actually happened the one time we got it wrong in production.</p>
+          <div class="font-mono flex items-center justify-between text-[0.78rem] text-text-faint pt-3.5 border-t border-glass-border-soft">
+            <span>Nov 3, 2025 · 9 min</span>
+            <span class="inline-flex items-center gap-1.5 text-text-muted transition-transform group-hover:translate-x-0.5">Read <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+          </div>
+        </a>
+
+        <a href="#" class="group glass-panel rounded-[18px] p-6 flex flex-col gap-3.5 bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1">
+          <span class="font-mono w-fit text-[0.72rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-accent-2">Infrastructure</span>
+          <h3 class="text-[1.12rem] font-semibold tracking-[-0.01em] leading-snug">What zero-downtime deploys actually require</h3>
+          <p class="text-text-muted text-[0.89rem] leading-relaxed flex-1">Health checks and canaries aren't enough on their own. Notes from building Northstar on the failure modes that only show up after the tenth deploy, not the first.</p>
+          <div class="font-mono flex items-center justify-between text-[0.78rem] text-text-faint pt-3.5 border-t border-glass-border-soft">
+            <span>Jul 22, 2025 · 6 min</span>
+            <span class="inline-flex items-center gap-1.5 text-text-muted transition-transform group-hover:translate-x-0.5">Read <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Open source chips -->
+      <div class="flex flex-wrap gap-3 mt-5">
+        <a href="#" class="glass-panel flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-[0.85rem] bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-0.5">
+          <svg class="w-[15px] h-[15px] text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 3.5 5.4 3.8 5.4 3.8a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 10.2c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.1-.5 2V22"/></svg>
+          <span>flux-cli</span><span class="font-mono text-[0.76rem] text-text-faint">1.2k ★</span>
+        </a>
+        <a href="#" class="glass-panel flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-[0.85rem] bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-0.5">
+          <svg class="w-[15px] h-[15px] text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 3.5 5.4 3.8 5.4 3.8a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 10.2c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.1-.5 2V22"/></svg>
+          <span>go-idempotent</span><span class="font-mono text-[0.76rem] text-text-faint">890 ★</span>
+        </a>
+        <a href="#" class="glass-panel flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-[0.85rem] bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-0.5">
+          <svg class="w-[15px] h-[15px] text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 3.5 5.4 3.8 5.4 3.8a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 10.2c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.1-.5 2V22"/></svg>
+          <span>pulse-client</span><span class="font-mono text-[0.76rem] text-text-faint">340 ★</span>
+        </a>
+      </div>
+    </div>
+  </section>

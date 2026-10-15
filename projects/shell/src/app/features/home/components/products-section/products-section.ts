@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import {APP_LINKS,SHELL_ROUTES} from 'shared'
 
 @Component({
-  imports: [RouterLink],
+  imports: [],
   selector: 'app-products-section',
   styleUrl: './products-section.css',
   templateUrl: './products-section.html',

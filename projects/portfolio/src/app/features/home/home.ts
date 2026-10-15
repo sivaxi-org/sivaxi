@@ -1,9 +1,13 @@
+
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { Navbar } from '../../shared/components/navbar/navbar';
 
 @Component({
-  imports: [],
   selector: 'app-home',
-  styleUrl: './home.css',
+  imports: [RouterLink],
   templateUrl: './home.html',
+  styleUrl: './home.css',
 })
 export class Home {}
+

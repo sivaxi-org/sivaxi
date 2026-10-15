@@ -1,0 +1,32 @@
+{
+  "projects": {},
+  "targets": {
+    "sivaxi-ai": {
+      "hosting": {
+        "shell": [
+          "sivaxi-ai"
+        ],
+        "vixi": [
+          "sivaxi-vixi"
+        ],
+        "portfolio": [
+          "sivaxi-portfolio"
+        ]
+      }
+    },
+    "sivaxi-ui": {
+      "hosting": {
+        "shell": [
+          "sivaxi-ui"
+        ],
+        "vixi": [
+          "sivaxi-vixi-379d2"
+        ],
+        "portfolio": [
+          "sivaxi-portfolio-30ffd"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

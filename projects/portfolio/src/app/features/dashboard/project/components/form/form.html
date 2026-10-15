@@ -1,0 +1,230 @@
+<div class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass">
+
+  <div class="mb-6">
+
+    <p class="text-xs font-medium uppercase tracking-wider text-accent-2">
+      {{ project() ? 'Edit Project' : 'New Project' }}
+    </p>
+
+    <h2 class="mt-2 text-xl font-semibold text-text-primary">
+      Project Details
+    </h2>
+
+    <p class="mt-1 text-sm text-text-muted">
+      {{ project()
+        ? 'Update the details of this project.'
+        : 'Add a new project to your portfolio.'
+      }}
+    </p>
+
+  </div>
+
+
+  <div class="grid gap-5 sm:grid-cols-2">
+
+    <!-- Title -->
+    <div class="sm:col-span-2">
+
+      <label
+        for="project-title"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Title
+      </label>
+
+      <input
+        id="project-title"
+        type="text"
+        [value]="title()"
+        (input)="updateTitle($any($event.target).value)"
+        placeholder="Sivaxi Portfolio"
+        class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+      />
+
+    </div>
+
+
+    <!-- Slug -->
+    <div>
+
+      <label
+        for="project-slug"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Slug
+      </label>
+
+      <input
+        id="project-slug"
+        type="text"
+        [value]="slug()"
+        (input)="updateSlug($any($event.target).value)"
+        placeholder="sivaxi-portfolio"
+        class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+      />
+
+    </div>
+
+
+    <!-- Thumbnail -->
+    <div>
+
+      <label
+        for="project-thumbnail"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Thumbnail URL
+      </label>
+
+      <input
+        id="project-thumbnail"
+        type="url"
+        [value]="thumbnailUrl()"
+        (input)="updateThumbnailUrl($any($event.target).value)"
+        placeholder="https://..."
+        class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+      />
+
+    </div>
+
+
+    <!-- Summary -->
+    <div class="sm:col-span-2">
+
+      <label
+        for="project-summary"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Summary
+      </label>
+
+      <textarea
+        id="project-summary"
+        rows="4"
+        [value]="summary()"
+        (input)="updateSummary($any($event.target).value)"
+        placeholder="Brief description of the project..."
+        class="w-full resize-y rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm leading-6 text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+      ></textarea>
+
+    </div>
+
+
+    <!-- Live URL -->
+    <div>
+
+      <label
+        for="project-live-url"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Live URL
+      </label>
+
+      <input
+        id="project-live-url"
+        type="url"
+        [value]="liveUrl()"
+        (input)="updateLiveUrl($any($event.target).value)"
+        placeholder="https://..."
+        class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+      />
+
+    </div>
+
+
+    <!-- Source URL -->
+    <div>
+
+      <label
+        for="project-source-url"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Source URL
+      </label>
+
+      <input
+        id="project-source-url"
+        type="url"
+        [value]="sourceUrl()"
+        (input)="updateSourceUrl($any($event.target).value)"
+        placeholder="https://github.com/..."
+        class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+      />
+
+    </div>
+
+  </div>
+
+
+  <!-- Options -->
+  <div class="mt-6 space-y-4">
+
+    <label class="flex cursor-pointer items-center gap-3">
+
+      <input
+        type="checkbox"
+        [checked]="featured()"
+        (change)="updateFeatured($any($event.target).checked)"
+        class="h-4 w-4 accent-[var(--accent-1)]"
+      />
+
+      <span>
+        <span class="block text-sm font-medium text-text-primary">
+          Featured
+        </span>
+
+        <span class="block text-xs text-text-muted">
+          Highlight this project on the portfolio.
+        </span>
+      </span>
+
+    </label>
+
+
+    <label class="flex cursor-pointer items-center gap-3">
+
+      <input
+        type="checkbox"
+        [checked]="visible()"
+        (change)="updateVisible($any($event.target).checked)"
+        class="h-4 w-4 accent-[var(--accent-1)]"
+      />
+
+      <span>
+        <span class="block text-sm font-medium text-text-primary">
+          Visible
+        </span>
+
+        <span class="block text-xs text-text-muted">
+          Show this project on the public portfolio.
+        </span>
+      </span>
+
+    </label>
+
+  </div>
+
+
+  <!-- Actions -->
+  <div class="mt-7 flex justify-end gap-3">
+
+    <button
+      type="button"
+      (click)="cancel()"
+      class="rounded-lg border border-glass-border-soft px-4 py-2 text-sm text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+    >
+      Cancel
+    </button>
+
+    <button
+      type="button"
+      (click)="submit()"
+      [disabled]="!title().trim() || !slug().trim()"
+      class="rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      {{ project() ? 'Update Project' : 'Add Project' }}
+    </button>
+
+  </div>
+
+</div>

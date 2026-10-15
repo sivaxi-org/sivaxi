@@ -1,0 +1,354 @@
+<div class="mx-auto max-w-4xl">
+
+  <!-- Page Header -->
+  <div class="mb-8">
+    <div class="mb-2 flex items-center gap-2">
+      <span class="h-2 w-2 rounded-full bg-accent-2"></span>
+
+      <span
+        class="text-xs font-medium uppercase tracking-[0.18em] text-text-faint"
+      >
+        Account
+      </span>
+    </div>
+
+    <h1 class="text-2xl font-semibold tracking-tight text-text-primary">
+      Profile
+    </h1>
+
+    <p class="mt-2 text-sm text-text-muted">
+      Manage your account information and profile settings.
+    </p>
+  </div>
+
+
+  <!-- Profile Card -->
+  <section
+    class="overflow-hidden rounded-2xl border border-glass-border-soft bg-glass-fill shadow-glass"
+  >
+
+    <!-- Card Header -->
+    <div
+      class="border-b border-glass-border-soft px-6 py-5 sm:px-7"
+    >
+      <div class="flex items-center justify-between gap-4">
+
+        <div>
+          <h2 class="text-base font-semibold text-text-primary">
+            Personal Information
+          </h2>
+
+          <p class="mt-1 text-sm text-text-muted">
+            Your basic profile information.
+          </p>
+        </div>
+
+        <!-- Status -->
+        @if (profile(); as data) {
+          <div
+            class="flex items-center gap-2 rounded-full border border-glass-border-soft bg-glass-fill px-3 py-1.5"
+          >
+            <span
+              class="h-1.5 w-1.5 rounded-full"
+              [class.bg-accent-2]="data.active"
+              [class.bg-text-faint]="!data.active"
+            ></span>
+
+            <span class="text-xs font-medium text-text-muted">
+              {{ data.active ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+        }
+
+      </div>
+    </div>
+
+
+    <!-- Form -->
+    @if (profile(); as data) {
+
+      <div class="space-y-6 p-6 sm:p-7">
+
+        <!-- Display Name -->
+        <div>
+          <label
+            for="displayName"
+            class="mb-2 block text-sm font-medium text-text-primary"
+          >
+            Display Name
+          </label>
+
+          <input
+            id="displayName"
+            type="text"
+            [value]="data.displayName"
+            (input)="updateField('displayName', $any($event.target).value)"
+            class="w-full rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+          />
+        </div>
+
+
+        <!-- Site Title / Headline -->
+        <div class="grid gap-6 sm:grid-cols-2">
+
+          <div>
+            <label
+              for="siteTitle"
+              class="mb-2 block text-sm font-medium text-text-primary"
+            >
+              Site Title
+            </label>
+
+            <input
+              id="siteTitle"
+              type="text"
+              [value]="data.siteTitle"
+              (input)="updateField('siteTitle', $any($event.target).value)"
+              class="w-full rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+            />
+          </div>
+
+          <div>
+            <label
+              for="headline"
+              class="mb-2 block text-sm font-medium text-text-primary"
+            >
+              Headline
+            </label>
+
+            <input
+              id="headline"
+              type="text"
+              [value]="data.headline ?? ''"
+              (input)="updateField('headline', $any($event.target).value)"
+              class="w-full rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+            />
+          </div>
+
+        </div>
+
+
+        <!-- Avatar -->
+        <div>
+
+          <label
+            for="avatar"
+            class="mb-2 block text-sm font-medium text-text-primary"
+          >
+            Avatar URL
+          </label>
+
+          <input
+            id="avatar"
+            type="url"
+            [value]="data.avatarUrl ?? ''"
+            (input)="updateField('avatarUrl', $any($event.target).value)"
+            placeholder="https://..."
+            class="w-full rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+          />
+
+          <p class="mt-2 text-xs text-text-faint">
+            Provide a publicly accessible image URL.
+          </p>
+
+        </div>
+
+
+        <!-- Bio -->
+        <div>
+
+          <label
+            for="bio"
+            class="mb-2 block text-sm font-medium text-text-primary"
+          >
+            Bio
+          </label>
+
+          <textarea
+            id="bio"
+            rows="5"
+            [value]="data.bio ?? ''"
+            (input)="updateField('bio', $any($event.target).value)"
+            placeholder="Tell something about yourself..."
+            class="w-full resize-y rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+          ></textarea>
+
+        </div>
+
+
+        <!-- Meta Description -->
+        <div>
+
+          <label
+            for="metaDescription"
+            class="mb-2 block text-sm font-medium text-text-primary"
+          >
+            Meta Description
+          </label>
+
+          <textarea
+            id="metaDescription"
+            rows="3"
+            [value]="data.metaDescription ?? ''"
+            (input)="updateField('metaDescription', $any($event.target).value)"
+            placeholder="Describe your portfolio..."
+            class="w-full resize-y rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+          ></textarea>
+
+        </div>
+
+
+        <!-- Resume -->
+        <div>
+
+          <label
+            for="resumeUrl"
+            class="mb-2 block text-sm font-medium text-text-primary"
+          >
+            Resume URL
+          </label>
+
+          <input
+            id="resumeUrl"
+            type="url"
+            [value]="data.resumeUrl ?? ''"
+            (input)="updateField('resumeUrl', $any($event.target).value)"
+            placeholder="https://..."
+            class="w-full rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+          />
+
+        </div>
+
+
+        <!-- Theme -->
+        <div>
+
+          <label
+            for="theme"
+            class="mb-2 block text-sm font-medium text-text-primary"
+          >
+            Theme
+          </label>
+
+          <input
+            id="theme"
+            type="text"
+            [value]="data.theme ?? ''"
+            (input)="updateField('theme', $any($event.target).value)"
+            placeholder="default"
+            class="w-full rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+          />
+
+        </div>
+
+
+        <!-- Active -->
+        <div
+          class="flex items-center justify-between rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-4"
+        >
+
+          <div>
+            <p class="text-sm font-medium text-text-primary">
+              Portfolio Active
+            </p>
+
+            <p class="mt-1 text-xs text-text-faint">
+              Controls whether your portfolio is active.
+            </p>
+          </div>
+
+          <input
+            type="checkbox"
+            [checked]="data.active"
+            (change)="updateField('active', $any($event.target).checked)"
+            class="h-4 w-4 accent-[var(--accent-1)]"
+          />
+
+        </div>
+
+
+        <!-- Divider -->
+        <div class="border-t border-glass-border-soft"></div>
+
+
+        <!-- Actions -->
+        <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+
+          <button
+            type="button"
+            (click)="loadProfile()"
+            class="rounded-xl border border-glass-border px-4 py-2.5 text-sm font-medium text-text-muted transition hover:bg-glass-fill hover:text-text-primary"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="button"
+            (click)="saveProfile()"
+            class="rounded-xl bg-accent-1 px-5 py-2.5 text-sm font-medium text-on-accent transition hover:opacity-90"
+          >
+            Save Changes
+          </button>
+
+        </div>
+
+      </div>
+
+    } @else {
+
+      <!-- Loading -->
+      <div class="p-7">
+        <p class="text-sm text-text-muted">
+          Loading profile...
+        </p>
+      </div>
+
+    }
+
+  </section>
+
+
+  <!-- Account Section -->
+  <section
+    class="mt-6 overflow-hidden rounded-2xl border border-glass-border-soft bg-glass-fill shadow-glass"
+  >
+
+    <div class="border-b border-glass-border-soft px-6 py-5 sm:px-7">
+
+      <h2 class="text-base font-semibold text-text-primary">
+        Account
+      </h2>
+
+      <p class="mt-1 text-sm text-text-muted">
+        Account-related actions.
+      </p>
+
+    </div>
+
+    <div
+      class="flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7"
+    >
+
+      <div>
+        <p class="text-sm font-medium text-text-primary">
+          Sign out
+        </p>
+
+        <p class="mt-1 text-xs text-text-faint">
+          Sign out of your current dashboard session.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        (click)="logout()"
+        class="rounded-xl border border-glass-border px-4 py-2.5 text-sm font-medium text-text-muted transition hover:border-accent-1 hover:text-text-primary"
+      >
+        Logout
+      </button>
+
+    </div>
+
+  </section>
+
+</div>

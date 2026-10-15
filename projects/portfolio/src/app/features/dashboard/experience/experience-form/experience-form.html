@@ -1,0 +1,212 @@
+<p>experience-form works!</p>
+<div class="space-y-6">
+
+  <div>
+    <h2 class="text-lg font-semibold text-text-primary">
+      {{ experience() ? 'Edit Experience' : 'New Experience' }}
+    </h2>
+
+
+<p class="mt-1 text-sm text-text-muted">
+  {{ experience()
+    ? 'Update this work experience.'
+    : 'Add a new work experience.'
+  }}
+</p>
+
+
+  </div>
+
+  <!-- Company -->
+
+  <div>
+    <label
+      for="company"
+      class="mb-2 block text-sm font-medium text-text-primary"
+    >
+      Company
+    </label>
+
+
+<input
+  id="company"
+  type="text"
+  [value]="company()"
+  (input)="company.set($any($event.target).value)"
+  placeholder="Company name"
+  maxlength="200"
+  class="w-full rounded-lg border border-glass-border-soft bg-glass-fill-strong px-3 py-2.5 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-glass-border"
+/>
+
+
+  </div>
+
+  <!-- Job Title -->
+
+  <div>
+    <label
+      for="jobTitle"
+      class="mb-2 block text-sm font-medium text-text-primary"
+    >
+      Job Title
+    </label>
+
+
+<input
+  id="jobTitle"
+  type="text"
+  [value]="jobTitle()"
+  (input)="jobTitle.set($any($event.target).value)"
+  placeholder="e.g. Java Backend Engineer"
+  maxlength="200"
+  class="w-full rounded-lg border border-glass-border-soft bg-glass-fill-strong px-3 py-2.5 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-glass-border"
+/>
+
+
+  </div>
+
+  <!-- Company URL -->
+
+  <div>
+    <label
+      for="companyUrl"
+      class="mb-2 block text-sm font-medium text-text-primary"
+    >
+      Company URL
+    </label>
+
+
+<input
+  id="companyUrl"
+  type="url"
+  [value]="companyUrl()"
+  (input)="companyUrl.set($any($event.target).value)"
+  placeholder="https://example.com"
+  maxlength="500"
+  class="w-full rounded-lg border border-glass-border-soft bg-glass-fill-strong px-3 py-2.5 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-glass-border"
+/>
+
+
+  </div>
+
+  <!-- Company Logo -->
+
+  <div>
+    <label
+      for="companyLogoUrl"
+      class="mb-2 block text-sm font-medium text-text-primary"
+    >
+      Company Logo URL
+    </label>
+
+
+<input
+  id="companyLogoUrl"
+  type="url"
+  [value]="companyLogoUrl()"
+  (input)="companyLogoUrl.set($any($event.target).value)"
+  placeholder="https://example.com/logo.png"
+  maxlength="500"
+  class="w-full rounded-lg border border-glass-border-soft bg-glass-fill-strong px-3 py-2.5 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-glass-border"
+/>
+
+
+  </div>
+
+  <!-- Dates -->
+
+  <div class="grid gap-5 sm:grid-cols-2">
+
+
+<div>
+  <label
+    for="startDate"
+    class="mb-2 block text-sm font-medium text-text-primary"
+  >
+    Start Date
+  </label>
+
+  <input
+    id="startDate"
+    type="date"
+    [value]="startDate()"
+    (input)="startDate.set($any($event.target).value)"
+    class="w-full rounded-lg border border-glass-border-soft bg-glass-fill-strong px-3 py-2.5 text-sm text-text-primary outline-none focus:border-glass-border"
+  />
+</div>
+
+
+<div>
+  <label
+    for="endDate"
+    class="mb-2 block text-sm font-medium text-text-primary"
+  >
+    End Date
+  </label>
+
+  <input
+    id="endDate"
+    type="date"
+    [value]="endDate()"
+    (input)="endDate.set($any($event.target).value)"
+    class="w-full rounded-lg border border-glass-border-soft bg-glass-fill-strong px-3 py-2.5 text-sm text-text-primary outline-none focus:border-glass-border"
+  />
+
+  <p class="mt-1 text-xs text-text-faint">
+    Leave empty if this is your current position.
+  </p>
+</div>
+
+
+  </div>
+
+  <!-- Visible -->
+
+  <label class="flex cursor-pointer items-center gap-3">
+
+
+<input
+  type="checkbox"
+  [checked]="visible()"
+  (change)="visible.set($any($event.target).checked)"
+  class="h-4 w-4 rounded border-glass-border-soft bg-glass-fill-strong"
+/>
+
+<span>
+  <span class="block text-sm font-medium text-text-primary">
+    Visible
+  </span>
+
+  <span class="block text-xs text-text-muted">
+    Show this experience on the public portfolio.
+  </span>
+</span>
+
+
+  </label>
+
+  <!-- Actions -->
+
+  <div class="flex justify-end gap-3 border-t border-glass-border-soft pt-5">
+
+
+<button
+  type="button"
+  (click)="cancel()"
+  class="rounded-lg border border-glass-border-soft px-4 py-2.5 text-sm font-medium text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+>
+  Cancel
+</button>
+
+<button
+  type="button"
+  (click)="submit()"
+  class="rounded-lg bg-accent-1 px-5 py-2.5 text-sm font-medium text-on-accent transition hover:opacity-90"
+>
+  {{ experience() ? 'Update Experience' : 'Add Experience' }}
+</button>
+
+
+  </div>
+
+</div>

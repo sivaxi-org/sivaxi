@@ -1,0 +1,142 @@
+<div class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass">
+
+  <div class="mb-6">
+
+    <p class="text-xs font-medium uppercase tracking-wider text-accent-2">
+      New Block
+    </p>
+
+    <h2 class="mt-2 text-xl font-semibold text-text-primary">
+      Skills Block
+    </h2>
+
+    <p class="mt-1 text-sm text-text-muted">
+      Create a group of skills.
+    </p>
+
+  </div>
+
+
+  <div class="space-y-5">
+
+    <div>
+
+      <label
+        for="skills-title"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Title
+      </label>
+
+      <input
+        id="skills-title"
+        type="text"
+        [value]="title()"
+        (input)="updateTitle($any($event.target).value)"
+        placeholder="Backend Technologies"
+        class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-accent-1"
+      />
+
+    </div>
+
+
+    <div>
+
+      <label
+        for="new-skill"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Add Skill
+      </label>
+
+      <div class="flex gap-2">
+
+        <input
+          id="new-skill"
+          type="text"
+          [value]="newSkill()"
+          (input)="updateNewSkill($any($event.target).value)"
+          (keydown.enter)="addSkill()"
+          placeholder="Java"
+          class="min-w-0 flex-1 rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-accent-1"
+        />
+
+        <button
+          type="button"
+          (click)="addSkill()"
+          class="rounded-xl border border-glass-border-soft px-4 py-2 text-sm text-text-muted hover:bg-glass-fill-strong hover:text-text-primary"
+        >
+          Add
+        </button>
+
+      </div>
+
+    </div>
+
+
+    @if (skills().length > 0) {
+
+      <div>
+
+        <p class="mb-2 text-sm font-medium text-text-primary">
+          Skills
+        </p>
+
+        <div class="flex flex-wrap gap-2">
+
+          @for (
+            skill of skills();
+            track $index
+          ) {
+
+            <div
+              class="flex items-center gap-2 rounded-lg border border-glass-border-soft bg-glass-fill px-3 py-2"
+            >
+
+              <span class="text-sm text-text-muted">
+                {{ skill }}
+              </span>
+
+              <button
+                type="button"
+                (click)="removeSkill($index)"
+                class="text-xs text-text-faint hover:text-text-primary"
+              >
+                ×
+              </button>
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <div class="mt-6 flex justify-end gap-3">
+
+    <button
+      type="button"
+      (click)="cancel()"
+      class="rounded-lg border border-glass-border-soft px-4 py-2 text-sm text-text-muted hover:bg-glass-fill-strong"
+    >
+      Cancel
+    </button>
+
+    <button
+      type="button"
+      (click)="submit()"
+      [disabled]="!title().trim() || skills().length === 0"
+      class="rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      Add Skills
+    </button>
+
+  </div>
+
+</div>

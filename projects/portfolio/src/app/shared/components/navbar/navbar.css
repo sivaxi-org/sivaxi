@@ -1,0 +1,17 @@
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.7rem 0.75rem;
+  border-radius: 0.6rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.mobile-nav-link:hover {
+  color: var(--text-primary);
+  background: var(--glass-fill-strong);
+}
