@@ -614,6 +614,7 @@ export class Dashboard {
   // Logout
   // ============================================================
 
+  
   logout(): void {
     this.keyclaokService.logout();
   }
