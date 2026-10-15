@@ -13,6 +13,8 @@ pipeline {
         FIREBASE_PROJECT = 'sivaxi-ui'
         FIREBASE_CREDENTIALS_ID = 'firebase-service-account-json'
         FIREBASE_TOOLS_VERSION = '15.28.1'
+        SKIP_PIPELINE = 'false'
+        DEPLOY_APPS = ''
     }
 
     stages {
@@ -25,37 +27,36 @@ pipeline {
         stage('Validate Branch') {
             steps {
                 script {
-                    def currentBranch = sh(
-                        script: 'git branch --show-current',
-                        returnStdout: true
-                    ).trim()
+                    def currentBranch = env.BRANCH_NAME?.trim()
 
                     if (!currentBranch) {
                         currentBranch = sh(
                             script: 'git branch -r --contains HEAD',
                             returnStdout: true
                         ).trim()
-                    }
 
-                    if (currentBranch.readLines().any {
-                        it.trim().replaceFirst(/^origin\//, '') == 'main'
-                    }) {
-                        currentBranch = 'main'
+                        if (currentBranch.readLines().size() == 1) {
+                            currentBranch = currentBranch.readLines()[0]
+                                .trim()
+                                .replaceFirst(/^origin\//, '')
+                        }
                     }
 
                     if (currentBranch != 'main') {
-                        error(
-                            "Pipeline aborted: only main is allowed. " +
-                            "Detected branch: ${currentBranch ?: 'unknown'}"
-                        )
+                        echo "Skipping pipeline: '${currentBranch ?: 'unknown'}' is not main."
+                        env.SKIP_PIPELINE = 'true'
+                        currentBuild.result = 'NOT_BUILT'
+                    } else {
+                        echo 'Branch validation passed: main'
                     }
-
-                    echo 'Branch validation passed: main'
                 }
             }
         }
 
         stage('Detect Changes') {
+            when {
+                expression { env.SKIP_PIPELINE != 'true' }
+            }
             steps {
                 script {
                     def base = env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
@@ -71,7 +72,6 @@ pipeline {
                             returnStatus: true,
                             script: "git merge-base --is-ancestor '${base}' HEAD"
                         ) != 0) {
-
                         // First build or unavailable comparison: deploy everything.
                         deployAll = true
                     } else {
@@ -96,7 +96,7 @@ pipeline {
                             file == '.gitignore' ||
                             file == 'Jenkinsfile'
                         ) {
-                            // These files do not directly require a frontend deployment.
+                            // No frontend deployment required.
                         } else if (
                             file.startsWith('projects/shared/') ||
                             file in [
@@ -119,7 +119,6 @@ pipeline {
                         } else if (file.startsWith('projects/portfolio/')) {
                             apps.add('portfolio')
                         } else {
-                            // Unknown application/build-related changes: deploy all.
                             deployAll = true
                         }
                     }
@@ -131,7 +130,7 @@ pipeline {
                     env.DEPLOY_APPS = apps.toList().sort().join(',')
 
                     echo "Project: ${env.PROJECT_NAME}"
-                    echo "Branch: main"
+                    echo "Branch: ${env.BRANCH_NAME}"
                     echo "Firebase project: ${env.FIREBASE_PROJECT}"
                     echo "Changed files: ${changedFiles}"
                     echo "Applications selected: ${env.DEPLOY_APPS ?: 'none'}"
@@ -141,7 +140,9 @@ pipeline {
 
         stage('Install Dependencies') {
             when {
-                expression { env.DEPLOY_APPS?.trim() }
+                expression {
+                    env.SKIP_PIPELINE != 'true' && env.DEPLOY_APPS?.trim()
+                }
             }
             steps {
                 sh '''
@@ -155,7 +156,9 @@ pipeline {
 
         stage('Build Applications') {
             when {
-                expression { env.DEPLOY_APPS?.trim() }
+                expression {
+                    env.SKIP_PIPELINE != 'true' && env.DEPLOY_APPS?.trim()
+                }
             }
             steps {
                 script {
@@ -173,7 +176,9 @@ pipeline {
 
         stage('Verify Build Artifacts') {
             when {
-                expression { env.DEPLOY_APPS?.trim() }
+                expression {
+                    env.SKIP_PIPELINE != 'true' && env.DEPLOY_APPS?.trim()
+                }
             }
             steps {
                 script {
@@ -191,7 +196,9 @@ pipeline {
 
         stage('Deploy to Firebase Hosting') {
             when {
-                expression { env.DEPLOY_APPS?.trim() }
+                expression {
+                    env.SKIP_PIPELINE != 'true' && env.DEPLOY_APPS?.trim()
+                }
             }
             steps {
                 withCredentials([
