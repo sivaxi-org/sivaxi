@@ -42,12 +42,12 @@ pipeline {
                         }
                     }
 
-                    if (currentBranch != 'main') {
-                        echo "Skipping pipeline: '${currentBranch ?: 'unknown'}' is not main."
+                    if (currentBranch != 'master') {
+                        echo "Skipping pipeline: '${currentBranch ?: 'unknown'}' is not master."
                         env.SKIP_PIPELINE = 'true'
                         currentBuild.result = 'NOT_BUILT'
                     } else {
-                        echo 'Branch validation passed: main'
+                        echo 'Branch validation passed: master'
                     }
                 }
             }
