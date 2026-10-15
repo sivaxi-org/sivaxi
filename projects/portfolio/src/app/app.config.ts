@@ -9,7 +9,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([sivaxiAuthInterceptor])),
     provideBrowserGlobalErrorListeners(), 
     provideRouter(routes),
-        {
+    {
       provide: SIVAXI_API_ORIGINS,
       useValue: ['https://champ.sivaxi.com'],
     },

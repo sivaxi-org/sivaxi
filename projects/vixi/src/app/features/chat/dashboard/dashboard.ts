@@ -607,7 +607,7 @@ export class Dashboard {
   }
 
   handleMarkdownClick(event: Event): void {
-    this.markdownRenderer.handleClick(event);
+    // this.markdownRenderer.handleClick(event);
   }
 
   // ============================================================
