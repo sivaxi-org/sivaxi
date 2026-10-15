@@ -37,16 +37,21 @@ export class App {
   return;
 }
     // Vixi — a personalized AI assistant platform
-    if (path === '/vixi' || path.startsWith('/vixi/')) {
-      this.seo.update({
-        title: 'Vixi AI | Personalized AI Assistant & Intelligent Workflows',
-        description:
-          'Meet Vixi, Sivaxi’s AI assistant platform designed for personalized conversations, contextual memory, intelligent tools, web search, and AI-powered workflows tailored to each user.',
-        canonicalUrl: `https://sivaxi.com${path}`,
-        robots: 'noindex, follow',
-      });
-      return;
-    }
+if (path === '/vixi' || path.startsWith('/vixi/')) {
+  const isPrivateArea =
+    path.includes('/dashboard') ||
+    path.includes('/chat') ||
+    path.includes('/settings');
+
+  this.seo.update({
+    title: 'Vixi AI | Personal AI Assistant & Agentic AI Platform',
+    description:
+      'Vixi is an AI assistant platform by Sivaxi, built for personalized conversations, contextual memory, intelligent tools, web search, and agentic workflows. Experience AI designed around your needs.',
+    canonicalUrl: `https://sivaxi.com${path}`,
+    robots: isPrivateArea ? 'noindex, nofollow' : 'noindex, follow',
+  });
+  return;
+}
 
     // Portfolio — a multi-user portfolio publishing platform
     if (path === '/portfolio' || path.startsWith('/portfolio/')) {
