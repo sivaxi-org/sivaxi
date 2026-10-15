@@ -16,91 +16,36 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
+            stage('Checkout') {
+        steps {
+            checkout scm
         }
+    }
 
-        stage('Detect Changes') {
-            steps {
-                script {
-                    def base = env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
-                    def changedFiles = []
-                    boolean deployAll = false
+    stage('Validate Branch') {
+        steps {
+            script {
+                def currentBranch = sh(
+                    script: 'git branch --show-current',
+                    returnStdout: true
+                ).trim()
 
-                    if (!base ||
-                        sh(
-                            returnStatus: true,
-                            script: "git cat-file -e '${base}^{commit}'"
-                        ) != 0 ||
-                        sh(
-                            returnStatus: true,
-                            script: "git merge-base --is-ancestor '${base}' HEAD"
-                        ) != 0) {
-                        deployAll = true
-                    } else {
-                        def output = sh(
-                            returnStdout: true,
-                            script: "git diff --name-only '${base}' HEAD"
-                        ).trim()
-
-                        if (output) {
-                            changedFiles = output.readLines()
-                        }
-                    }
-
-                    def apps = [] as Set
-
-                    changedFiles.each { file ->
-                        if (
-                            file ==~ /(?i).*\.(md|mdx)$/ ||
-                            file.startsWith('docs/') ||
-                            file.startsWith('.github/') ||
-                            file == 'LICENSE' ||
-                            file == '.gitignore' ||
-                            file == 'Jenkinsfile'
-                        ) {
-                            // No deployment needed for documentation-only changes.
-                        } else if (
-                            file.startsWith('projects/shared/') ||
-                            file in [
-                                'package.json',
-                                'package-lock.json',
-                                'angular.json',
-                                'tsconfig.json',
-                                'tsconfig.app.json',
-                                'firebase.json',
-                                '.firebaserc'
-                            ] ||
-                            file.startsWith('tsconfig.') ||
-                            file.endsWith('.config.mjs')
-                        ) {
-                            deployAll = true
-                        } else if (file.startsWith('projects/shell/')) {
-                            apps.add('shell')
-                        } else if (file.startsWith('projects/vixi/')) {
-                            apps.add('vixi')
-                        } else if (file.startsWith('projects/portfolio/')) {
-                            apps.add('portfolio')
-                        } else {
-                            deployAll = true
-                        }
-                    }
-
-                    if (deployAll) {
-                        apps = ['shell', 'vixi', 'portfolio'] as Set
-                    }
-
-                    env.DEPLOY_APPS = apps.toList().sort().join(',')
-
-                    echo "Project: ${env.PROJECT_NAME}"
-                    echo "Firebase project: ${env.FIREBASE_PROJECT}"
-                    echo "Changed files: ${changedFiles}"
-                    echo "Applications selected: ${env.DEPLOY_APPS ?: 'none'}"
+                if (currentBranch != 'main') {
+                    error(
+                        "Pipeline aborted: deployments are allowed only from main. " +
+                        "Current branch: ${currentBranch ?: 'unknown'}"
+                    )
                 }
+
+                echo 'Branch validation passed: main'
             }
         }
+    }
+
+    stage('Detect Changes') {
+        // Keep your existing Detect Changes stage here.
+    }
+
 
         stage('Install Dependencies') {
             when {
