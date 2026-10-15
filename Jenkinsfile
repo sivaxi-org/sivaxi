@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -27,25 +28,14 @@ pipeline {
         stage('Validate Branch') {
             steps {
                 script {
-                    // Multibranch Pipeline provides BRANCH_NAME, e.g. master or feature/setup.
                     def currentBranch = env.BRANCH_NAME?.trim()
 
                     if (!currentBranch) {
-                        currentBranch = sh(
-                            script: 'git branch -r --contains HEAD',
-                            returnStdout: true
-                        ).trim()
-
-                        def branches = currentBranch
-                            .readLines()
-                            .collect { it.trim().replaceFirst(/^origin\//, '') }
-                            .unique()
-
-                        currentBranch = branches.size() == 1 ? branches[0] : ''
+                        error('Cannot determine branch name. This must run as a Multibranch Pipeline.')
                     }
 
                     if (currentBranch != 'master') {
-                        echo "Skipping pipeline: '${currentBranch ?: 'unknown'}' is not master."
+                        echo "Skipping pipeline: '${currentBranch}' is not master."
                         env.SKIP_PIPELINE = 'true'
                         currentBuild.result = 'NOT_BUILT'
                     } else {
@@ -55,7 +45,7 @@ pipeline {
             }
         }
 
-                stage('Detect Changes') {
+        stage('Detect Changes') {
             when {
                 expression { env.SKIP_PIPELINE != 'true' }
             }
@@ -65,7 +55,10 @@ pipeline {
                     def changedFiles = []
                     boolean deployAll = false
 
-                    if (!base ||
+                    // If no trustworthy comparison commit exists,
+                    // perform a full deployment.
+                    if (
+                        !base ||
                         sh(
                             returnStatus: true,
                             script: "git cat-file -e '${base}^{commit}'"
@@ -73,7 +66,9 @@ pipeline {
                         sh(
                             returnStatus: true,
                             script: "git merge-base --is-ancestor '${base}' HEAD"
-                        ) != 0) {
+                        ) != 0
+                    ) {
+                        echo 'No valid previous successful commit. Selecting all applications.'
                         deployAll = true
                     } else {
                         def output = sh(
@@ -88,27 +83,44 @@ pipeline {
 
                     def apps = [] as Set
 
-                    changedFiles.each { file ->
+                    for (rawFile in changedFiles) {
+                        // Normalize paths before matching them.
+                        def file = rawFile.trim().replace('\\', '/')
+
+                        echo "Checking changed file: '${file}'"
+
+                        if (!file) {
+                            continue
+                        }
+
+                        // Shared code or build/deployment configuration
+                        // can affect every application.
                         if (
                             file.startsWith('projects/shared/') ||
-                            file in [
-                                'package.json',
-                                'package-lock.json',
-                                'angular.json',
-                                'tsconfig.json',
-                                'tsconfig.app.json',
-                                'firebase.json',
-                                '.firebaserc'
-                            ] ||
+                            file == 'package.json' ||
+                            file == 'package-lock.json' ||
+                            file == 'angular.json' ||
+                            file == 'tsconfig.json' ||
+                            file == 'tsconfig.app.json' ||
                             file.startsWith('tsconfig.') ||
-                            file.endsWith('.config.mjs')
+                            file.endsWith('.config.mjs') ||
+                            file == 'firebase.json' ||
+                            file == '.firebaserc'
                         ) {
+                            echo "Shared/configuration change detected: ${file}"
                             deployAll = true
-                        } else if (file.startsWith('projects/shell/')) {
+                            continue
+                        }
+
+                        // Application-specific source changes.
+                        if (file.startsWith('projects/shell/')) {
+                            echo "Matched application: shell (${file})"
                             apps.add('shell')
                         } else if (file.startsWith('projects/vixi/')) {
+                            echo "Matched application: vixi (${file})"
                             apps.add('vixi')
                         } else if (file.startsWith('projects/portfolio/')) {
+                            echo "Matched application: portfolio (${file})"
                             apps.add('portfolio')
                         } else if (
                             file == 'Jenkinsfile' ||
@@ -118,8 +130,10 @@ pipeline {
                             file.startsWith('.github/') ||
                             file ==~ /(?i).*\\.(md|mdx)$/
                         ) {
-                            // Ignore documentation and pipeline-only changes.
+                            echo "Ignoring documentation/pipeline-only change: ${file}"
                         } else {
+                            // Unknown files may affect the build.
+                            echo "Unclassified file; selecting all applications: ${file}"
                             deployAll = true
                         }
                     }
@@ -130,11 +144,13 @@ pipeline {
 
                     env.DEPLOY_APPS = apps.toList().sort().join(',')
 
+                    echo "Comparison base: ${base ?: 'none'}"
                     echo "Changed files: ${changedFiles}"
+                    echo "Deploy all: ${deployAll}"
                     echo "Applications selected: ${env.DEPLOY_APPS ?: 'none'}"
 
                     if (!env.DEPLOY_APPS?.trim()) {
-                        echo 'No frontend application changes detected; deployment skipped.'
+                        echo 'No frontend application changes detected; deployment will be skipped.'
                     }
                 }
             }
@@ -143,7 +159,8 @@ pipeline {
         stage('Install Dependencies') {
             when {
                 expression {
-                    env.SKIP_PIPELINE != 'true' && env.DEPLOY_APPS?.trim()
+                    env.SKIP_PIPELINE != 'true' &&
+                    env.DEPLOY_APPS?.trim()
                 }
             }
             steps {
@@ -159,7 +176,8 @@ pipeline {
         stage('Build Applications') {
             when {
                 expression {
-                    env.SKIP_PIPELINE != 'true' && env.DEPLOY_APPS?.trim()
+                    env.SKIP_PIPELINE != 'true' &&
+                    env.DEPLOY_APPS?.trim()
                 }
             }
             steps {
@@ -179,16 +197,24 @@ pipeline {
         stage('Verify Build Artifacts') {
             when {
                 expression {
-                    env.SKIP_PIPELINE != 'true' && env.DEPLOY_APPS?.trim()
+                    env.SKIP_PIPELINE != 'true' &&
+                    env.DEPLOY_APPS?.trim()
                 }
             }
             steps {
                 script {
                     env.DEPLOY_APPS.split(',').each { app ->
+                        echo "Verifying ${app} artifacts"
+
                         sh """
                             set -eu
+
                             test -f dist/${app}/browser/index.html
-                            test -f dist/${app}/browser/remoteEntry.json
+
+                            if [ "${app}" != "shell" ]; then
+                                test -f dist/${app}/browser/remoteEntry.json
+                            fi
+
                             echo "Verified ${app} build artifacts"
                         """
                     }
@@ -199,7 +225,8 @@ pipeline {
         stage('Deploy to Firebase Hosting') {
             when {
                 expression {
-                    env.SKIP_PIPELINE != 'true' && env.DEPLOY_APPS?.trim()
+                    env.SKIP_PIPELINE != 'true' &&
+                    env.DEPLOY_APPS?.trim()
                 }
             }
             steps {
@@ -211,17 +238,13 @@ pipeline {
                 ]) {
                     script {
                         env.DEPLOY_APPS.split(',').each { app ->
-                            echo "Deploying ${app} to ${env.FIREBASE_PROJECT}"
+                            echo "Deploying ${app} to Firebase project ${env.FIREBASE_PROJECT}"
 
                             sh """
                                 set -eu
                                 export CI=true
 
-                                npx --yes firebase-tools@${FIREBASE_TOOLS_VERSION} \
-                                    deploy \
-                                    --only hosting:${app} \
-                                    --project ${FIREBASE_PROJECT} \
-                                    --non-interactive
+                                npx --yes firebase-tools@${FIREBASE_TOOLS_VERSION} deploy --only hosting:${app} --project ${FIREBASE_PROJECT} --non-interactive
                             """
                         }
                     }
