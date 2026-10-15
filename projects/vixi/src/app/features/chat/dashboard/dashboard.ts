@@ -609,12 +609,11 @@ export class Dashboard {
  handleMarkdownClick(event: Event): void {
   this.markdownRenderer.handleClick(event);
 }
-
   // ============================================================
   // Logout
   // ============================================================
 
-  
+
   logout(): void {
     this.keyclaokService.logout();
   }
