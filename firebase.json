@@ -20,7 +20,7 @@
           "headers": [
             {
               "key": "Access-Control-Allow-Origin",
-              "value": "*"
+              "value": "https://sivaxi.com"
             }
           ]
         }
@@ -42,11 +42,20 @@
       ],
       "headers": [
         {
+          "source": "/remoteEntry.json",
+          "headers": [
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "https://sivaxi.com"
+            }
+          ]
+        },
+        {
           "source": "**/*.@(js|mjs|json)",
           "headers": [
             {
               "key": "Access-Control-Allow-Origin",
-              "value": "*"
+              "value": "https://sivaxi.com"
             }
           ]
         }
@@ -68,11 +77,20 @@
       ],
       "headers": [
         {
+          "source": "/remoteEntry.json",
+          "headers": [
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "https://sivaxi.com"
+            }
+          ]
+        },
+        {
           "source": "**/*.@(js|mjs|json)",
           "headers": [
             {
               "key": "Access-Control-Allow-Origin",
-              "value": "*"
+              "value": "https://sivaxi.com"
             }
           ]
         }
