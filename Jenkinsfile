@@ -55,7 +55,7 @@ pipeline {
             }
         }
 
-        stage('Detect Changes') {
+                stage('Detect Changes') {
             when {
                 expression { env.SKIP_PIPELINE != 'true' }
             }
@@ -74,8 +74,6 @@ pipeline {
                             returnStatus: true,
                             script: "git merge-base --is-ancestor '${base}' HEAD"
                         ) != 0) {
-
-                        // First build or unavailable comparison: deploy all apps.
                         deployAll = true
                     } else {
                         def output = sh(
@@ -92,15 +90,6 @@ pipeline {
 
                     changedFiles.each { file ->
                         if (
-                            file ==~ /(?i).*\\.(md|mdx)$/ ||
-                            file.startsWith('docs/') ||
-                            file.startsWith('.github/') ||
-                            file == 'LICENSE' ||
-                            file == '.gitignore' ||
-                            file == 'Jenkinsfile'
-                        ) {
-                            // These changes do not require a frontend deployment.
-                        } else if (
                             file.startsWith('projects/shared/') ||
                             file in [
                                 'package.json',
@@ -121,8 +110,16 @@ pipeline {
                             apps.add('vixi')
                         } else if (file.startsWith('projects/portfolio/')) {
                             apps.add('portfolio')
+                        } else if (
+                            file == 'Jenkinsfile' ||
+                            file == 'LICENSE' ||
+                            file == '.gitignore' ||
+                            file.startsWith('docs/') ||
+                            file.startsWith('.github/') ||
+                            file ==~ /(?i).*\\.(md|mdx)$/
+                        ) {
+                            // Ignore documentation and pipeline-only changes.
                         } else {
-                            // Unclassified source/configuration changes: deploy all.
                             deployAll = true
                         }
                     }
@@ -133,11 +130,12 @@ pipeline {
 
                     env.DEPLOY_APPS = apps.toList().sort().join(',')
 
-                    echo "Project: ${env.PROJECT_NAME}"
-                    echo "Branch: ${currentBuild.number ? (env.BRANCH_NAME ?: 'master') : 'master'}"
-                    echo "Firebase project: ${env.FIREBASE_PROJECT}"
                     echo "Changed files: ${changedFiles}"
                     echo "Applications selected: ${env.DEPLOY_APPS ?: 'none'}"
+
+                    if (!env.DEPLOY_APPS?.trim()) {
+                        echo 'No frontend application changes detected; deployment skipped.'
+                    }
                 }
             }
         }
