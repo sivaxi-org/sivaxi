@@ -1,0 +1,129 @@
+
+<div class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass">
+
+  <div class="mb-6">
+    <h2 class="text-lg font-semibold text-text-primary">
+      {{ editMode ? 'Edit Skill' : 'New Skill' }}
+    </h2>
+
+    <p class="mt-1 text-sm text-text-muted">
+      {{ editMode
+        ? 'Update this skill.'
+        : 'Add a skill to this category.' }}
+    </p>
+  </div>
+
+  <form
+    class="space-y-5"
+    (submit)="$event.preventDefault(); submit()"
+  >
+
+    <!-- Name -->
+    <div>
+      <label class="mb-2 block text-sm font-medium text-text-primary">
+        Name
+      </label>
+
+      <input
+        type="text"
+        [value]="name()"
+        (input)="name.set($any($event.target).value)"
+        maxlength="100"
+        required
+        placeholder="Java"
+        class="w-full rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-accent-1"
+      />
+    </div>
+
+    <!-- Icon -->
+    <div>
+      <label class="mb-2 block text-sm font-medium text-text-primary">
+        Icon
+      </label>
+      <app-icon-picker [icon]="icon()" (iconChange)="icon.set($any($event))"></app-icon-picker>
+    </div>
+
+    <!-- Proficiency -->
+    <div>
+      <div class="mb-2 flex items-center justify-between">
+
+        <label class="text-sm font-medium text-text-primary">
+          Proficiency
+        </label>
+
+        <span class="text-sm text-text-muted">
+          {{ proficiency() }}%
+        </span>
+
+      </div>
+
+      <input
+        type="range"
+        min="0"
+        max="100"
+        [value]="proficiency()"
+        (input)="proficiency.set(+$any($event.target).value)"
+        class="w-full accent-[var(--accent-1)]"
+      />
+
+      <div class="mt-2 flex justify-between text-xs text-text-faint">
+        <span>0%</span>
+        <span>100%</span>
+      </div>
+    </div>
+
+    <!-- Sort Order -->
+    <div>
+      <label class="mb-2 block text-sm font-medium text-text-primary">
+        Sort Order
+      </label>
+
+      <input
+        type="number"
+        min="0"
+        [value]="sortOrder()"
+        (input)="sortOrder.set(+$any($event.target).value)"
+        class="w-full rounded-xl border border-glass-border-soft bg-bg-elev px-4 py-3 text-sm text-text-primary outline-none focus:border-accent-1"
+      />
+    </div>
+
+    <!-- Visible -->
+    <label class="flex cursor-pointer items-center gap-3">
+
+      <input
+        type="checkbox"
+        [checked]="visible()"
+        (change)="visible.set($any($event.target).checked)"
+        class="h-4 w-4"
+      />
+
+      <span class="text-sm text-text-primary">
+        Visible
+      </span>
+
+    </label>
+
+    <!-- Actions -->
+    <div class="flex justify-end gap-3 pt-2">
+
+      <button
+        type="button"
+        (click)="cancel()"
+        class="rounded-xl border border-glass-border-soft px-4 py-2.5 text-sm text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        class="rounded-xl bg-accent-1 px-5 py-2.5 text-sm font-medium text-on-accent transition hover:opacity-90"
+      >
+        {{ editMode ? 'Update' : 'Add' }}
+      </button>
+
+    </div>
+
+  </form>
+
+</div>
+

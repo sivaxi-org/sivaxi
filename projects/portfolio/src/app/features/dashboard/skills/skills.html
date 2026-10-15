@@ -1,0 +1,332 @@
+
+<section class="px-6 py-8">
+
+  <div class="mx-auto max-w-[1060px]">
+
+    <!-- Header -->
+    <div class="mb-8 flex items-center justify-between gap-4">
+
+      <div>
+        <h1 class="text-2xl font-semibold text-text-primary">
+          Skills
+        </h1>
+
+        <p class="mt-1 text-sm text-text-muted">
+          Manage your skill categories and technical skills.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        (click)="openAddCategory()"
+        class="rounded-xl bg-accent-1 px-5 py-2.5 text-sm font-medium text-on-accent transition hover:opacity-90"
+      >
+        + Add Category
+      </button>
+
+    </div>
+
+    <!-- Add Category -->
+    @if (showAddCategory()) {
+
+      <div class="mb-8">
+        <app-skill-category-form
+          [category]="null"
+          (submitted)="createCategory($event)"
+          (cancelled)="closeAddCategory()"
+        />
+      </div>
+
+    }
+
+    <!-- Edit Category -->
+    @if (editingCategory(); as category) {
+
+      <div class="mb-8">
+        <app-skill-category-form
+          [category]="category"
+          (submitted)="updateCategory($event)"
+          (cancelled)="closeEditCategory()"
+        />
+      </div>
+
+    }
+
+    <!-- Loading -->
+    @if (loading()) {
+
+      <div
+        class="rounded-2xl border border-glass-border-soft bg-glass-fill p-8 text-center"
+      >
+        <p class="text-sm text-text-muted">
+          Loading skills...
+        </p>
+      </div>
+
+    }
+
+    <!-- Empty -->
+    @if (!loading() && categories().length === 0) {
+
+      <div
+        class="rounded-2xl border border-glass-border-soft bg-glass-fill p-10 text-center"
+      >
+
+        <h2 class="text-base font-medium text-text-primary">
+          No skill categories yet
+        </h2>
+
+        <p class="mt-2 text-sm text-text-muted">
+          Create your first category to start adding skills.
+        </p>
+
+      </div>
+
+    }
+
+    <!-- Categories -->
+    @if (!loading() && categories().length > 0) {
+
+      <div class="space-y-5">
+
+        @for (category of categories(); track category.id) {
+
+          <article
+            class="rounded-2xl border border-glass-border-soft bg-glass-fill p-5 shadow-glass"
+          >
+
+            <!-- Category Header -->
+            <div class="flex items-start justify-between gap-5">
+
+              <div class="min-w-0">
+
+                <div class="flex items-center gap-3">
+
+                  @if (category.icon) {
+                    <span class="text-lg text-accent-1">
+                      <app-icon  [svg]="category.icon" ></app-icon>
+                    </span>
+                  }
+
+                  <h2 class="text-lg font-semibold text-text-primary">
+                    {{ category.name }}
+                  </h2>
+
+                  @if (!category.visible) {
+                    <span
+                      class="rounded-full bg-glass-fill-strong px-2 py-1 text-xs text-text-faint"
+                    >
+                      Hidden
+                    </span>
+                  }
+
+                </div>
+
+                @if (category.description) {
+                  <p class="mt-2 text-sm text-text-muted">
+                    {{ category.description }}
+                  </p>
+                }
+
+              </div>
+
+              <!-- Category Actions -->
+              <div class="flex shrink-0 gap-2">
+
+                <button
+                  type="button"
+                  (click)="openEditCategory(category)"
+                  class="rounded-lg border border-glass-border-soft px-3 py-2 text-xs text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+                >
+                  Edit
+                </button>
+
+                <button
+                  type="button"
+                  (click)="deleteCategory(category)"
+                  class="rounded-lg border border-glass-border-soft px-3 py-2 text-xs text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </div>
+
+            <!-- Skills -->
+            <div class="mt-6 border-t border-glass-border-soft pt-5">
+
+              <div class="mb-4 flex items-center justify-between">
+
+                <h3 class="text-sm font-medium text-text-primary">
+                  Skills
+                </h3>
+
+                <button
+                  type="button"
+                  (click)="openAddSkill(category.id)"
+                  class="rounded-lg border border-glass-border-soft px-3 py-2 text-xs text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+                >
+                  + Add Skill
+                </button>
+
+              </div>
+
+              <!-- Add Skill Form -->
+              @if (addingSkillToCategory() === category.id) {
+
+                <div class="mb-5">
+                  <app-skill-form
+                    [skill]="null"
+                    (submitted)="createSkill(category.id, $event)"
+                    (cancelled)="closeAddSkill()"
+                  />
+                </div>
+
+              }
+
+              <!-- Edit Skill -->
+              @if (
+                editingSkill();
+                as editing
+              ) {
+
+                @if (editing.categoryId === category.id) {
+
+                  <div class="mb-5">
+                    <app-skill-form
+                      [skill]="editing.skill"
+                      (submitted)="updateSkill(category.id, $event)"
+                      (cancelled)="closeEditSkill()"
+                    />
+                  </div>
+
+                }
+
+              }
+
+              <!-- Empty Skills -->
+              @if (getSkillsForCategory(category.id).length === 0) {
+
+                <div
+                  class="rounded-xl border border-dashed border-glass-border-soft px-5 py-6 text-center"
+                >
+                  <p class="text-sm text-text-faint">
+                    No skills in this category yet.
+                  </p>
+                </div>
+
+              }
+
+              <!-- Skill List -->
+              @if (getSkillsForCategory(category.id).length > 0) {
+
+                <div class="space-y-3">
+
+                  @for (
+                    skill of getSkillsForCategory(category.id);
+                    track skill.id
+                  ) {
+
+                    <div
+                      class="rounded-xl border border-glass-border-soft bg-bg-elev p-4"
+                    >
+
+                      <div class="flex items-center justify-between gap-4">
+
+                        <!-- Skill Info -->
+                        <div class="flex min-w-0 items-center gap-3">
+
+                          @if (skill.icon) {
+                            <span class="shrink-0 text-accent-1">
+                              <app-icon [svg]="skill.icon"></app-icon>
+                            </span>
+                          }
+
+                          <div class="min-w-0">
+
+                            <div class="flex items-center gap-2">
+
+                              <span
+                                class="truncate text-sm font-medium text-text-primary"
+                              >
+                                {{ skill.name }}
+                              </span>
+
+                              @if (!skill.visible) {
+                                <span
+                                  class="rounded-full bg-glass-fill-strong px-2 py-0.5 text-[10px] text-text-faint"
+                                >
+                                  Hidden
+                                </span>
+                              }
+
+                            </div>
+
+                            <!-- Proficiency -->
+                            <div class="mt-2 flex items-center gap-3">
+
+                              <div
+                                class="h-1.5 w-32 overflow-hidden rounded-full bg-glass-fill-strong"
+                              >
+                                <div
+                                  class="h-full rounded-full bg-accent-1"
+                                  [style.width.%]="skill.proficiency"
+                                ></div>
+                              </div>
+
+                              <span class="text-xs text-text-faint">
+                                {{ skill.proficiency }}%
+                              </span>
+
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                        <!-- Skill Actions -->
+                        <div class="flex shrink-0 gap-2">
+
+                          <button
+                            type="button"
+                            (click)="openEditSkill(category.id, skill)"
+                            class="rounded-lg border border-glass-border-soft px-3 py-2 text-xs text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+                          >
+                            Edit
+                          </button>
+
+                          <button
+                            type="button"
+                            (click)="deleteSkill(category.id, skill)"
+                            class="rounded-lg border border-glass-border-soft px-3 py-2 text-xs text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+                          >
+                            Delete
+                          </button>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+</section>
+

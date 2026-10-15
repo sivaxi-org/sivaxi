@@ -1,0 +1,94 @@
+<div class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass">
+
+  <div class="mb-6">
+
+    <p class="text-xs font-medium uppercase tracking-wider text-accent-2">
+      New Block
+    </p>
+
+    <h2 class="mt-2 text-xl font-semibold text-text-primary">
+      Heading Block
+    </h2>
+
+    <p class="mt-1 text-sm text-text-muted">
+      Add a heading to your section.
+    </p>
+
+  </div>
+
+
+  <div class="space-y-5">
+
+    <div>
+
+      <label
+        for="heading-text"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Heading
+      </label>
+
+      <input
+        id="heading-text"
+        type="text"
+        [value]="text()"
+        (input)="updateText($any($event.target).value)"
+        placeholder="Enter heading..."
+        class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-accent-1"
+      />
+
+    </div>
+
+
+    <div>
+
+      <label
+        for="heading-level"
+        class="mb-2 block text-sm font-medium text-text-primary"
+      >
+        Heading Level
+      </label>
+
+      <select
+        id="heading-level"
+        [value]="level()"
+        (change)="updateLevel($any($event.target).value)"
+        class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none focus:border-accent-1"
+      >
+
+        <option value="1">H1</option>
+        <option value="2">H2</option>
+        <option value="3">H3</option>
+        <option value="4">H4</option>
+        <option value="5">H5</option>
+        <option value="6">H6</option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <div class="mt-6 flex justify-end gap-3">
+
+    <button
+      type="button"
+      (click)="cancel()"
+      class="rounded-lg border border-glass-border-soft px-4 py-2 text-sm text-text-muted hover:bg-glass-fill-strong"
+    >
+      Cancel
+    </button>
+
+    <button
+      type="button"
+      (click)="submit()"
+      [disabled]="!text().trim()"
+      class="rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      Add Heading
+    </button>
+
+  </div>
+
+</div>

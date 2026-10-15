@@ -1,12 +1,13 @@
 
 import { Routes } from '@angular/router';
-import { Home } from '../features/home/home';
+import { Dashboard } from './features/chat/dashboard/dashboard';
 import { authGuard } from 'shared';
+
 
 export const routes: Routes = [
   {
     path: '',
     canActivate: [authGuard],
-    component: Home,
+    component: Dashboard,
   },
 ];

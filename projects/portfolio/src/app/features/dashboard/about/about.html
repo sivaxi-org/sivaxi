@@ -1,0 +1,90 @@
+<div class="space-y-8">
+
+  <!-- About Section -->
+  <section>
+
+    <div class="mb-6">
+
+      <p class="text-xs font-medium uppercase tracking-wider text-accent-2">
+        About
+      </p>
+
+      <h1 class="mt-2 text-2xl font-semibold text-text-primary">
+        About Section
+      </h1>
+
+      <p class="mt-2 text-sm text-text-muted">
+        Manage the title and content displayed in your portfolio's About section.
+      </p>
+
+    </div>
+
+    @if (about(); as current) {
+
+      <div class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass">
+
+        <div class="mb-6">
+
+          <h2 class="text-lg font-semibold text-text-primary">
+            Section Details
+          </h2>
+
+          <p class="mt-1 text-sm text-text-muted">
+            Configure the main title for your About section.
+          </p>
+
+        </div>
+
+        <div>
+
+          <label
+            for="about-title"
+            class="mb-2 block text-sm font-medium text-text-primary"
+          >
+            Title
+          </label>
+
+          <input
+            id="about-title"
+            type="text"
+            [value]="current.title"
+            (input)="updateField(
+              'title',
+              $any($event.target).value
+            )"
+            placeholder="About Me"
+            class="w-full rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+          />
+
+        </div>
+
+        <div class="mt-6 flex justify-end">
+
+          <button
+            type="button"
+            (click)="saveAbout()"
+            [disabled]="!current.title.trim()"
+            class="rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Save About
+          </button>
+
+        </div>
+
+      </div>
+
+    }
+
+  </section>
+
+
+  <!-- Content Blocks -->
+  <section>
+
+    <app-content-block-manager
+      url="/api/about/blocks"
+    />
+
+  </section>
+
+</div>

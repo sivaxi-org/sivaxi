@@ -1,0 +1,65 @@
+@switch (block().blockType) {
+
+  @case ('TEXT') {
+
+    <app-text-block
+      [data]="block().data"
+    />
+
+  }
+
+
+  @case ('HEADING') {
+
+    <app-heading-block
+      [data]="block().data"
+    />
+
+  }
+
+
+  @case ('IMAGE') {
+
+    <app-image-block
+      [data]="block().data"
+    />
+
+  }
+
+
+  @case ('RICH_TEXT') {
+
+    <app-rich-text-block
+      [data]="block().data"
+    />
+
+  }
+
+
+  @case ('SKILLS') {
+
+    <app-skills-block
+      [data]="block().data"
+    />
+
+  }
+
+
+  @case ('TITLE_BULLETS') {
+
+    <app-title-bullets-block
+      [data]="block().data"
+    />
+
+  }
+
+
+  @case ('CUSTOM') {
+
+    <app-custom-block
+      [data]="block().data"
+    />
+
+  }
+
+}

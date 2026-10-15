@@ -1,0 +1,162 @@
+<div class="rounded-xl border border-glass-border-soft bg-glass-fill p-5">
+
+  <div class="mb-6">
+    <h3 class="text-lg font-semibold text-text-primary">
+      {{ editMode ? 'Edit Contact' : 'Add Contact' }}
+    </h3>
+
+
+<p class="mt-1 text-sm text-text-muted">
+  Configure the contact information displayed on your portfolio.
+</p>
+
+
+  </div>
+
+  <form
+    class="space-y-5"
+    (submit)="$event.preventDefault(); submit()"
+  >
+
+
+<!-- Icon -->
+<div>
+  <label
+    for="contact-icon"
+    class="mb-2 block text-sm font-medium text-text-primary"
+  >
+    Icon
+  </label>
+
+  <app-icon-picker  (iconChange)="icon.set($any($event))" ></app-icon-picker>
+
+</div>
+
+<!-- Type -->
+<div>
+  <label
+    for="contact-type"
+    class="mb-2 block text-sm font-medium text-text-primary"
+  >
+    Type <span class="text-accent-2">*</span>
+  </label>
+
+  <input
+    id="contact-type"
+    type="text"
+    maxlength="50"
+    required
+    [value]="type()"
+    (input)="type.set($any($event.target).value)"
+    placeholder="e.g. Email, Phone, LinkedIn"
+    class="w-full rounded-lg border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+  />
+</div>
+
+<!-- Title -->
+<div>
+  <label
+    for="contact-title"
+    class="mb-2 block text-sm font-medium text-text-primary"
+  >
+    Title <span class="text-accent-2">*</span>
+  </label>
+
+  <input
+    id="contact-title"
+    type="text"
+    maxlength="150"
+    required
+    [value]="title()"
+    (input)="title.set($any($event.target).value)"
+    placeholder="e.g. ajay@example.com"
+    class="w-full rounded-lg border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+  />
+</div>
+
+<!-- Link -->
+<div>
+  <label
+    for="contact-link"
+    class="mb-2 block text-sm font-medium text-text-primary"
+  >
+    Link <span class="text-accent-2">*</span>
+  </label>
+
+  <input
+    id="contact-link"
+    type="text"
+    maxlength="500"
+    required
+    [value]="link()"
+    (input)="link.set($any($event.target).value)"
+    placeholder="mailto:ajay@example.com"
+    class="w-full rounded-lg border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-faint focus:border-accent-1"
+  />
+</div>
+
+<!-- Sort Order -->
+<div>
+  <label
+    for="contact-sort-order"
+    class="mb-2 block text-sm font-medium text-text-primary"
+  >
+    Sort Order
+  </label>
+
+  <input
+    id="contact-sort-order"
+    type="number"
+    min="0"
+    [value]="sortOrder()"
+    (input)="sortOrder.set(+$any($event.target).value)"
+    class="w-full rounded-lg border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none transition focus:border-accent-1"
+  />
+</div>
+
+<!-- Visible -->
+<label
+  class="flex cursor-pointer items-center gap-3 rounded-lg border border-glass-border-soft bg-glass-fill p-4"
+>
+  <input
+    type="checkbox"
+    [checked]="visible()"
+    (change)="visible.set($any($event.target).checked)"
+    class="h-4 w-4 accent-[var(--accent-1)]"
+  />
+
+  <div>
+    <p class="text-sm font-medium text-text-primary">
+      Visible
+    </p>
+
+    <p class="mt-0.5 text-xs text-text-muted">
+      Display this contact on the public portfolio.
+    </p>
+  </div>
+</label>
+
+<!-- Actions -->
+<div class="flex justify-end gap-3 pt-2">
+
+  <button
+    type="button"
+    (click)="cancel()"
+    class="rounded-lg border border-glass-border-soft px-4 py-2.5 text-sm font-medium text-text-muted transition hover:border-glass-border hover:text-text-primary"
+  >
+    Cancel
+  </button>
+
+  <button
+    type="submit"
+    class="rounded-lg bg-accent-1 px-5 py-2.5 text-sm font-semibold text-on-accent transition hover:opacity-90"
+  >
+    {{ editMode ? 'Update Contact' : 'Add Contact' }}
+  </button>
+
+</div>
+
+
+  </form>
+
+</div>

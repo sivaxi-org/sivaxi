@@ -1,0 +1,185 @@
+<div class="space-y-6">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between gap-4">
+
+    <div>
+
+      <h2 class="text-lg font-semibold text-text-primary">
+        Content Blocks
+      </h2>
+
+      <p class="mt-1 text-sm text-text-muted">
+        Manage the content displayed in this section.
+      </p>
+
+    </div>
+
+
+    @if (!showAddBlock() && !editingBlock()) {
+
+      <button
+        type="button"
+        (click)="openAddBlock()"
+        class="rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent transition hover:opacity-90"
+      >
+        + Add Block
+      </button>
+
+    }
+
+  </div>
+
+
+  <!-- Add Block -->
+  @if (showAddBlock()) {
+
+    <app-content-block-add
+      (closed)="closeAddBlock()"
+      (submitted)="createBlock($event)"
+    />
+
+  }
+
+
+  <!-- Loading -->
+  @if (loading()) {
+
+    <div
+      class="rounded-xl border border-glass-border-soft bg-glass-fill p-8 text-center"
+    >
+
+      <p class="text-sm text-text-muted">
+        Loading content blocks...
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- Loaded -->
+  @else {
+
+    <!-- Empty State -->
+    @if (blocks().length === 0 && !showAddBlock()) {
+
+      <div
+        class="rounded-xl border border-glass-border-soft bg-glass-fill p-8 text-center"
+      >
+
+        <p class="text-sm text-text-muted">
+          No content blocks yet.
+        </p>
+
+        <p class="mt-2 text-xs text-text-faint">
+          Add your first content block above.
+        </p>
+
+        <button
+          type="button"
+          (click)="openAddBlock()"
+          class="mt-5 rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent transition hover:opacity-90"
+        >
+          + Add Block
+        </button>
+
+      </div>
+
+    }
+
+
+    <!-- Blocks -->
+    @if (blocks().length > 0) {
+
+      <div class="space-y-6">
+
+        @for (
+          block of blocks();
+          track block.id
+        ) {
+
+          <!-- Edit Mode -->
+          @if (editingBlock()?.id === block.id) {
+
+            <app-content-block-edit
+              [block]="block"
+              (cancelled)="closeEditBlock()"
+              (submitted)="updateBlock($event)"
+            />
+
+          }
+
+
+          <!-- Display Mode -->
+          @else {
+
+            <div
+              class="rounded-2xl border border-glass-border-soft bg-glass-fill p-4"
+            >
+
+              <!-- Block Header -->
+              <div
+                class="mb-4 flex items-center justify-between gap-4"
+              >
+
+                <div class="flex items-center gap-3">
+
+                  <span
+                    class="rounded-md border border-glass-border-soft bg-glass-fill-strong px-2.5 py-1 text-[11px] font-medium uppercase tracking-wider text-accent-2"
+                  >
+                    {{ block.blockType }}
+                  </span>
+
+                  <span
+                    class="text-xs text-text-faint"
+                  >
+                    Order {{ block.sortOrder }}
+                  </span>
+
+                </div>
+
+
+                <!-- Actions -->
+                <div class="flex items-center gap-2">
+
+                  <button
+                    type="button"
+                    (click)="openEditBlock(block)"
+                    class="rounded-lg border border-glass-border-soft px-3 py-2 text-xs font-medium text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+                  >
+                    Edit
+                  </button>
+
+
+                  <button
+                    type="button"
+                    (click)="deleteBlock(block)"
+                    class="rounded-lg border border-glass-border-soft px-3 py-2 text-xs font-medium text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+                  >
+                    Delete
+                  </button>
+
+                </div>
+
+              </div>
+
+
+              <!-- Block Content -->
+              <app-content-block-renderer
+                [block]="block"
+              />
+
+            </div>
+
+          }
+
+        }
+
+      </div>
+
+    }
+
+  }
+
+</div>

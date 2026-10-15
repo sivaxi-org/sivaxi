@@ -1,0 +1,105 @@
+<div class="inline-block">
+
+  <button
+    type="button"
+    (click)="openPicker()"
+    [disabled]="disabled()"
+    class="flex items-center gap-3 rounded-lg border border-gray-300
+           px-4 py-2.5 text-sm text-gray-700 transition
+           hover:border-gray-400
+           disabled:cursor-not-allowed disabled:opacity-50"
+  >
+
+    @if (value(); as svg) {
+
+      <app-icon [svg]="svg" sizeClass="h-5 w-5" colorClass="text-gray-700" />
+
+      <span>Change icon</span>
+
+      <span
+        (click)="clearSelection($event)"
+        class="ml-1 text-gray-400 hover:text-gray-700"
+        title="Remove icon"
+      >
+        ×
+      </span>
+
+    } @else {
+
+      <span class="text-gray-400">+</span>
+      <span>Select icon</span>
+
+    }
+
+  </button>
+
+
+  <dialog
+    #dialog
+    (click)="dialog.close()"
+    class="w-full max-w-3xl rounded-xl border-0 p-0 backdrop:bg-black/40"
+  >
+
+    <div (click)="$event.stopPropagation()">
+
+      <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+
+        <h3 class="text-lg font-semibold text-gray-900">
+          Select an icon
+        </h3>
+
+        <button
+          type="button"
+          (click)="closePicker()"
+          class="flex h-8 w-8 items-center justify-center rounded-full
+                 text-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-1 border-b border-gray-200 px-6">
+
+        <button
+          type="button"
+          (click)="setTab('library')"
+          class="border-b-2 px-3 py-3 text-sm font-medium transition"
+          [class.border-gray-900]="activeTab() === 'library'"
+          [class.text-gray-900]="activeTab() === 'library'"
+          [class.border-transparent]="activeTab() !== 'library'"
+          [class.text-gray-400]="activeTab() !== 'library'"
+        >
+          Browse icons
+        </button>
+
+        <button
+          type="button"
+          (click)="setTab('custom')"
+          class="border-b-2 px-3 py-3 text-sm font-medium transition"
+          [class.border-gray-900]="activeTab() === 'custom'"
+          [class.text-gray-900]="activeTab() === 'custom'"
+          [class.border-transparent]="activeTab() !== 'custom'"
+          [class.text-gray-400]="activeTab() !== 'custom'"
+        >
+          Upload / paste SVG
+        </button>
+
+      </div>
+
+      @if (activeTab() === 'library') {
+
+        <app-icon-search (iconSelected)="onLibraryIconSelected($event)" />
+
+      } @else {
+
+        <app-icon-upload (svgSelected)="onCustomSvgSelected($event)" />
+
+      }
+
+    </div>
+
+  </dialog>
+
+</div>

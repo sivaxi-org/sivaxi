@@ -1,0 +1,62 @@
+<div class="rounded-2xl border border-glass-border bg-glass-fill p-6 shadow-glass">
+
+  <div class="mb-6">
+
+    <p class="text-xs font-medium uppercase tracking-wider text-accent-2">
+      New Block
+    </p>
+
+    <h2 class="mt-2 text-xl font-semibold text-text-primary">
+      Rich Text Block
+    </h2>
+
+    <p class="mt-1 text-sm text-text-muted">
+      Add formatted or long-form content.
+    </p>
+
+  </div>
+
+
+  <div>
+
+    <label
+      for="rich-text-content"
+      class="mb-2 block text-sm font-medium text-text-primary"
+    >
+      Content
+    </label>
+
+    <textarea
+      id="rich-text-content"
+      rows="8"
+      [value]="content()"
+      (input)="updateContent($any($event.target).value)"
+      placeholder="Enter your rich text content..."
+      class="w-full resize-y rounded-xl border border-glass-border-soft bg-glass-fill px-4 py-3 text-sm leading-6 text-text-primary outline-none placeholder:text-text-faint focus:border-accent-1"
+    ></textarea>
+
+  </div>
+
+
+  <div class="mt-6 flex justify-end gap-3">
+
+    <button
+      type="button"
+      (click)="cancel()"
+      class="rounded-lg border border-glass-border-soft px-4 py-2 text-sm text-text-muted hover:bg-glass-fill-strong"
+    >
+      Cancel
+    </button>
+
+    <button
+      type="button"
+      (click)="submit()"
+      [disabled]="!content().trim()"
+      class="rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      Add Rich Text
+    </button>
+
+  </div>
+
+</div>

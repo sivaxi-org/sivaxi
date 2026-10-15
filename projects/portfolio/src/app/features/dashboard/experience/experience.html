@@ -1,0 +1,200 @@
+<div class="space-y-6">
+
+  <!-- Header -->
+
+  <div class="flex items-center justify-between gap-4">
+
+
+<div>
+  <h1 class="text-2xl font-semibold tracking-tight text-text-primary">
+    Experience
+  </h1>
+
+  <p class="mt-1 text-sm text-text-muted">
+    Manage your professional experience.
+  </p>
+</div>
+
+@if (!showForm()) {
+  <button
+    type="button"
+    (click)="openAddExperience()"
+    class="rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent transition hover:opacity-90"
+  >
+    + Add Experience
+  </button>
+}
+
+
+  </div>
+
+  <!-- Add Form -->
+
+@if (showForm()) {
+
+
+<div
+  class="rounded-2xl border border-glass-border-soft bg-glass-fill p-6"
+>
+  <app-experience-form
+    [experience]="null"
+    (cancelled)="closeForm()"
+    (submitted)="createExperience($event)"
+  />
+</div>
+
+
+}
+
+  <!-- Loading -->
+
+@if (loading()) {
+
+
+<div
+  class="rounded-2xl border border-glass-border-soft bg-glass-fill p-8 text-center"
+>
+  <p class="text-sm text-text-muted">
+    Loading experiences...
+  </p>
+</div>
+
+
+} @else {
+
+
+<!-- Empty -->
+@if (experiences().length === 0 && !showForm()) {
+
+  <div
+    class="rounded-2xl border border-glass-border-soft bg-glass-fill p-8 text-center"
+  >
+    <p class="text-sm text-text-muted">
+      No experiences yet.
+    </p>
+
+    <p class="mt-2 text-xs text-text-faint">
+      Add your first professional experience.
+    </p>
+
+    <button
+      type="button"
+      (click)="openAddExperience()"
+      class="mt-5 rounded-lg bg-accent-1 px-4 py-2 text-sm font-medium text-on-accent transition hover:opacity-90"
+    >
+      + Add Experience
+    </button>
+  </div>
+
+}
+
+
+<!-- Experience List -->
+@if (experiences().length > 0) {
+
+  <div class="space-y-4">
+
+    @for (
+      experience of experiences();
+      track experience.id
+    ) {
+
+      <div
+        class="rounded-2xl border border-glass-border-soft bg-glass-fill p-5"
+      >
+
+        <div class="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+
+          <!-- Information -->
+          <div class="flex min-w-0 gap-4">
+
+            @if (experience.companyLogoUrl) {
+
+              <img
+                [src]="experience.companyLogoUrl"
+                [alt]="experience.company + ' logo'"
+                class="h-12 w-12 shrink-0 rounded-lg border border-glass-border-soft object-contain bg-glass-fill-strong p-1.5"
+              />
+
+            } @else {
+
+              <div
+                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-glass-border-soft bg-glass-fill-strong text-sm font-semibold text-accent-2"
+              >
+                {{ experience.company.charAt(0) }}
+              </div>
+
+            }
+
+            <div class="min-w-0">
+
+              <h2 class="truncate text-base font-semibold text-text-primary">
+                {{ experience.jobTitle }}
+              </h2>
+
+              <p class="mt-1 text-sm text-accent-2">
+                {{ experience.company }}
+              </p>
+
+              <p class="mt-2 text-xs text-text-muted">
+                {{ experience.startDate }}
+                —
+                {{ experience.endDate || 'Present' }}
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- Status -->
+          <div class="flex shrink-0 items-center gap-2">
+
+            <span
+              class="rounded-md border border-glass-border-soft bg-glass-fill-strong px-2.5 py-1 text-[11px] font-medium uppercase tracking-wider"
+              [class.text-accent-2]="experience.visible"
+              [class.text-text-faint]="!experience.visible"
+            >
+              {{ experience.visible ? 'Visible' : 'Hidden' }}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Actions -->
+        <div
+          class="mt-5 flex justify-end gap-2 border-t border-glass-border-soft pt-4"
+        >
+
+          <button
+            type="button"
+            (click)="openExperience(experience)"
+            class="rounded-lg border border-glass-border-soft px-3 py-2 text-xs font-medium text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+          >
+            Open
+          </button>
+
+          <button
+            type="button"
+            (click)="deleteExperience(experience)"
+            class="rounded-lg border border-glass-border-soft px-3 py-2 text-xs font-medium text-text-muted transition hover:bg-glass-fill-strong hover:text-text-primary"
+          >
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+}
+
+
+}
+
+</div>
