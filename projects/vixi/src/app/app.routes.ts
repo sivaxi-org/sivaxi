@@ -7,6 +7,7 @@ import { authGuard } from 'shared';
 export const routes: Routes = [
   {
     path: '',
+    title: 'Sivaxi | VIXI',
     canActivate: [authGuard],
     component: Dashboard,
   },
