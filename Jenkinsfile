@@ -45,116 +45,21 @@ pipeline {
             }
         }
 
-        stage('Detect Changes') {
-            when {
-                expression { env.SKIP_PIPELINE != 'true' }
-            }
-            steps {
-                script {
-                    def base = env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
-                    def changedFiles = []
-                    boolean deployAll = false
+        
+stage('Detect Changes') {
+    when {
+        expression { env.SKIP_PIPELINE != 'true' }
+    }
+    steps {
+        script {
+            env.DEPLOY_APPS = 'shell,vixi,portfolio'
 
-                    // If no trustworthy comparison commit exists,
-                    // perform a full deployment.
-                    if (
-                        !base ||
-                        sh(
-                            returnStatus: true,
-                            script: "git cat-file -e '${base}^{commit}'"
-                        ) != 0 ||
-                        sh(
-                            returnStatus: true,
-                            script: "git merge-base --is-ancestor '${base}' HEAD"
-                        ) != 0
-                    ) {
-                        echo 'No valid previous successful commit. Selecting all applications.'
-                        deployAll = true
-                    } else {
-                        def output = sh(
-                            returnStdout: true,
-                            script: "git diff --name-only '${base}' HEAD"
-                        ).trim()
-
-                        if (output) {
-                            changedFiles = output.readLines()
-                        }
-                    }
-
-                    def apps = [] as Set
-
-                    for (rawFile in changedFiles) {
-                        // Normalize paths before matching them.
-                        def file = rawFile.trim().replace('\\', '/')
-
-                        echo "Checking changed file: '${file}'"
-
-                        if (!file) {
-                            continue
-                        }
-
-                        // Shared code or build/deployment configuration
-                        // can affect every application.
-                        if (
-                            file.startsWith('projects/shared/') ||
-                            file == 'package.json' ||
-                            file == 'package-lock.json' ||
-                            file == 'angular.json' ||
-                            file == 'tsconfig.json' ||
-                            file == 'tsconfig.app.json' ||
-                            file.startsWith('tsconfig.') ||
-                            file.endsWith('.config.mjs') ||
-                            file == 'firebase.json' ||
-                            file == '.firebaserc'
-                        ) {
-                            echo "Shared/configuration change detected: ${file}"
-                            deployAll = true
-                            continue
-                        }
-
-                        // Application-specific source changes.
-                        if (file.startsWith('projects/shell/')) {
-                            echo "Matched application: shell (${file})"
-                            apps.add('shell')
-                        } else if (file.startsWith('projects/vixi/')) {
-                            echo "Matched application: vixi (${file})"
-                            apps.add('vixi')
-                        } else if (file.startsWith('projects/portfolio/')) {
-                            echo "Matched application: portfolio (${file})"
-                            apps.add('portfolio')
-                        } else if (
-                            file == 'Jenkinsfile' ||
-                            file == 'LICENSE' ||
-                            file == '.gitignore' ||
-                            file.startsWith('docs/') ||
-                            file.startsWith('.github/') ||
-                            file ==~ /(?i).*\\.(md|mdx)$/
-                        ) {
-                            echo "Ignoring documentation/pipeline-only change: ${file}"
-                        } else {
-                            // Unknown files may affect the build.
-                            echo "Unclassified file; selecting all applications: ${file}"
-                            deployAll = true
-                        }
-                    }
-
-                    if (deployAll) {
-                        apps = ['shell', 'vixi', 'portfolio'] as Set
-                    }
-
-                    env.DEPLOY_APPS = apps.toList().sort().join(',')
-
-                    echo "Comparison base: ${base ?: 'none'}"
-                    echo "Changed files: ${changedFiles}"
-                    echo "Deploy all: ${deployAll}"
-                    echo "Applications selected: ${env.DEPLOY_APPS ?: 'none'}"
-
-                    if (!env.DEPLOY_APPS?.trim()) {
-                        echo 'No frontend application changes detected; deployment will be skipped.'
-                    }
-                }
-            }
+            echo 'Deploy-all mode enabled.'
+            echo 'Applications selected: shell,vixi,portfolio'
         }
+    }
+}
+
 
         stage('Install Dependencies') {
             when {
