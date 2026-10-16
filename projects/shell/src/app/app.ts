@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { SeoService } from './core/services/seo.service';
@@ -8,6 +8,7 @@ import { SeoService } from './core/services/seo.service';
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class App {
   private readonly router = inject(Router);
