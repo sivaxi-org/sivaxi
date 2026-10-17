@@ -1,0 +1,105 @@
+<div
+  role="link"
+  tabindex="0"
+  (click)="openProjectFn(project().slug)"
+  (keydown.enter)="openProjectFn(project().slug)"
+  class="glass-panel rounded-[18px] p-6 flex flex-col justify-between min-h-[210px] w-full h-full bg-glass-fill border border-glass-border backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass transition-transform hover:-translate-y-1 cursor-pointer"
+>
+  <div>
+    <!-- Project header -->
+    <div class="flex items-center gap-2.5">
+      <span
+        class="w-[34px] h-[34px] rounded-[9px] bg-glass-fill-strong border border-glass-border-soft flex items-center justify-center text-text-primary flex-shrink-0"
+      >
+        @if (project().thumbnailUrl) {
+        <img
+          [src]="project().thumbnailUrl"
+          [alt]="project().title"
+          class="w-full h-full rounded-[8px] object-cover"
+        />
+        } @else {
+        <span class="font-mono text-sm font-semibold">
+          {{ project().title.charAt(0).toUpperCase() }}
+        </span>
+        }
+      </span>
+
+      <span class="font-mono text-[0.74rem] text-text-faint"> Project </span>
+    </div>
+
+    <!-- Title -->
+    <h3 class="text-[1.24rem] font-semibold mt-2.5 tracking-[-0.01em]">
+      {{ project().title }}
+    </h3>
+
+    <!-- Summary -->
+    @if (project().summary) {
+    <p class="text-text-muted text-[0.9rem] mt-2.5 line-clamp-3">
+      {{ project().summary }}
+    </p>
+    }
+  </div>
+
+  <div>
+    <!-- Tags -->
+    @if (project().tags?.length) {
+    <div class="flex flex-wrap gap-2 mt-4">
+      @for (tag of project().tags.slice(0, 6); track tag.id) {
+      <span
+        class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted"
+      >
+        {{ tag.name }}
+      </span>
+      } @if (project().tags.length > 6) {
+      <span
+        class="font-mono text-[0.71rem] px-2.5 py-1.5 rounded-md bg-glass-fill-strong border border-glass-border-soft text-text-muted"
+      >
+        +{{ project().tags.length - 6 }}
+      </span>
+      }
+    </div>
+    }
+
+    <!-- Project links -->
+    @if (project().liveUrl || project().sourceUrl) {
+    <div class="flex items-center gap-4 mt-4">
+      @if (project().liveUrl) {
+      <a
+        [href]="project().liveUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        (click)="$event.stopPropagation()"
+        (keydown.enter)="$event.stopPropagation()"
+        class="font-mono group inline-flex items-center gap-1.5 text-[0.8rem] text-text-muted transition-colors hover:text-text-primary"
+      >
+        View project
+
+        <svg
+          class="w-[13px] h-[13px] transition-transform group-hover:translate-x-0.5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M7 17 17 7" />
+          <path d="M7 7h10v10" />
+        </svg>
+      </a>
+      } @if (project().sourceUrl) {
+      <a
+        [href]="project().sourceUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        (click)="$event.stopPropagation()"
+        (keydown.enter)="$event.stopPropagation()"
+        class="font-mono text-[0.8rem] text-text-faint transition-colors hover:text-text-primary"
+      >
+        Source
+      </a>
+      }
+    </div>
+    }
+  </div>
+</div>
