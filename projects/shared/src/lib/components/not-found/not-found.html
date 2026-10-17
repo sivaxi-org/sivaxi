@@ -35,7 +35,7 @@
              transition-opacity hover:opacity-80">
 
       <img
-        [src]="branding.logos.primaryHorizontalLight"
+        [src]="themeService.isDark() ? branding.logos.primaryHorizontalLight:branding.logos.primaryHorizontalDark"
         alt="Sivaxi"
         class="h-9 w-auto max-w-40 object-contain"
       />

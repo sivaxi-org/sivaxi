@@ -1,6 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SIVAXI_BRANDING } from '../../constants/branding';
+import { ThemeService } from '../theme/theme-service';
 
 @Component({
   selector: 'sivaxi-not-found',
@@ -11,9 +12,11 @@ import { SIVAXI_BRANDING } from '../../constants/branding';
 export class NotFoundComponent {
 
   branding = SIVAXI_BRANDING;
-
+   
   title = input('Page not found');
   message = input(
     "The page you're looking for doesn't exist or may have moved."
   );
+
+  themeService = inject(ThemeService);
 }
