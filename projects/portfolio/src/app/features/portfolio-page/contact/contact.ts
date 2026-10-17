@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { IconRenderer } from '../../../../shared/components/icon/icon-renderer/icon-renderer';
+import { IconRenderer } from '../../../shared/components/icon/icon-renderer/icon-renderer';
 
 
 @Component({

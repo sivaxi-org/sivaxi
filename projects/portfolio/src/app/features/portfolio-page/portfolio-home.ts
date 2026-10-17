@@ -6,14 +6,14 @@ import { Footer } from "../../shared/components/footer/footer";
 import { ActivatedRoute } from "@angular/router";
 import { ThemeService } from "shared";
 import { ScrollScrubVideoDirective } from "../../core/directives/scroll-scrub-video.directive";
-import { Hero } from "./sections/hero/hero";
-import { Skills } from "./sections/skills/skills";
-import { Work } from "./sections/work/work";
-import { Blog } from "./sections/blog/blog";
-import { Experience } from "./sections/experience/experience";
-import { Testimonials } from "./sections/testimonials/testimonials";
-import { About } from "./sections/about/about";
-import { Contact } from "./sections/contact/contact";
+import { Hero } from "./hero/hero";
+import { Skills } from "./skills/skills";
+import { Work } from "./work/work";
+import { Blog } from "./blog/blog";
+import { Experience } from "./experience/experience";
+import { Testimonials } from "./testimonials/testimonials";
+import { About } from "./about/about";
+import { Contact } from "./contact/contact";
 
 @Component({
   selector: 'app-portfolio-page',

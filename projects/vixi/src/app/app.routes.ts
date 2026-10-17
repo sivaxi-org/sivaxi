@@ -1,7 +1,7 @@
 
 import { Routes } from '@angular/router';
 import { Dashboard } from './features/chat/dashboard/dashboard';
-import { authGuard } from 'shared';
+import { authGuard, NotFoundComponent } from 'shared';
 
 
 export const routes: Routes = [
@@ -11,4 +11,8 @@ export const routes: Routes = [
     canActivate: [authGuard],
     component: Dashboard,
   },
+  {
+  path: '**',
+  component: NotFoundComponent
+}
 ];

@@ -1,0 +1,22 @@
+   <div
+        class="anim-reveal animate-reveal [animation-delay:0.55s] opacity-0 relative z-[1] mt-16 md:mt-[88px] flex items-center justify-center flex-wrap gap-y-3.5 text-[0.92rem] text-text-muted"
+      >
+
+        @for (stat of stats(); track $index; let i = $index) {
+
+          @if (i > 0) {
+            <span
+              class="w-px h-4 bg-glass-border mx-6 hidden sm:inline-block"
+            ></span>
+          }
+
+          <span class="whitespace-nowrap">
+            <strong class="text-text-primary font-bold mr-1.5">
+              {{ stat.value }}
+            </strong>
+
+            {{ stat.label }}
+          </span>
+        }
+
+      </div>

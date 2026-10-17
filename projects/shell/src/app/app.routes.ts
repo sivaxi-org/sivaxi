@@ -3,6 +3,8 @@ import { Routes } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/native-federation';
 import { Home } from './features/home/home';
 
+import {NotFoundComponent} from 'shared'
+
 export const routes: Routes = [
   {
     path: '',
@@ -20,8 +22,8 @@ export const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule('portfolio', './Routes').then((m) => m.routes),
   },
-  {
-    path: '**',
-    redirectTo: '',
-  },
+{
+  path: '**',
+  component: NotFoundComponent
+}
 ];

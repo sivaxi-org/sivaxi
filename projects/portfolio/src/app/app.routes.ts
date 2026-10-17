@@ -1,42 +1,37 @@
 import { Routes } from '@angular/router';
-import { authGuard } from 'shared';
+import { authGuard, NotFoundComponent } from 'shared';
 import { HomeLayout } from './core/layout/home-layout/home-layout';
 import { PortfolioPage } from './features/portfolio-page/portfolio-home';
 import { Plans } from './features/plans/plans';
 
 export const routes: Routes = [
   {
-  path: '',
-  component: HomeLayout,
-  children: [
-    {
-      path: '',
-      pathMatch: 'full',
-      redirectTo: 'portfolio/ajaymalah',
-    },
+    path: '',
+    component: HomeLayout,
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'portfolio/ajaymalah',
+      },
 
-    {
-      path: 'portfolio/:username',
-      component: PortfolioPage,
-    },
+      {
+        path: 'portfolio/:username',
+        component: PortfolioPage,
+      },
 
-    {
-      path: 'portfolio/:username/projects',
-      loadComponent: () =>
-        import('./features/projects/projects').then(
-          (m) => m.Projects
-        ),
-    },
+      {
+        path: 'portfolio/:username/projects',
+        loadComponent: () => import('./features/projects/projects').then((m) => m.Projects),
+      },
 
-    {
-      path: 'portfolio/:username/projects/:slug',
-      loadComponent: () =>
-        import('./features/project-detail/project-detail').then(
-          (m) => m.ProjectDetail
-        ),
-    },
-  ],
-},
+      {
+        path: 'portfolio/:username/projects/:slug',
+        loadComponent: () =>
+          import('./features/project-detail/project-detail').then((m) => m.ProjectDetail),
+      },
+    ],
+  },
 
   {
     path: 'plans',
@@ -115,7 +110,7 @@ export const routes: Routes = [
         },
         loadComponent: () =>
           import('./features/dashboard/project/components/project-detail/project-detail').then(
-            (m) => m.ProjectDetail,
+            (m) => m.ProjectDetail
           ),
       },
 
@@ -139,7 +134,7 @@ export const routes: Routes = [
         },
         loadComponent: () =>
           import('./features/dashboard/experience/experience-detail/experience-detail').then(
-            (m) => m.ExperienceDetail,
+            (m) => m.ExperienceDetail
           ),
       },
 
@@ -183,12 +178,11 @@ export const routes: Routes = [
         },
         loadComponent: () => import('./features/dashboard/contact/contact').then((m) => m.Contact),
       },
-
     ],
   },
 
   {
     path: '**',
-    redirectTo: '',
+    component: NotFoundComponent,
   },
 ];

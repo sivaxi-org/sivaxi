@@ -1,0 +1,257 @@
+<section id="skills" class="px-5 sm:px-6 py-14">
+
+  <div class="max-w-6xl mx-auto">
+
+    <!-- ========================================================= -->
+    <!-- SECTION HEADER                                             -->
+    <!-- ========================================================= -->
+
+    <div class="mb-9">
+      <h2
+        class="
+          text-[clamp(1.4rem,2.8vw,1.85rem)]
+          font-semibold
+          tracking-[-0.01em]
+        "
+      >
+        Skills
+      </h2>
+
+      <p
+        class="
+          text-text-muted
+          max-w-[44ch]
+          text-[0.95rem]
+          mt-1
+        "
+      >
+        The languages, frameworks, and infrastructure I work with.
+      </p>
+    </div>
+
+
+    @if (skillsData()?.length) {
+
+      <!-- ======================================================= -->
+      <!-- MAIN SKILLS LAYOUT                                      -->
+      <!-- ======================================================= -->
+
+      <div
+        class="
+          flex
+          flex-col
+          lg:grid
+          lg:grid-cols-[330px_minmax(0,1fr)]
+          gap-3
+          lg:gap-4
+          items-stretch
+        "
+      >
+
+        <!-- ===================================================== -->
+        <!-- CATEGORY AREA                                         -->
+        <!-- ===================================================== -->
+
+        <div class="min-w-0">
+
+          <!-- Mobile navigation -->
+          @if (
+            openedCategory() !== null &&
+            skillsData()[openedCategory()!];
+            as activeNav
+          ) {
+
+            <div
+              class="
+                lg:hidden
+                flex
+                items-center
+                justify-between
+                mb-2
+                px-1
+              "
+            >
+
+              <button
+                type="button"
+                (click)="prevCategory()"
+                class="
+                  w-8
+                  h-8
+                  shrink-0
+
+                  flex
+                  items-center
+                  justify-center
+
+                  rounded-full
+
+                  border
+                  border-glass-border-soft
+
+                  bg-glass-fill-strong
+
+                  text-text-muted
+
+                  hover:text-text-primary
+
+                  transition-colors
+                "
+                aria-label="Previous category"
+              >
+
+                <svg
+                  class="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M15 18l-6-6 6-6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+
+              </button>
+
+
+              <div
+                class="
+                  flex
+                  items-center
+                  gap-2
+                  min-w-0
+                  px-3
+                "
+              >
+
+                @if (activeNav.icon) {
+
+                  <div
+                    class="
+                      w-7
+                      h-7
+                      shrink-0
+
+                      flex
+                      items-center
+                      justify-center
+                    "
+                  >
+                    <app-icon [svg]="activeNav.icon"></app-icon>
+                  </div>
+
+                }
+
+                <span
+                  class="
+                    font-mono
+                    text-[0.72rem]
+                    text-text-primary
+                    uppercase
+                    tracking-[0.08em]
+                    truncate
+                  "
+                >
+                  {{ activeNav.name }}
+                </span>
+
+              </div>
+
+
+              <button
+                type="button"
+                (click)="nextCategory()"
+                class="
+                  w-8
+                  h-8
+                  shrink-0
+
+                  flex
+                  items-center
+                  justify-center
+
+                  rounded-full
+
+                  border
+                  border-glass-border-soft
+
+                  bg-glass-fill-strong
+
+                  text-text-muted
+
+                  hover:text-text-primary
+
+                  transition-colors
+                "
+                aria-label="Next category"
+              >
+
+                <svg
+                  class="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M9 18l6-6-6-6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+
+              </button>
+
+            </div>
+
+          }
+
+
+          <!-- =================================================== -->
+          <!-- CATEGORY GRID                                       -->
+          <!-- =================================================== -->
+
+          <app-categories-card [openedCategory]="openedCategory()" [skillsData]="skillsData()" (toggleCategory)="toggleCategory($event) " >
+
+          </app-categories-card>
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- DETAIL PANEL                                          -->
+        <!-- ===================================================== -->
+
+         <app-detail-panel [openedCategory]="openedCategory()" [skillsData]="skillsData()" />
+
+      </div>
+
+    } @else {
+
+      <div
+        class="
+          rounded-2xl
+
+          border
+          border-glass-border
+
+          bg-glass-fill
+
+          p-8
+
+          text-center
+
+          text-text-muted
+        "
+      >
+        No skills available.
+      </div>
+
+    }
+
+  </div>
+
+</section>

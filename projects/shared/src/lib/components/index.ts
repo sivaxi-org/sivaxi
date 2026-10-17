@@ -3,3 +3,4 @@ export * from './theme/theme-service';
 export * from  './site-header/site-header'
 export * from './site-footer/site-footer'
 export * from "./draggable-float/draggable-float"
+export * from './not-found/not-found'

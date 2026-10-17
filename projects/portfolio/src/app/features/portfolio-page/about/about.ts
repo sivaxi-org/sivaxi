@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { ContentBlockRenderer } from '../../../../shared/components/content-block-renderer/content-block-renderer';
+import { ContentBlockRenderer } from '../../../shared/components/content-block-renderer/content-block-renderer';
 
 @Component({
   selector: 'app-about',

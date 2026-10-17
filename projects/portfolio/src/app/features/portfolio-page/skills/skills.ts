@@ -12,11 +12,13 @@ import {
 
 import { interval } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { IconRenderer } from '../../../../shared/components/icon/icon-renderer/icon-renderer';
+import { IconRenderer } from '../../../shared/components/icon/icon-renderer/icon-renderer';
+import { CategoriesCard } from './categories-card/categories-card';
+import { DetailPanel } from './detail-panel/detail-panel';
 
 @Component({
   selector: 'app-skills',
-  imports: [IconRenderer],
+  imports: [IconRenderer, CategoriesCard, DetailPanel],
   styleUrl: './skills.css',
   templateUrl: './skills.html',
 })
