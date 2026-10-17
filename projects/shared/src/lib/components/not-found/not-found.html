@@ -1,234 +1,198 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>404 — Sivaxi</title>
+<div class="relative flex min-h-screen flex-col overflow-x-hidden
+            bg-bg-base font-sans text-text-primary antialiased">
 
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            sivaxi: {
-              bg: "#111318",
-              surface: "#1B1D24",
-              jade: "#3D8C78",
-              text: "#F4F2ED"
-            }
-          },
-          fontFamily: {
-            sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
-          }
-        }
-      }
-    };
-  </script>
-
-  <style>
-    body {
-      background-color: #111318;
-      color: #F4F2ED;
-    }
-
-    .grid-bg {
+  <!-- Background effects -->
+  <div
+    class="pointer-events-none fixed inset-0"
+    aria-hidden="true"
+    style="
       background-image:
-        linear-gradient(#ffffff06 1px, transparent 1px),
-        linear-gradient(90deg, #ffffff06 1px, transparent 1px);
+        linear-gradient(var(--sivaxi-border-soft) 1px, transparent 1px),
+        linear-gradient(90deg, var(--sivaxi-border-soft) 1px, transparent 1px);
       background-size: 48px 48px;
       mask-image: linear-gradient(to bottom, black, transparent 90%);
-    }
+      opacity: 0.55;
+    ">
+  </div>
 
-    .jade-glow {
-      background: radial-gradient(
-        ellipse at center,
-        #3D8C7825 0%,
-        #3D8C7808 40%,
-        transparent 72%
-      );
-    }
+  <div
+    class="pointer-events-none fixed inset-0"
+    aria-hidden="true"
+    style="background: radial-gradient(ellipse at center,
+      color-mix(in srgb, var(--sivaxi-accent) 13%, transparent),
+      transparent 70%);">
+  </div>
 
-    .number-glow {
-      text-shadow: 0 0 80px #3D8C7818;
-    }
+  <!-- Header -->
+  <header class="relative z-10 mx-auto flex w-full max-w-7xl
+                 items-center justify-between px-6 py-7 lg:px-10">
 
-    .zero {
-      color: #3D8C78;
-    }
+    <a
+      href="/"
+      aria-label="Sivaxi home"
+      class="inline-flex items-center rounded-xl
+             transition-opacity hover:opacity-80">
 
-    @media (prefers-reduced-motion: no-preference) {
-      .float {
-        animation: float 5s ease-in-out infinite;
-      }
+      <img
+        [src]="themeService.isDark() ? branding.logos.primaryHorizontalLight:branding.logos.primaryHorizontalDark"
+        alt="Sivaxi"
+        class="h-9 w-auto max-w-40 object-contain"
+      />
+    </a>
 
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
-      }
-    }
-  </style>
-</head>
+    <div class="glass flex items-center gap-2.5 rounded-full px-3.5 py-2">
+      <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+      <span class="text-xs tracking-wide text-text-muted">
+        ERROR 404
+      </span>
+    </div>
+  </header>
 
-<body class="min-h-screen overflow-x-hidden font-sans antialiased">
+  <!-- Main content -->
+  <main class="relative z-10 flex flex-1 items-center justify-center
+               px-6 py-16">
 
-  <!-- Background -->
-  <div class="fixed inset-0 grid-bg pointer-events-none"></div>
-  <div class="fixed inset-0 jade-glow pointer-events-none"></div>
+    <section class="w-full max-w-3xl text-center">
 
-  <!-- Main layout -->
-  <div class="relative min-h-screen flex flex-col">
+      <!-- Status pill -->
+      <div
+        class="mb-8 inline-flex items-center gap-2.5 rounded-full
+               border border-border-soft bg-glass-fill px-4 py-2">
 
-    <!-- Navigation -->
-    <header class="w-full max-w-7xl mx-auto px-6 lg:px-10 py-7
-                   flex items-center justify-between">
+        <svg
+          class="h-4 w-4 text-accent"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          aria-hidden="true">
 
-      <a href="/" class="flex items-center gap-3 group"
-         aria-label="Sivaxi home">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 8v4m0 4h.01"></path>
+        </svg>
 
-        <!-- Minimal brand mark -->
-        <div class="w-32 rounded-xl bg-sivaxi-jade
-                    flex items-center justify-center
-                    shadow-lg shadow-sivaxi-jade/10
-                    group-hover:scale-105 transition">
-          <img [src]="branding.logos.primaryHorizontalLight" alt="">
-        </div>
-
-      </a>
-
-      <div class="flex items-center gap-2.5 rounded-full
-                  border border-white/10 bg-sivaxi-surface/80
-                  px-3.5 py-2">
-        <span class="w-1.5 h-1.5 rounded-full bg-sivaxi-jade"></span>
-        <span class="text-xs tracking-wide text-white/60">
-          ERROR 404
+        <span class="text-xs tracking-wide text-text-muted">
+          Looks like you've taken a wrong turn
         </span>
       </div>
-    </header>
 
-    <!-- Content -->
-    <main class="flex-1 flex items-center justify-center px-6 py-16">
-      <section class="w-full max-w-3xl text-center">
+      <!-- 404 -->
+      <div class="mb-7 motion-safe:animate-[float_5s_ease-in-out_infinite]">
+        <h1
+          class="select-none text-[clamp(8rem,24vw,17rem)]
+                 font-semibold leading-[0.8] tracking-[-0.09em]"
+          aria-label="Error 404"
+          style="text-shadow: 0 0 80px
+                 color-mix(in srgb, var(--sivaxi-accent) 10%, transparent);">
 
-        <!-- Decorative status -->
-        <div class="inline-flex items-center gap-2.5 mb-8
-                    rounded-full border border-sivaxi-jade/20
-                    bg-sivaxi-jade/5 px-4 py-2">
-          <svg class="w-4 h-4 text-sivaxi-jade"
-               viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.7">
-            <circle cx="12" cy="12" r="9"/>
-            <path d="M12 8v4m0 4h.01"/>
-          </svg>
-          <span class="text-xs text-white/65 tracking-wide">
-            Looks like you've taken a wrong turn
-          </span>
-        </div>
+          4<span class="text-accent">0</span>4
+        </h1>
+      </div>
 
-        <!-- 404 typography -->
-        <div class="float mb-6">
-          <h1 class="number-glow select-none
-                     text-[clamp(8rem,24vw,17rem)]
-                     font-semibold leading-[0.8]
-                     tracking-[-0.09em] text-sivaxi-text">
-            4<span class="zero">0</span>4
-          </h1>
-        </div>
+      <!-- Message -->
+      <h2 class="mb-5 text-2xl font-medium tracking-tight
+                 sm:text-4xl">
+        This route doesn't exist<span class="text-accent">.</span>
+      </h2>
 
-        <!-- Message -->
-        <h2 class="text-2xl sm:text-4xl font-medium
-                   tracking-tight mb-5">
-          This route doesn't exist<span class="text-sivaxi-jade">.</span>
-        </h2>
-
-        <p class="max-w-lg mx-auto text-sm sm:text-base
-                  leading-7 text-white/50">
-          The page you're looking for may have moved,
-          been removed, or the URL might be incorrect.
-          Let's get you back on track.
-        </p>
-
-        <!-- Actions -->
-        <div class="mt-9 flex flex-col sm:flex-row
-                    items-center justify-center gap-3">
-
-          <a href="/"
-             class="group w-full sm:w-auto inline-flex
-                    items-center justify-center gap-2.5
-                    rounded-xl bg-sivaxi-jade px-6 py-3.5
-                    text-sm font-medium text-white
-                    shadow-lg shadow-sivaxi-jade/15
-                    hover:bg-[#347a69] hover:-translate-y-0.5
-                    transition duration-200">
-
-            <svg class="w-4 h-4" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor"
-                 stroke-width="1.8">
-              <path d="m3 10 9-7 9 7"/>
-              <path d="M5 9v12h14V9M9 21v-7h6v7"/>
-            </svg>
-
-            Back to Home
-
-            <svg class="w-4 h-4 group-hover:translate-x-1
-                        transition-transform"
-                 viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="1.8">
-              <path d="M5 12h14m-6-6 6 6-6 6"/>
-            </svg>
-          </a>
-
-          <button type="button" onclick="history.back()"
-                  class="w-full sm:w-auto inline-flex
-                         items-center justify-center gap-2
-                         rounded-xl border border-white/10
-                         bg-sivaxi-surface px-6 py-3.5
-                         text-sm text-white/75
-                         hover:border-white/20
-                         hover:bg-white/5 transition">
-
-            <svg class="w-4 h-4" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor"
-                 stroke-width="1.8">
-              <path d="m12 19-7-7 7-7M5 12h14"/>
-            </svg>
-
-            Go Back
-          </button>
-        </div>
-
-        <!-- Technical detail -->
-        <div class="mt-14 inline-flex items-center gap-2
-                    text-xs text-white/35">
-          <span class="relative flex h-2 w-2">
-            <span class="absolute inline-flex h-full w-full
-                         rounded-full bg-sivaxi-jade/40"></span>
-            <span class="relative inline-flex h-2 w-2
-                         rounded-full bg-sivaxi-jade"></span>
-          </span>
-          Sivaxi platform · Still connected, just not here.
-        </div>
-
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="w-full max-w-7xl mx-auto px-6 lg:px-10 py-6
-                   border-t border-white/5
-                   flex flex-col sm:flex-row items-center
-                   justify-between gap-3 text-xs text-white/35">
-
-      <p>© 2026 Sivaxi. Engineering, connected.</p>
-
-      <p class="flex items-center gap-2">
-        Built with
-        <span class="text-sivaxi-jade">precision</span>
-        and a little curiosity.
+      <p class="mx-auto max-w-lg text-sm leading-7 text-text-muted sm:text-base">
+        The page you're looking for may have moved, been removed,
+        or the URL might be incorrect. Let's get you back on track.
       </p>
-    </footer>
 
-  </div>
-</body>
-</html>
+      <!-- Actions -->
+      <div class="mt-9 flex flex-col items-center justify-center gap-3
+                  sm:flex-row">
+
+        <a
+          href="/"
+          class="group inline-flex w-full items-center justify-center
+                 gap-2.5 rounded-xl bg-accent px-6 py-3.5
+                 text-sm font-medium text-on-accent
+                 shadow-lg transition duration-200
+                 hover:-translate-y-0.5 hover:bg-accent-hover
+                 sm:w-auto">
+
+          <svg
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            aria-hidden="true">
+
+            <path d="m3 10 9-7 9 7"></path>
+            <path d="M5 9v12h14V9M9 21v-7h6v7"></path>
+          </svg>
+
+          Back to Home
+
+          <svg
+            class="h-4 w-4 transition-transform
+                   group-hover:translate-x-1"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            aria-hidden="true">
+
+            <path d="M5 12h14m-6-6 6 6-6 6"></path>
+          </svg>
+        </a>
+
+        <button
+          type="button"
+          onclick="history.back()"
+          class="inline-flex w-full items-center justify-center gap-2
+                 rounded-xl border border-border bg-bg-elev px-6 py-3.5
+                 text-sm text-text-muted transition
+                 hover:border-accent hover:text-text-primary
+                 sm:w-auto">
+
+          <svg
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            aria-hidden="true">
+
+            <path d="m12 19-7-7 7-7M5 12h14"></path>
+          </svg>
+
+          Go Back
+        </button>
+      </div>
+
+      <!-- Footer status -->
+      <div class="mt-14 inline-flex items-center gap-2
+                  text-xs text-text-faint">
+
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full
+                       animate-ping rounded-full bg-accent opacity-30"></span>
+          <span class="relative inline-flex h-2 w-2
+                       rounded-full bg-accent"></span>
+        </span>
+
+        Sivaxi platform · Still connected, just not here.
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer
+    class="relative z-10 mx-auto flex w-full max-w-7xl flex-col
+           items-center justify-between gap-3 border-t border-border-soft
+           px-6 py-6 text-xs text-text-faint sm:flex-row lg:px-10">
+
+    <p>© 2026 Sivaxi. Engineering, connected.</p>
+
+    <p class="flex items-center gap-1.5">
+      Built with
+      <span class="text-accent">precision</span>
+      and a little curiosity.
+    </p>
+  </footer>
+</div>
