@@ -12,7 +12,7 @@ const domain = isLocal ? 'sivaxi.test' : 'sivaxi.com';
 
 export const APP_LINKS = {
   shell: `${protocol}//${isLocal ? 'shell.' : ''}${domain}`,
-  vixi: `${protocol}//vixi.${domain}`,
+  vixi: `${protocol}//ai.${domain}`,
   portfolio: `${protocol}//portfolio.${domain}`,
 } as const;
 
