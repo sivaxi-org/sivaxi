@@ -59,9 +59,9 @@ const products = [
         label: 'Keycloak',
       },
     ],
-    link: 'https://sivaxi.com',
+    link: 'https://ai.sivaxi.com/preview',
     linkLabel: 'Explore Vixi',
-    previewUrl: 'https://sivaxi.com',
+    previewUrl: 'https://ai.sivaxi.com/preview',
   },
 ];
 
