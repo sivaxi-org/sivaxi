@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Sivaxi — Products, platforms, and the systems behind them</title>
+    <meta
+      name="description"
+      content="Sivaxi builds products and platforms that make technology more useful, connected, and accessible."
+    />
+    <script>
+      (function () {
+        var t = null;
+        try {
+          t = localStorage.getItem('sivaxi-theme');
+        } catch (e) {}
+        if (!t) {
+          t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+        document.documentElement.className = 'js';
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap"
+    />
+    <!-- Preview-only: Tailwind CDN. For production use the Angular app's Tailwind v4 build and shared theme tokens. -->
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <style>
+      :root {
+        --bg: #111318;
+        --sf: #1b1d24;
+        --rs: #252630;
+        --tx: #f4f2ed;
+        --mu: #a8a9b2;
+        --fa: #6b6d78;
+        --bd: #30313a;
+        --ac: #3d8c78;
+        --ach: #4b9f89;
+        --acs: #203d35;
+        --ac2: #75b9a5;
+        --on: #0c0f0e;
+        color-scheme: dark;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      :root[data-theme='light'] {
+        --bg: #f7f7f4;
+        --sf: #ffffff;
+        --rs: #eceeea;
+        --tx: #202520;
+        --mu: #626b66;
+        --fa: #858d87;
+        --bd: #d9ded9;
+        --ac: #3d8c78;
+        --ach: #327663;
+        --acs: #e0f0e9;
+        --ac2: #276b59;
+        --on: #fff;
+        color-scheme: light;
+      }
+      html {
+        scroll-padding-top: 5rem;
+      }
+      body {
+        background: var(--bg);
+        color: var(--tx);
+        font-family: Inter, system-ui, sans-serif;
+        overflow-x: hidden;
+      }
+      h1,
+      h2,
+      h3,
+      .disp {
+        font-family: 'Space Grotesk', Inter, sans-serif;
+        letter-spacing: -0.02em;
+      }
+      .mono {
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+      }
+      .mu {
+        color: var(--mu);
+      }
+      .fa {
+        color: var(--fa);
+      }
+      .ac {
+        color: var(--ac2);
+      }
+      .sf {
+        background: var(--sf);
+      }
+      .rs {
+        background: var(--rs);
+      }
+      .bd {
+        border: 1px solid var(--bd);
+      }
+      .bdb {
+        border-bottom: 1px solid var(--bd);
+      }
+      .bdt {
+        border-top: 1px solid var(--bd);
+      }
+      a {
+        text-underline-offset: 3px;
+      }
+      :focus-visible {
+        outline: 2px solid var(--ac2);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1.1rem;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        border: 1px solid var(--bd);
+        transition: background 0.15s, border-color 0.15s;
+      }
+      .btn:hover {
+        border-color: var(--ac);
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+      .btn-p {
+        background: var(--ac);
+        border-color: var(--ac);
+        color: var(--on);
+      }
+      .btn-p:hover {
+        background: var(--ach);
+        border-color: var(--ach);
+      }
+      .tag {
+        font-size: 0.72rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 99px;
+        border: 1px solid var(--bd);
+        color: var(--mu);
+      }
+      .tag-ac {
+        background: var(--acs);
+        color: var(--ac2);
+        border-color: transparent;
+      }
+      .nav a.link {
+        color: var(--mu);
+        padding: 0.4rem 0.6rem;
+        border-radius: 6px;
+      }
+      .nav a.link:hover {
+        color: var(--tx);
+        background: var(--rs);
+      }
+      .js #menu {
+        display: none;
+      }
+      .js #menu.open {
+        display: block;
+      }
+      @media (min-width: 768px) {
+        .js #menu {
+          display: flex;
+        }
+        .js #menu.open {
+          display: flex;
+        }
+        #menubtn {
+          display: none;
+        }
+      }
+      .ill::after {
+        content: 'Illustrative preview';
+        position: absolute;
+        top: 0.6rem;
+        right: 0.7rem;
+        font: 500 0.65rem 'JetBrains Mono', monospace;
+        color: var(--fa);
+      }
+      .line {
+        stroke: var(--bd);
+        stroke-width: 1.5;
+        stroke-dasharray: 4 4;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .pulse {
+          animation: p 2.4s ease-in-out infinite;
+        }
+        @keyframes p {
+          50% {
+            opacity: 0.35;
+          }
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 btn btn-p"
+      >Skip to content</a
+    >
+    <header
+      class="nav sticky top-0 z-40 bdb"
+      style="
+        background: color-mix(in srgb, var(--bg) 92%, transparent);
+        backdrop-filter: blur(8px);
+        top: env(safe-area-inset-top, 0px);
+      "
+    >
+      <div class="mx-auto max-w-6xl px-5 h-16 flex items-center justify-between gap-4">
+        <a
+          href="#top"
+          class="flex items-center gap-2 disp font-semibold text-lg"
+          aria-label="Sivaxi home"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+            <rect width="24" height="24" rx="6" fill="var(--ac)" />
+            <path
+              d="M16 8.5c-1-1.2-2.4-1.7-4-1.7-2 0-3.4 1-3.4 2.5 0 3.600 7.400 1.800 7.400 5.600 0 1.600-1.500 2.800-3.700 2.800-1.800 0-3.300-.7-4.300-2"
+              fill="none"
+              stroke="var(--on)"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          Sivaxi
+        </a>
+        <nav
+          id="menu"
+          aria-label="Primary"
+          class="absolute md:static left-0 right-0 top-16 sf md:bg-transparent bdb md:border-0 p-4 md:p-0 flex-col md:flex-row md:items-center gap-1 text-sm flex"
+        >
+          <a class="link" href="#products">Products</a>
+          <a class="link" href="#platforms">Platforms</a>
+          <a class="link" href="#capabilities">Capabilities</a>
+          <a class="link" href="#technology">Technology</a>
+          <a class="link" href="#about">About</a>
+          <a class="link" href="#journal">Journal</a>
+        </nav>
+        <div class="flex items-center gap-2">
+          <button
+            id="theme"
+            class="btn !p-2"
+            type="button"
+            aria-label="Switch theme"
+            aria-pressed="false"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2M12 20v2M4.900 4.900l1.400 1.400M17.700 17.700l1.400 1.400M2 12h2M20 12h2M4.900 19.100l1.400-1.400M17.700 6.300l1.400-1.400"
+              />
+            </svg>
+          </button>
+          <a href="#products" class="btn btn-p hidden sm:inline-flex">Explore products</a>
+          <button
+            id="menubtn"
+            class="btn !p-2"
+            type="button"
+            aria-expanded="false"
+            aria-controls="menu"
+            aria-label="Open menu"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- Hero -->
+      <section
+        id="top"
+        class="mx-auto max-w-6xl px-5 pt-14 pb-16 md:pt-24 md:pb-24 grid lg:grid-cols-2 gap-12 items-center"
+      >
+        <div>
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05]">
+            Products, platforms, and the systems behind them.
+          </h1>
+          <p class="mu mt-6 text-lg max-w-xl">
+            Sivaxi builds useful software across AI, web applications, backend services, and
+            infrastructure. Each product ships on its own; the engineering underneath is shared and
+            keeps growing.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#products" class="btn btn-p">Explore products</a>
+            <a href="#platforms" class="btn">Discover the ecosystem</a>
+          </div>
+        </div>
+        <figure
+          class="relative sf bd rounded-xl p-4 ill"
+          aria-label="Illustrative diagram of the Sivaxi product ecosystem"
+        >
+          <div class="mono text-xs fa pb-3 bdb">sivaxi / ecosystem</div>
+          <div class="grid grid-cols-2 gap-3 pt-4">
+            <div class="rs bd rounded-lg p-3">
+              <div class="flex justify-between items-center">
+                <b class="disp text-sm">Vixi AI</b><span class="tag tag-ac">In development</span>
+              </div>
+              <div class="mt-3 space-y-1.5">
+                <div class="h-2 rounded" style="background: var(--bd); width: 80%"></div>
+                <div
+                  class="h-2 rounded"
+                  style="background: var(--acs); width: 60%; margin-left: auto"
+                ></div>
+                <div class="h-2 rounded" style="background: var(--bd); width: 45%"></div>
+              </div>
+            </div>
+            <div class="rs bd rounded-lg p-3">
+              <div class="flex justify-between items-center">
+                <b class="disp text-sm">Portfolio</b><span class="tag tag-ac">In development</span>
+              </div>
+              <div class="mt-3 grid grid-cols-2 gap-1.5">
+                <div class="h-8 rounded" style="background: var(--bd)"></div>
+                <div class="h-8 rounded" style="background: var(--bd)"></div>
+                <div class="h-2 rounded col-span-2" style="background: var(--acs)"></div>
+              </div>
+            </div>
+          </div>
+          <svg viewBox="0 0 300 70" class="w-full" aria-hidden="true">
+            <path class="line" d="M75 0v25h75M225 0v25h-75M150 25v30" fill="none" />
+            <circle cx="150" cy="25" r="3" fill="var(--ac)" />
+          </svg>
+          <div class="rs bd rounded-lg p-3 flex items-center gap-3" style="border-color: var(--ac)">
+            <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
+              <rect width="24" height="24" rx="6" fill="var(--ac)" />
+            </svg>
+            <div>
+              <b class="disp text-sm">Shared engineering foundations</b>
+              <div class="mu text-xs">APIs · services · AI workflows · automation</div>
+            </div>
+          </div>
+          <div class="mt-3 bd rounded-lg p-3 text-xs fa border-dashed text-center">
+            More products over time
+          </div>
+        </figure>
+      </section>
+
+      <!-- Products -->
+      <section id="products" class="bdt">
+        <div class="mx-auto max-w-6xl px-5 py-20">
+          <h2 class="text-3xl md:text-4xl font-semibold max-w-2xl">Products we are building</h2>
+          <p class="mu mt-3 max-w-2xl">
+            Two projects are underway today. Both are in development, so previews below are
+            illustrative sketches, not screenshots.
+          </p>
+
+          <article class="mt-10 grid lg:grid-cols-5 gap-8 items-center">
+            <div class="lg:col-span-2">
+              <div class="flex gap-2 items-center">
+                <span class="tag tag-ac">In development</span
+                ><span class="mono text-xs fa">AI assistant</span>
+              </div>
+              <h3 class="text-2xl font-semibold mt-3">Vixi AI</h3>
+              <p class="mu mt-3">
+                An assistant and agentic platform exploring conversation, tool integration, search,
+                memory, and workflow-oriented capabilities. Features are being built and tested;
+                none should be assumed live.
+              </p>
+              <a class="btn mt-6" href="https://vixi.sivaxi.com" rel="noopener">Explore Vixi</a>
+            </div>
+            <div
+              class="lg:col-span-3 relative sf bd rounded-xl overflow-hidden ill"
+              role="img"
+              aria-label="Illustrative sketch of Vixi AI: sidebar, conversation, and activity panel"
+            >
+              <div
+                class="grid grid-cols-[2.5rem_1fr] sm:grid-cols-[7rem_1fr_9rem] min-h-[18rem] text-xs"
+              >
+                <div
+                  class="bdb sm:border-b-0 p-2 sm:p-3 space-y-2"
+                  style="border-right: 1px solid var(--bd)"
+                >
+                  <div class="rs rounded p-1.5 hidden sm:block">New chat</div>
+                  <div class="mu hidden sm:block">Planning notes</div>
+                  <div class="mu hidden sm:block">API review</div>
+                  <div class="rounded h-5 w-5 sm:hidden" style="background: var(--ac)"></div>
+                </div>
+                <div class="p-3 pt-8 space-y-3">
+                  <div class="rs rounded-lg p-2.5 max-w-[85%]">
+                    Summarize open tasks for the portfolio build.
+                  </div>
+                  <div class="rounded-lg p-2.5 max-w-[90%] ml-auto" style="background: var(--acs)">
+                    Sample reply: three tasks are open. Want them grouped by area?<span
+                      class="pulse ac"
+                    >
+                      ▍</span
+                    >
+                  </div>
+                  <div class="bd rounded-lg p-2 fa mt-6">Message Vixi…</div>
+                </div>
+                <div
+                  class="hidden sm:block p-3 pt-8 space-y-2 mono"
+                  style="border-left: 1px solid var(--bd)"
+                >
+                  <div class="fa">Activity</div>
+                  <div class="rs rounded p-1.5">search · done</div>
+                  <div class="rs rounded p-1.5">memory · read</div>
+                  <div class="rounded p-1.5 ac" style="background: var(--acs)">tool · running</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="mt-16 grid lg:grid-cols-5 gap-8 items-center">
+            <div
+              class="lg:col-span-3 lg:order-1 order-2 relative sf bd rounded-xl overflow-hidden ill"
+              role="img"
+              aria-label="Illustrative sketch of a portfolio workspace in a browser frame"
+            >
+              <div class="flex items-center gap-1.5 p-2.5 bdb">
+                <i class="w-2 h-2 rounded-full" style="background: var(--bd)"></i
+                ><i class="w-2 h-2 rounded-full" style="background: var(--bd)"></i
+                ><i class="w-2 h-2 rounded-full" style="background: var(--bd)"></i
+                ><span class="mono text-[11px] fa ml-3">portfolio.sivaxi.com/workspace</span>
+              </div>
+              <div class="grid sm:grid-cols-[10rem_1fr] text-xs">
+                <div
+                  class="p-3 space-y-1.5 bdb sm:border-b-0"
+                  style="border-right: 1px solid var(--bd)"
+                >
+                  <div class="fa mono">Projects</div>
+                  <div class="rounded p-1.5" style="background: var(--acs); color: var(--ac2)">
+                    Sample project A
+                  </div>
+                  <div class="p-1.5 mu">Sample project B</div>
+                  <div class="p-1.5 mu">Sample project C</div>
+                </div>
+                <div class="p-4 space-y-3">
+                  <div class="flex justify-between">
+                    <b class="disp text-sm">Sample project A</b><span class="tag">Draft</span>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                    <div class="rs rounded h-14"></div>
+                    <div class="rs rounded h-14"></div>
+                    <div class="rs rounded h-14"></div>
+                  </div>
+                  <div class="space-y-1.5">
+                    <div class="h-2 rounded" style="background: var(--bd)"></div>
+                    <div class="h-2 rounded w-3/4" style="background: var(--bd)"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="lg:col-span-2 lg:order-2 order-1">
+              <div class="flex gap-2 items-center">
+                <span class="tag tag-ac">In development</span
+                ><span class="mono text-xs fa">Web platform</span>
+              </div>
+              <h3 class="text-2xl font-semibold mt-3">Sivaxi Portfolio</h3>
+              <p class="mu mt-3">
+                A platform for presenting projects, built with web frontend and backend
+                technologies. It doubles as a working reference for how Sivaxi structures full-stack
+                applications.
+              </p>
+              <a class="btn mt-6" href="https://portfolio.sivaxi.com" rel="noopener"
+                >Explore Portfolio</a
+              >
+            </div>
+          </article>
+
+          <div
+            class="mt-16 bd border-dashed rounded-xl p-6 flex flex-wrap items-center justify-between gap-3"
+          >
+            <div>
+              <b class="disp">More products over time</b>
+              <p class="mu text-sm mt-1">
+                No names or dates announced. New products will join this page as they are real.
+              </p>
+            </div>
+            <a class="btn" href="#journal">Follow progress</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Platforms -->
+      <section id="platforms" class="bdt sf">
+        <div class="mx-auto max-w-6xl px-5 py-20">
+          <h2 class="text-3xl md:text-4xl font-semibold max-w-2xl">
+            One engineering base, many products
+          </h2>
+          <p class="mu mt-3 max-w-2xl">
+            Products sit on top; shared capabilities sit underneath. Tags show where each layer
+            stands, and "Direction" means planned, not shipped.
+          </p>
+          <div class="mt-10 bd rounded-xl overflow-hidden" style="background: var(--bg)">
+            <div class="grid grid-cols-3 gap-px" style="background: var(--bd)">
+              <div class="p-3 text-center text-sm disp" style="background: var(--bg)">Vixi AI</div>
+              <div class="p-3 text-center text-sm disp" style="background: var(--bg)">
+                Portfolio
+              </div>
+              <div class="p-3 text-center text-sm fa" style="background: var(--bg)">
+                Future products
+              </div>
+            </div>
+            <ul
+              class="divide-y"
+              style="--tw-divide-opacity: 1; border-top: 1px solid var(--bd)"
+              id="layers"
+            ></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Capabilities -->
+      <section id="capabilities" class="bdt">
+        <div class="mx-auto max-w-6xl px-5 py-20">
+          <h2 class="text-3xl md:text-4xl font-semibold max-w-2xl">What Sivaxi builds</h2>
+          <p class="mu mt-3 max-w-2xl">
+            Software across the stack, from the interface people use to the services and automation
+            behind it. These are our areas of work and the kind of output each produces.
+          </p>
+          <ul class="mt-10 bdt" id="caps"></ul>
+        </div>
+      </section>
+
+      <!-- Process -->
+      <section class="bdt sf">
+        <div class="mx-auto max-w-6xl px-5 py-20 grid lg:grid-cols-3 gap-10">
+          <div>
+            <h2 class="text-3xl font-semibold">How we work</h2>
+            <p class="mu mt-3">
+              The same loop applies to our own products and to collaborations, so results stay
+              predictable.
+            </p>
+          </div>
+          <ol class="lg:col-span-2 grid sm:grid-cols-2 gap-x-10 gap-y-8" id="steps"></ol>
+        </div>
+      </section>
+
+      <!-- Engineering practices & stack -->
+      <section class="bdt">
+        <div class="mx-auto max-w-6xl px-5 py-20 grid lg:grid-cols-2 gap-12">
+          <div>
+            <h2 class="text-3xl font-semibold">Engineering practices</h2>
+            <ul class="mt-6 space-y-4 mu">
+              <li>
+                <b class="text-[color:var(--tx)]">Open where it helps.</b> Source and progress live
+                on
+                <a class="ac underline" href="https://github.com/sivaxi-org/sivaxi" rel="noopener"
+                  >GitHub</a
+                >.
+              </li>
+              <li>
+                <b class="text-[color:var(--tx)]">Accessible by default.</b> Keyboard navigation,
+                visible focus, and contrast checks are part of every interface.
+              </li>
+              <li>
+                <b class="text-[color:var(--tx)]">Incremental releases.</b> Small, reviewable
+                changes instead of large rewrites.
+              </li>
+              <li>
+                <b class="text-[color:var(--tx)]">Decisions written down.</b> Trade-offs end up in
+                the journal, not in someone's head.
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="text-3xl font-semibold">Technology we use</h2>
+            <p class="mu mt-3">
+              Current front-end foundations of the Sivaxi web platform. Backend and infrastructure
+              choices are documented as they settle.
+            </p>
+            <ul class="mt-6 flex flex-wrap gap-2 mono text-sm">
+              <li class="sf bd rounded px-3 py-1.5">Angular</li>
+              <li class="sf bd rounded px-3 py-1.5">Native Federation</li>
+              <li class="sf bd rounded px-3 py-1.5">TypeScript</li>
+              <li class="sf bd rounded px-3 py-1.5">Tailwind CSS</li>
+              <li class="sf bd rounded px-3 py-1.5">REST APIs</li>
+              <li class="sf bd rounded px-3 py-1.5">Git &amp; CI</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Showcase -->
+      <section id="technology" class="bdt">
+        <div class="mx-auto max-w-6xl px-5 py-20 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 class="text-3xl md:text-4xl font-semibold">Designed as one system</h2>
+            <p class="mu mt-3">
+              Every interface draws from shared tokens: one accent, three typefaces, two themes.
+              Components carry real states so products feel consistent as the ecosystem grows.
+            </p>
+            <ul class="mt-6 space-y-3 text-sm mu">
+              <li>
+                <b class="text-[color:var(--tx)]">Workspace structure.</b> Navigation, content, and
+                context stay in predictable places.
+              </li>
+              <li>
+                <b class="text-[color:var(--tx)]">Dense where it helps.</b> Technical surfaces show
+                more; onboarding shows less.
+              </li>
+              <li>
+                <b class="text-[color:var(--tx)]">Mobile by design.</b> Panels collapse into focused
+                views instead of shrinking.
+              </li>
+            </ul>
+          </div>
+          <div class="relative sf bd rounded-xl p-5 ill pt-9">
+            <div class="flex flex-wrap gap-2">
+              <button class="btn btn-p" type="button" data-pick>Primary</button
+              ><button class="btn" type="button" data-pick>Secondary</button
+              ><button class="btn" type="button" disabled style="opacity: 0.5">Disabled</button>
+            </div>
+            <div
+              class="mt-5 flex flex-wrap gap-2"
+              role="tablist"
+              aria-label="Sample selected state"
+            >
+              <button role="tab" aria-selected="true" class="tag tag-ac" type="button">
+                Overview</button
+              ><button role="tab" aria-selected="false" class="tag" type="button">Activity</button
+              ><button role="tab" aria-selected="false" class="tag" type="button">Settings</button>
+            </div>
+            <div class="mt-5 flex flex-wrap gap-2 mono text-xs">
+              <span class="rs bd rounded px-2 py-1" style="background: #3d8c78; color: #fff"
+                >#3D8C78</span
+              ><span class="rs rounded px-2 py-1 bd">Space Grotesk</span
+              ><span class="rs rounded px-2 py-1 bd">Inter</span
+              ><span class="rs rounded px-2 py-1 bd">JetBrains Mono</span>
+            </div>
+            <div class="mt-5 rs rounded-lg p-3 text-sm flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full pulse" style="background: var(--ac)"></span
+              ><span id="state" class="mu">Click a button or tab to see selected states.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Principles -->
+      <section id="about" class="bdt sf">
+        <div class="mx-auto max-w-6xl px-5 py-20">
+          <h2 class="text-3xl md:text-4xl font-semibold max-w-2xl">How we approach building</h2>
+          <dl class="mt-10 grid md:grid-cols-2 gap-x-12 gap-y-8">
+            <div class="bdt pt-4">
+              <dt class="disp text-lg font-medium">Useful by design</dt>
+              <dd class="mu mt-2">
+                Each product starts from a task someone needs done. If a feature does not shorten
+                that task, it waits.
+              </dd>
+            </div>
+            <div class="bdt pt-4">
+              <dt class="disp text-lg font-medium">Built to evolve</dt>
+              <dd class="mu mt-2">
+                Products stay independently deployable, so one can change direction without forcing
+                the rest to follow.
+              </dd>
+            </div>
+            <div class="bdt pt-4">
+              <dt class="disp text-lg font-medium">Connected by engineering</dt>
+              <dd class="mu mt-2">
+                Authentication, APIs, and design tokens are shared where sharing reduces work and
+                kept separate where it does not.
+              </dd>
+            </div>
+            <div class="bdt pt-4">
+              <dt class="disp text-lg font-medium">Thoughtful about complexity</dt>
+              <dd class="mu mt-2">
+                We prefer plain architecture we can explain, and we write down the trade-offs we
+                make.
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- Journal -->
+      <section id="journal" class="bdt">
+        <div class="mx-auto max-w-6xl px-5 py-20">
+          <div class="flex flex-wrap items-end justify-between gap-3">
+            <h2 class="text-3xl md:text-4xl font-semibold">Engineering journal</h2>
+            <span class="tag">Sample entries — drafts, not published</span>
+          </div>
+          <p class="mu mt-3 max-w-2xl">
+            Notes on what we build and what we learn along the way. Real posts will replace these
+            placeholders.
+          </p>
+          <ul class="mt-8 bdt" id="posts"></ul>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="bdt">
+        <div class="mx-auto max-w-3xl px-5 py-20">
+          <h2 class="text-3xl font-semibold">Common questions</h2>
+          <div class="mt-8 bdt" id="faq"></div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="bdt sf">
+        <div class="mx-auto max-w-6xl px-5 py-20 grid md:grid-cols-2 gap-6">
+          <div class="bd rounded-xl p-6" style="background: var(--bg)">
+            <h2 class="text-2xl font-semibold">For individuals</h2>
+            <p class="mu mt-2">
+              See what is being built and try products as they become available.
+            </p>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <a class="btn btn-p" href="#products">Discover products</a
+              ><a class="btn" href="https://vixi.sivaxi.com" rel="noopener">Try Vixi</a>
+            </div>
+          </div>
+          <div class="bd rounded-xl p-6" style="background: var(--bg)">
+            <h2 class="text-2xl font-semibold">For businesses and technical teams</h2>
+            <p class="mu mt-2">
+              Review the engineering approach, or follow the code to see how things are built.
+            </p>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <a class="btn btn-p" href="#platforms">Explore platform capabilities</a
+              ><a class="btn" href="https://github.com/sivaxi-org/sivaxi" rel="noopener"
+                >Discuss on GitHub</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bdt">
+      <div class="mx-auto max-w-6xl px-5 py-12 grid sm:grid-cols-2 md:grid-cols-4 gap-8 text-sm">
+        <div>
+          <b class="disp text-lg">Sivaxi</b>
+          <p class="mu mt-2">Useful, connected, accessible technology.</p>
+        </div>
+        <div>
+          <b>Products</b>
+          <ul class="mt-3 space-y-2 mu">
+            <li><a href="https://vixi.sivaxi.com" rel="noopener">Vixi AI</a></li>
+            <li><a href="https://portfolio.sivaxi.com" rel="noopener">Sivaxi Portfolio</a></li>
+          </ul>
+        </div>
+        <div>
+          <b>Engineering</b>
+          <ul class="mt-3 space-y-2 mu">
+            <li><a href="#platforms">Platforms</a></li>
+            <li><a href="#capabilities">Capabilities</a></li>
+            <li><a href="#technology">Technology</a></li>
+            <li><a href="#journal">Journal</a></li>
+          </ul>
+        </div>
+        <div>
+          <b>Company</b>
+          <ul class="mt-3 space-y-2 mu">
+            <li><a href="#about">About</a></li>
+            <li><a href="https://github.com/sivaxi-org/sivaxi" rel="noopener">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mx-auto max-w-6xl px-5 pb-10 text-xs fa">
+        © <span id="yr">2026</span> Sivaxi. All rights reserved.
+      </div>
+    </footer>
+
+    <script>
+      const layers = [
+        [
+          'Web experiences & integrations',
+          'Frontend applications and connections to outside services.',
+          'Current work',
+        ],
+        [
+          'APIs & backend systems',
+          'Services that power products behind the interface.',
+          'Current work',
+        ],
+        [
+          'AI & intelligent workflows',
+          'Conversation, search, memory, and tool use.',
+          'In development',
+        ],
+        [
+          'Infrastructure & automation',
+          'Deployment, delivery, and operations tooling.',
+          'Direction',
+        ],
+      ];
+      document.getElementById('layers').innerHTML = layers
+        .map(
+          (l) =>
+            `<li class="p-4 flex flex-wrap items-center justify-between gap-2" style="border-top:1px solid var(--bd)"><div><b class="disp">${
+              l[0]
+            }</b><p class="mu text-sm">${l[1]}</p></div><span class="tag ${
+              l[2] === 'Direction' ? '' : 'tag-ac'
+            }">${l[2]}</span></li>`
+        )
+        .join('');
+      const posts = [
+        [
+          'Draft',
+          'Structuring a full-stack portfolio platform',
+          'Notes on splitting frontend and backend concerns.',
+        ],
+        [
+          'Draft',
+          'Designing tool use for an assistant',
+          'How activity and memory could be shown to users.',
+        ],
+        ['Draft', 'One theme, many apps', 'Sharing design tokens across independent products.'],
+      ];
+      document.getElementById('posts').innerHTML = posts
+        .map(
+          (p) =>
+            `<li class="py-5 flex flex-wrap justify-between gap-2 bdb"><div><h3 class="disp text-lg font-medium">${p[1]}</h3><p class="mu text-sm mt-1">${p[2]}</p></div><span class="tag self-start">${p[0]}</span></li>`
+        )
+        .join('');
+      const caps = [
+        [
+          'Software products & SaaS',
+          'Complete products from first release to long-term maintenance.',
+          'Product scoping · web apps · accounts and billing flows',
+        ],
+        [
+          'AI assistants & agentic systems',
+          'Assistants that search, remember, and use tools to finish tasks.',
+          'Conversational interfaces · tool integration · memory and retrieval',
+        ],
+        [
+          'Backend systems & APIs',
+          'Services and interfaces that other software can depend on.',
+          'REST APIs · data models · authentication · service design',
+        ],
+        [
+          'Web & frontend platforms',
+          'Fast, accessible interfaces on a shared design system.',
+          'Angular applications · micro-frontends · responsive UI',
+        ],
+        [
+          'DevOps & automation',
+          'Delivery pipelines and repeatable operations.',
+          'CI/CD · build tooling · environment setup · workflow automation',
+        ],
+        [
+          'Integrations',
+          'Connecting products to the tools teams already use.',
+          'API connectors · data sync · webhook workflows',
+        ],
+      ];
+      document.getElementById('caps').innerHTML = caps
+        .map(
+          (c) =>
+            `<li class="py-6 grid md:grid-cols-3 gap-2 md:gap-8 bdb"><h3 class="disp text-lg font-medium">${c[0]}</h3><p class="mu md:col-span-1">${c[1]}</p><p class="mono text-xs fa md:pt-1">${c[2]}</p></li>`
+        )
+        .join('');
+      const steps = [
+        ['Discover', 'Define the problem, the people it affects, and what success looks like.'],
+        ['Design', 'Sketch workflows and interfaces, then agree the architecture before building.'],
+        ['Build', 'Ship in small increments with tests, reviews, and accessibility checks.'],
+        [
+          'Release and learn',
+          'Deploy, observe real use, and feed what we learn into the next iteration.',
+        ],
+      ];
+      document.getElementById('steps').innerHTML = steps
+        .map(
+          (s, i) =>
+            `<li class="bdt pt-4"><span class="mono text-xs ac">Step ${
+              i + 1
+            }</span><h3 class="disp text-lg font-medium mt-1">${s[0]}</h3><p class="mu mt-2">${
+              s[1]
+            }</p></li>`
+        )
+        .join('');
+      const faq = [
+        [
+          'What does Sivaxi do?',
+          'Sivaxi designs and builds software products and the platforms they run on, covering AI, web applications, backend services, and automation.',
+        ],
+        [
+          'Is Sivaxi only an AI company?',
+          'No. Vixi AI is one product. The portfolio platform is another, and the engineering base is intentionally broader than any single category.',
+        ],
+        [
+          'Are the products live?',
+          'Vixi AI and Sivaxi Portfolio are in development. Visit their sites to see current progress; features may change.',
+        ],
+        [
+          'Can we work together?',
+          'We are open to conversations about integrations and collaboration. The quickest route today is GitHub, where you can open an issue or discussion.',
+        ],
+        [
+          'Where can I follow progress?',
+          'The engineering journal and the GitHub repository are where updates appear first.',
+        ],
+      ];
+      document.getElementById('faq').innerHTML = faq
+        .map(
+          (f) =>
+            `<details class="bdb py-4 group"><summary class="cursor-pointer disp text-lg font-medium list-none flex justify-between gap-4">${f[0]}<span class="ac" aria-hidden="true">+</span></summary><p class="mu mt-3">${f[1]}</p></details>`
+        )
+        .join('');
+      const root = document.documentElement,
+        tb = document.getElementById('theme');
+      function sync() {
+        tb.setAttribute('aria-pressed', root.dataset.theme === 'light');
+      }
+      sync();
+      tb.onclick = () => {
+        const t = root.dataset.theme === 'light' ? 'dark' : 'light';
+        root.dataset.theme = t;
+        try {
+          localStorage.setItem('sivaxi-theme', t);
+        } catch (e) {}
+        sync();
+      };
+      const mb = document.getElementById('menubtn'),
+        m = document.getElementById('menu');
+      function setMenu(o) {
+        m.classList.toggle('open', o);
+        mb.setAttribute('aria-expanded', o);
+        mb.setAttribute('aria-label', o ? 'Close menu' : 'Open menu');
+      }
+      mb.onclick = () => setMenu(!m.classList.contains('open'));
+      m.addEventListener('click', (e) => {
+        if (e.target.closest('a')) setMenu(false);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && m.classList.contains('open')) {
+          setMenu(false);
+          mb.focus();
+        }
+      });
+      const st = document.getElementById('state');
+      document
+        .querySelectorAll('[data-pick]')
+        .forEach(
+          (b) =>
+            (b.onclick = () =>
+              (st.textContent = 'Selected: ' + b.textContent + ' button (sample state)'))
+        );
+      document.querySelectorAll('[role=tab]').forEach(
+        (t) =>
+          (t.onclick = () => {
+            document.querySelectorAll('[role=tab]').forEach((x) => {
+              x.setAttribute('aria-selected', x === t);
+              x.classList.toggle('tag-ac', x === t);
+            });
+            st.textContent = 'Selected tab: ' + t.textContent;
+          })
+      );
+      document.getElementById('yr').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

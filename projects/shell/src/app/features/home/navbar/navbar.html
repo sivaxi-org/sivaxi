@@ -1,0 +1,118 @@
+
+<header
+  class="sticky top-0 z-50 w-full border-b border-border bg-bg/90 backdrop-blur-xl"
+>
+  <nav
+    class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8"
+    aria-label="Main navigation"
+  >
+    <!-- Brand -->
+    <a
+      href="#top"
+      class="flex shrink-0 items-center"
+      aria-label="Sivaxi home"
+    >
+      <img
+        class="w-24 sm:w-28"
+        [src]="
+          themeService.isDark()
+            ? branding().logos.primaryHorizontalLight
+            : branding().logos.primaryHorizontalDark
+        "
+        alt="Sivaxi"
+      />
+    </a>
+
+    <!-- Desktop navigation -->
+    <div class="hidden items-center gap-5 lg:flex xl:gap-7">
+      @for (link of links(); track link.path) {
+        <a
+          [href]="link.path"
+          (click)="navigateToSection($event, link.path)"
+          class="relative whitespace-nowrap py-2 text-sm font-medium text-muted transition-colors duration-200 hover:text-accent after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-200"
+          [class.text-accent]="activeSection() === link.path"
+          [class.font-semibold]="activeSection() === link.path"
+          [class.after:scale-x-100]="activeSection() === link.path"
+        >
+          {{ link.label }}
+        </a>
+      }
+    </div>
+
+    <!-- Actions -->
+    <div class="flex shrink-0 items-center gap-2 sm:gap-3">
+      <!-- Theme toggle -->
+      <div
+        class="flex h-10 w-10 items-center justify-center rounded-xl border border-border text-primary transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
+      >
+        <lib-theme />
+      </div>
+
+      <!-- Primary CTA -->
+      <button
+        href="#products"
+        (click)="navigateToSection($event, '#products')"
+        appButton
+        variant="primary"
+      >
+        <span class="whitespace-nowrap">Explore Products</span>
+        <iconify-icon
+          icon="lucide:arrow-up-right"
+          width="16"
+          height="16"
+          class="ml-2"
+        ></iconify-icon>
+      </button>
+
+      <!-- Mobile menu toggle -->
+      <button
+        type="button"
+        class="flex h-10 w-10 items-center justify-center rounded-xl border border-border text-primary transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent lg:hidden"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="isMenuOpen()"
+        aria-controls="mobile-navigation"
+        [attr.aria-label]="
+          isMenuOpen() ? 'Close navigation menu' : 'Open navigation menu'
+        "
+      >
+        @if (isMenuOpen()) {
+          <iconify-icon
+            icon="lucide:x"
+            width="22"
+            height="22"
+          ></iconify-icon>
+        } @else {
+          <iconify-icon
+            icon="lucide:menu"
+            width="22"
+            height="22"
+          ></iconify-icon>
+        }
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile navigation -->
+  @if (isMenuOpen()) {
+    <div
+      id="mobile-navigation"
+      class="border-t border-border bg-bg/95 backdrop-blur-xl lg:hidden"
+    >
+      <div class="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3 sm:px-6">
+        @for (link of links(); track link.path) {
+          <a
+            [href]="link.path"
+            (click)="navigateToSection($event, link.path)"
+            class="rounded-xl border-l-2 border-transparent px-4 py-3 text-sm font-medium text-muted transition-colors duration-200 hover:bg-surface hover:text-accent"
+            [class.bg-accent-soft]="activeSection() === link.path"
+            [class.text-accent]="activeSection() === link.path"
+            [class.font-semibold]="activeSection() === link.path"
+            [class.border-l-accent]="activeSection() === link.path"
+          >
+            {{ link.label }}
+          </a>
+        }
+      </div>
+    </div>
+  }
+</header>

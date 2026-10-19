@@ -9,5 +9,9 @@
     themeService.isDark() ? 'Switch to light theme' : 'Switch to dark theme'
   "
 >
-  {{ themeService.isDark() ? '☀️' : '🌙' }}
+  @if (themeService.isDark()) {
+    <iconify-icon icon="lucide:sun"></iconify-icon>
+  } @else {
+    <iconify-icon icon="lucide:moon"></iconify-icon>
+  }
 </button>

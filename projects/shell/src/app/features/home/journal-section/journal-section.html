@@ -1,0 +1,192 @@
+
+<section id="journal" class="border-t border-border">
+  <div class="mx-auto max-w-6xl px-5 py-20 sm:py-24 lg:py-28">
+
+    <!-- Header -->
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      <div class="max-w-2xl">
+        <span appPill variant="secondary">
+          The Sivaxi journal
+        </span>
+
+        <h2 class="mt-5 text-3xl font-semibold tracking-tight text-primary sm:text-4xl lg:text-5xl">
+          Notes from
+          <span class="text-accent">building in public.</span>
+        </h2>
+
+        <p class="mt-4 text-base leading-7 text-muted sm:text-lg sm:leading-8">
+          Engineering decisions, problems worth solving, and lessons
+          learned while building the Sivaxi ecosystem.
+        </p>
+      </div>
+
+      <a
+        href="https://github.com/sivaxi-org/sivaxi"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex min-h-11 shrink-0 items-center gap-2 self-start rounded-lg border border-border px-4 py-2 text-sm font-medium text-primary transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent sm:self-auto"
+      >
+        Follow development
+        <iconify-icon
+          icon="lucide:arrow-up-right"
+          width="17"
+          height="17"
+          aria-hidden="true"
+        ></iconify-icon>
+      </a>
+    </div>
+
+    <!-- Featured article -->
+    <article class="mt-12 overflow-hidden rounded-2xl border border-border bg-surface sm:mt-16">
+      <div class="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr]">
+
+        <!-- Visual panel -->
+        <div class="relative flex min-h-64 flex-col justify-between overflow-hidden bg-surface-raised p-6 sm:min-h-80 sm:p-8 lg:min-h-full lg:p-10">
+          <div class="flex items-center justify-between">
+            <span appPill variant="secondary">
+              Engineering notes
+            </span>
+
+            <iconify-icon
+              icon="lucide:layers-3"
+              width="24"
+              height="24"
+              class="text-accent"
+              aria-hidden="true"
+            ></iconify-icon>
+          </div>
+
+          <div class="mt-12">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-muted">
+              Sivaxi / Architecture
+            </p>
+
+            <div class="mt-5 flex flex-wrap gap-2">
+              <span class="rounded-md border border-border px-3 py-2 text-xs text-muted">Angular</span>
+              <span class="rounded-md border border-border px-3 py-2 text-xs text-muted">Microfrontends</span>
+              <span class="rounded-md border border-border px-3 py-2 text-xs text-muted">Native Federation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured content -->
+        <div class="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
+          <div class="flex flex-wrap items-center gap-3 text-xs text-muted">
+            <span>Architecture</span>
+            <span aria-hidden="true">•</span>
+            <span>Featured article</span>
+          </div>
+
+          <h3 class="mt-4 text-2xl font-semibold leading-tight tracking-tight text-primary sm:text-3xl">
+            Building a microfrontend architecture for Sivaxi
+          </h3>
+
+          <p class="mt-4 text-sm leading-7 text-muted sm:text-base">
+            A look at separating applications into independently developed
+            frontend projects, sharing authentication and design tokens,
+            and solving integration challenges along the way.
+          </p>
+
+          <div class="mt-7">
+            <a
+              href="https://github.com/sivaxi-org/sivaxi"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-primary"
+            >
+              Explore the project
+              <iconify-icon
+                icon="lucide:arrow-up-right"
+                width="17"
+                height="17"
+                aria-hidden="true"
+              ></iconify-icon>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- Journal categories -->
+    <div class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+
+      <a
+        href="https://github.com/sivaxi-org/sivaxi"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group rounded-2xl border border-border p-6 transition-colors hover:border-accent/50 hover:bg-surface sm:p-7"
+      >
+        <div class="flex items-center justify-between">
+          <iconify-icon icon="lucide:code-2" width="22" height="22" class="text-accent" aria-hidden="true"></iconify-icon>
+          <iconify-icon icon="lucide:arrow-up-right" width="18" height="18" class="text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true"></iconify-icon>
+        </div>
+
+        <h3 class="mt-6 font-semibold text-primary">
+          Engineering & architecture
+        </h3>
+        <p class="mt-2 text-sm leading-6 text-muted">
+          Implementation decisions, system design, integrations, and trade-offs.
+        </p>
+      </a>
+
+      <a
+        href="https://github.com/sivaxi-org/sivaxi"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group rounded-2xl border border-border p-6 transition-colors hover:border-accent/50 hover:bg-surface sm:p-7"
+      >
+        <div class="flex items-center justify-between">
+          <iconify-icon icon="lucide:git-pull-request" width="22" height="22" class="text-accent" aria-hidden="true"></iconify-icon>
+          <iconify-icon icon="lucide:arrow-up-right" width="18" height="18" class="text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true"></iconify-icon>
+        </div>
+
+        <h3 class="mt-6 font-semibold text-primary">
+          Build updates
+        </h3>
+        <p class="mt-2 text-sm leading-6 text-muted">
+          Features shipped, bugs resolved, and progress across our products.
+        </p>
+      </a>
+
+      <a
+        href="https://github.com/sivaxi-org/sivaxi"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group rounded-2xl border border-border p-6 transition-colors hover:border-accent/50 hover:bg-surface sm:p-7"
+      >
+        <div class="flex items-center justify-between">
+          <iconify-icon icon="lucide:book-open" width="22" height="22" class="text-accent" aria-hidden="true"></iconify-icon>
+          <iconify-icon icon="lucide:arrow-up-right" width="18" height="18" class="text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true"></iconify-icon>
+        </div>
+
+        <h3 class="mt-6 font-semibold text-primary">
+          Lessons & insights
+        </h3>
+        <p class="mt-2 text-sm leading-6 text-muted">
+          Practical takeaways from experimenting, debugging, and shipping software.
+        </p>
+      </a>
+
+    </div>
+
+    <!-- Footer note -->
+    <div class="mt-8 flex flex-col gap-4 rounded-xl border border-border p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+      <p class="text-sm leading-6 text-muted">
+        Real work, documented as it happens. New entries will appear as
+        there is something useful to share.
+      </p>
+
+      <a
+        href="https://github.com/sivaxi-org/sivaxi"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex min-h-10 shrink-0 items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-accent"
+      >
+        Visit the repository
+        <iconify-icon icon="lucide:arrow-up-right" width="16" height="16" aria-hidden="true"></iconify-icon>
+      </a>
+    </div>
+
+  </div>
+</section>

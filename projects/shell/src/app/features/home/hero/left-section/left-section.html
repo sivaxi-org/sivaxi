@@ -1,0 +1,45 @@
+<!-- LEFT: Hero content -->
+<section class="flex flex-col items-start">
+  <!-- Eyebrow -->
+  <span appPill class="px-3" >
+    <span class="h-2 w-2 rounded-full bg-accent"></span>
+    Engineering that connects
+  </span>
+
+  <!-- Main heading -->
+  <h1
+    class="max-w-2xl text-4xl font-semibold leading-tight tracking-tight text-primary sm:text-5xl lg:text-6xl"
+  >
+    Products, platforms, and the
+    <span class="text-accent">systems behind them.</span>
+  </h1>
+
+  <!-- Description -->
+  <p class="mt-6 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8">
+    Sivaxi builds useful software across AI, web applications, backend services, and infrastructure.
+    Each product ships on its own; the engineering underneath is shared and keeps growing.
+  </p>
+
+  <!-- Actions -->
+  <div class="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+
+    <button appButton variant="primary">
+      Explore Products
+      <iconify-icon icon="lucide:arrow-up-right" width="18" height="18"></iconify-icon>
+    </button>
+
+    <button
+      appButton
+      variant="secondary"
+    >
+      Discover Ecosystem
+    </button>
+  </div>
+
+  <!-- Areas of engineering -->
+  <div class="mt-10 flex flex-wrap gap-x-6 gap-y-3 border-t border-border pt-6">
+    @for (item of engineeringAreas; track item.title) {
+    <app-icon-label [data]="item" />
+    }
+  </div>
+</section>

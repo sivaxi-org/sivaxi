@@ -1,24 +1,36 @@
 import { Component } from '@angular/core';
 
 
-import { HeroSection } from './components/hero-section/hero-section';
-import { EngineeringPrinciples } from './components/engineering-principles/engineering-principles';
-import { ProductsSection } from './components/products-section/products-section';
-import { TechnologySection } from './components/technology-section/technology-section';
-import { SiteFooter } from 'shared';
-import { SiteHeader } from 'shared';
+import { Navbar } from './navbar/navbar';
+import { Hero } from './hero/hero';
+import { ProductsSections } from './products-section/products-section';
+import { MoreProductsSection } from './more-products-section/more-products-section';
+import { PlateformSection } from './plateform-section/plateform-section';
+import { CapabilitiesSection } from './capabilities-section/capabilities-section';
+import { TechnologiesSection } from './technologies-section/technologies-section';
+import { Footer } from '../../core/components/footer/footer';
+import { AboutSection } from './about-section/about-section';
+import { JournalSection } from './journal-section/journal-section';
+
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    SiteHeader,
-    HeroSection,
-    EngineeringPrinciples,
-    ProductsSection,
-    TechnologySection,
-    SiteFooter,
-  ],
+    Navbar,
+    Hero,
+    ProductsSections,
+    MoreProductsSection,
+    PlateformSection,
+    CapabilitiesSection,
+    TechnologiesSection,
+    Footer,
+    AboutSection,
+    JournalSection
+],
   templateUrl: './home.html',
 })
-export class Home {}
+export class Home {
+   
+}

@@ -1,0 +1,62 @@
+<!-- RIGHT: Product ecosystem visual -->
+<section
+  aria-label="Sivaxi product ecosystem"
+  class="relative mx-auto w-full max-w-xl"
+>
+  <!-- Decorative background -->
+  <div
+    aria-hidden="true"
+    class="absolute inset-8 rounded-full bg-accent/10 blur-3xl"
+  ></div>
+
+  <!-- Visual container -->
+  <div
+    class="relative overflow-hidden rounded-3xl border border-border bg-surface p-4 shadow-2xl sm:p-6"
+  >
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-border pb-4">
+      <div>
+        <p class="text-sm font-semibold text-primary">The Sivaxi ecosystem</p>
+        <p class="mt-1 text-xs text-muted">Connected by engineering</p>
+      </div>
+
+      <span appPill class="px-3" >
+        In progress
+      </span>
+    </div>
+
+    <!-- Central product -->
+    <div class="relative flex flex-col items-center py-8">
+      <div
+        class="flex h-20 w-20 items-center justify-center rounded-2xl border border-accent/40 bg-accent-soft text-accent shadow-lg shadow-accent/10"
+      >
+        <iconify-icon
+          icon="lucide:workflow"
+          width="38"
+          height="38"
+        ></iconify-icon>
+      </div>
+
+      <h2 class="mt-4 text-lg font-semibold text-primary">Sivaxi</h2>
+      <p class="mt-1 text-sm text-muted">One ecosystem. Multiple products.</p>
+
+      <!-- Connection line -->
+      <div aria-hidden="true" class="h-8 w-px bg-accent/40"></div>
+
+      <!-- Product cards -->
+      <div class="grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
+        @for (item of ecosystem(); track $index) {
+            <right-section-card   [item]="item" ></right-section-card>
+        }
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="flex items-center gap-2 border-t border-border pt-4">
+      <span class="h-2 w-2 rounded-full bg-accent"></span>
+      <p class="text-xs text-muted">
+        Building products in public, one system at a time.
+      </p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,22 @@
+<article
+  class="rounded-2xl border border-border bg-bg p-4 transition-colors hover:border-accent/50 h-44"
+>
+  <div
+    class="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent-soft text-accent"
+  >
+    <iconify-icon
+      [attr.icon]="item().icon"
+      width="22"
+      height="22"
+      aria-hidden="true"
+    ></iconify-icon>
+  </div>
+
+  <h3 class="text-sm font-semibold text-primary">
+    {{ item().title }}
+  </h3>
+
+  <p class="mt-2 text-xs leading-5 text-muted">
+    {{ item().description }}
+  </p>
+</article>

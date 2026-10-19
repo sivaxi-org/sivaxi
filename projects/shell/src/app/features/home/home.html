@@ -1,13 +1,23 @@
-<app-site-header />
+<app-navbar />
 
-<main>
-  <app-hero-section />
+<main class="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+  <section id="top" class="scroll-mt-24">
+    <app-hero />
+  </section>
 
-  <app-engineering-principles />
+  <app-products-section id="products" class="scroll-mt-24" />
 
-  <app-products-section />
+  <app-more-products-section />
 
-  <app-technology-section />
+  <app-plateform-section id="platforms" class="scroll-mt-24" />
+
+  <app-capabilities-section id="capabilities" class="scroll-mt-24" />
+
+  <app-technologies-section id="technology" class="scroll-mt-24" />
+
+  <app-about-section id="about" class="scroll-mt-24" />
+
+  <app-journal-section id="journal" class="scroll-mt-24" />
 </main>
 
-<app-site-footer />
+<app-footer />
