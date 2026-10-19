@@ -8,7 +8,7 @@ http:
       tls: {}
 
     vixi:
-      rule: "Host(`vixi.sivaxi.test`)"
+      rule: "Host(`ai.sivaxi.test`)"
       entryPoints:
         - websecure
       service: vixi
