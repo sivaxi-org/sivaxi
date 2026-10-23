@@ -22,6 +22,13 @@ http:
       service: portfolio
       tls: {}
 
+    auth:
+      rule: "Host(`auth.sivaxi.test`)"
+      entryPoints:
+        - websecure
+      service: auth
+      tls: {}
+
   services:
     shell:
       loadBalancer:
@@ -37,6 +44,11 @@ http:
       loadBalancer:
         servers:
           - url: "http://host.docker.internal:4202"
+
+    auth:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:4203"
 
 tls:
   certificates:
