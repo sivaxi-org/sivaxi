@@ -1,0 +1,244 @@
+
+<!-- Preview only: hard-coded Vixi AI workspace -->
+
+<div class="flex h-screen overflow-hidden bg-bg text-primary antialiased">
+
+  <!-- Sidebar -->
+  <aside class="hidden w-64 shrink-0 flex-col border-r border-border bg-surface p-3 sm:flex">
+    <div class="flex items-center gap-2.5 px-2 py-3">
+      <div class="flex size-9 items-center justify-center rounded-xl border border-glass-border bg-glass text-accent">
+        <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-2-5.8L4 11l6-2.2L12 3Z"/>
+          <path d="m19 15 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z"/>
+        </svg>
+      </div>
+      <div>
+        <p class="text-base font-semibold">vixi <span class="text-accent">AI</span></p>
+        <p class="text-[10px] text-muted">by Sivaxi</p>
+      </div>
+    </div>
+
+    <button class="mt-4 flex items-center gap-2.5 rounded-xl border border-border bg-surface-raised px-3 py-2.5 text-sm transition hover:border-accent/50">
+      <span class="text-lg">+</span>
+      New conversation
+    </button>
+
+    <p class="mb-2 mt-7 px-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-faint">
+      Workspace
+    </p>
+
+    <button class="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm text-muted hover:bg-surface-raised">
+      <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H10l2 2h5.5A2.5 2.5 0 0 1 20 7.5v10a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-12Z"/>
+      </svg>
+      Projects
+    </button>
+
+    <button class="flex items-center gap-2.5 rounded-lg bg-surface-raised px-3 py-2.5 text-left text-sm text-primary">
+      <svg class="size-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+        <path d="M8 10h8M8 14h5M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/>
+      </svg>
+      All conversations
+    </button>
+
+    <div class="mb-2 mt-6 flex items-center justify-between px-2">
+      <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-faint">Your projects</p>
+      <span class="text-muted">+</span>
+    </div>
+
+    <div class="space-y-1">
+      <div class="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-primary">
+        <svg class="size-4 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5v-10Z"/>
+        </svg>
+        <span class="truncate">Sivaxi Platform</span>
+        <span class="ml-auto text-xs text-faint">⌄</span>
+      </div>
+      <div class="ml-5 flex items-center gap-2 rounded-lg bg-surface-raised px-3 py-2.5 text-xs text-primary">
+        <span class="size-1.5 rounded-full bg-accent"></span>
+        Architecture discussion
+      </div>
+      <div class="ml-5 flex items-center gap-2 rounded-lg px-3 py-2 text-xs text-muted">
+        <span class="size-1.5 rounded-full bg-faint"></span>
+        API design
+      </div>
+      <div class="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-muted">
+        <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5v-10Z"/>
+        </svg>
+        Vixi Development
+      </div>
+    </div>
+
+    <div class="mt-auto border-t border-border pt-3">
+      <div class="flex items-center gap-2.5 rounded-lg px-2 py-2">
+        <div class="flex size-8 items-center justify-center rounded-full bg-accent/15 text-xs font-semibold text-accent">AM</div>
+        <div class="min-w-0">
+          <p class="truncate text-xs font-medium text-primary">Workspace member</p>
+          <p class="text-[10px] text-muted">Personal workspace</p>
+        </div>
+        <span class="ml-auto text-muted">⋯</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main workspace -->
+  <main class="relative flex min-w-0 flex-1 flex-col overflow-hidden">
+
+    <!-- Top navigation -->
+    <header class="z-10 flex h-14 shrink-0 items-center justify-between gap-4 border-b border-border bg-bg/80 px-4 backdrop-blur-xl sm:px-6">
+      <div class="flex min-w-0 items-center gap-3">
+        <button class="flex size-9 shrink-0 items-center justify-center rounded-xl text-muted hover:bg-surface-raised hover:text-primary" aria-label="Open sidebar">
+          <svg class="size-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <rect x="3.5" y="4.5" width="17" height="15" rx="3"/>
+            <path stroke-linecap="round" d="M9.5 4.5v15"/>
+          </svg>
+        </button>
+
+        <div class="flex min-w-0 items-center gap-2.5 text-sm">
+          <div class="flex min-w-0 items-center gap-2 rounded-lg bg-surface px-2.5 py-1.5">
+            <svg class="size-4 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5v-10Z"/>
+            </svg>
+            <span class="max-w-36 truncate text-muted">Sivaxi Platform</span>
+          </div>
+
+          <svg class="size-3.5 shrink-0 text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/>
+          </svg>
+
+          <h1 class="truncate font-semibold text-primary">Architecture discussion</h1>
+        </div>
+      </div>
+
+      <span class="hidden items-center gap-1.5 rounded-full border border-border bg-surface px-2.5 py-1 text-[11px] font-medium text-muted sm:inline-flex">
+        <span class="size-1.5 rounded-full bg-accent"></span>
+        Vixi AI
+      </span>
+    </header>
+
+    <!-- Hard-coded conversation preview -->
+    <section class="chat-scroll min-h-0 flex-1 overflow-y-auto">
+      <div class="mx-auto w-full max-w-[800px] px-4 pb-8 pt-8 sm:px-7">
+        <div class="space-y-8">
+
+          <!-- User message -->
+          <div class="flex justify-end">
+            <div class="max-w-[88%] sm:max-w-[80%]">
+              <div class="mb-1.5 text-right text-[10px] font-medium uppercase tracking-wider text-faint">You</div>
+              <div class="whitespace-pre-wrap break-words rounded-2xl rounded-br-md border border-border bg-surface-raised px-4 py-3 text-[14px] leading-7 text-primary shadow-sm sm:px-5">
+                How should I structure the Sivaxi platform as it grows into multiple products?
+              </div>
+            </div>
+          </div>
+
+          <!-- Assistant message -->
+          <article class="flex items-start gap-3.5 sm:gap-4">
+            <div class="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-xl border border-glass-border bg-glass">
+              <svg class="size-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-2-5.8L4 11l6-2.2L12 3Z"/>
+              </svg>
+            </div>
+
+            <div class="min-w-0 flex-1 pt-0.5">
+              <div class="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-accent">Vixi</div>
+              <div class="chat-prose min-w-0 break-words text-[14px] leading-7 text-primary">
+                <p class="mb-4">I'd approach Sivaxi as a <strong>product ecosystem</strong>, with clear boundaries between shared platform capabilities and individual products.</p>
+
+                <h3 class="mb-2 mt-5 font-semibold">1. Start with the shell</h3>
+                <p class="mb-3 text-muted">Use the Angular shell for global navigation, authentication, theme, and shared UI. Keep product-specific features inside their respective remotes.</p>
+
+                <div class="my-4 overflow-hidden rounded-xl border border-border bg-surface">
+                  <div class="border-b border-border px-4 py-2.5 text-xs font-semibold text-muted">Suggested structure</div>
+                  <div class="space-y-2 px-4 py-3 font-mono text-xs sm:text-sm">
+                    <div class="text-accent">sivaxi-shell/</div>
+                    <div class="pl-4 text-muted">├── shared/auth/</div>
+                    <div class="pl-4 text-muted">├── shared/theme/</div>
+                    <div class="pl-4 text-muted">├── projects/vixi/</div>
+                    <div class="pl-4 text-muted">└── projects/portfolio/</div>
+                  </div>
+                </div>
+
+                <h3 class="mb-2 mt-5 font-semibold">2. Keep responsibilities separate</h3>
+                <ul class="mb-4 list-disc space-y-1 pl-5 text-muted">
+                  <li><strong class="text-primary">Shell:</strong> navigation and global application layout.</li>
+                  <li><strong class="text-primary">Shared libraries:</strong> authentication, theme tokens, reusable UI.</li>
+                  <li><strong class="text-primary">Product remotes:</strong> product-specific screens and workflows.</li>
+                  <li><strong class="text-primary">Backend services:</strong> APIs and domain logic.</li>
+                </ul>
+
+                <p>That gives you room to evolve products independently without duplicating every common capability. Start with these boundaries and introduce more complexity only when the product needs it.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Another user message -->
+          <div class="flex justify-end">
+            <div class="max-w-[88%] sm:max-w-[80%]">
+              <div class="mb-1.5 text-right text-[10px] font-medium uppercase tracking-wider text-faint">You</div>
+              <div class="whitespace-pre-wrap break-words rounded-2xl rounded-br-md border border-border bg-surface-raised px-4 py-3 text-[14px] leading-7 text-primary shadow-sm sm:px-5">
+                What should I avoid while implementing this?
+              </div>
+            </div>
+          </div>
+
+          <!-- Assistant typing indicator -->
+          <div class="flex items-start gap-3.5 sm:gap-4">
+            <div class="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-xl border border-glass-border bg-glass">
+              <svg class="size-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-2-5.8L4 11l6-2.2L12 3Z"/>
+              </svg>
+            </div>
+            <div class="pt-1">
+              <p class="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-accent">Vixi is thinking</p>
+              <div class="flex items-center gap-1.5 py-1" role="status" aria-label="Vixi AI is typing">
+                <span class="size-1.5 animate-bounce rounded-full bg-accent/60"></span>
+                <span class="size-1.5 animate-bounce rounded-full bg-accent/60 [animation-delay:150ms]"></span>
+                <span class="size-1.5 animate-bounce rounded-full bg-accent/60 [animation-delay:300ms]"></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Composer -->
+    <div class="shrink-0 border-t border-border/60 bg-bg/75 px-3 pb-3 pt-4 backdrop-blur-xl sm:px-6 sm:pb-5">
+      <div class="mx-auto w-full max-w-[800px]">
+        <div class="group relative overflow-hidden rounded-2xl border border-border bg-surface shadow-lg transition-colors duration-200 focus-within:border-focus">
+          <textarea
+            rows="1"
+            placeholder="Message Vixi AI..."
+            aria-label="Message Vixi AI"
+            class="block max-h-48 min-h-[58px] w-full resize-none bg-transparent px-4 py-[18px] pr-16 text-sm leading-6 text-primary outline-none placeholder:text-muted sm:px-5"
+          ></textarea>
+
+          <div class="flex items-center justify-between gap-3 border-t border-border/60 px-3 py-2">
+            <p class="truncate text-[10px] text-muted sm:text-xs">
+              <span class="font-medium text-primary">Enter</span> to send
+              <span class="mx-1 text-faint">·</span>
+              <span class="font-medium text-primary">Shift + Enter</span> for a new line
+            </p>
+
+            <button
+              type="button"
+              class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-white transition hover:bg-accent-hover active:scale-95"
+              title="Send message"
+              aria-label="Send message"
+            >
+              <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 19V5m-7 7 7-7 7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <p class="mt-3 text-center text-[10px] leading-5 text-muted sm:text-xs">
+          Vixi AI can make mistakes. Verify important information.
+        </p>
+      </div>
+    </div>
+
+  </main>
+</div>
