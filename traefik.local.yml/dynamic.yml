@@ -1,3 +1,4 @@
+
 http:
   routers:
     shell:
@@ -7,7 +8,7 @@ http:
       service: shell
       tls: {}
 
-    vixi:
+    ai:
       rule: "Host(`ai.sivaxi.test`)"
       entryPoints:
         - websecure
@@ -41,4 +42,3 @@ tls:
   certificates:
     - certFile: /etc/traefik/dynamic/certs/sivaxi.test.pem
       keyFile: /etc/traefik/dynamic/certs/sivaxi.test-key.pem
-
