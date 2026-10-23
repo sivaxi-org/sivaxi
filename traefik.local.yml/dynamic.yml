@@ -7,7 +7,7 @@ http:
       service: shell
       tls: {}
 
-    vixi:
+    ai:
       rule: "Host(`ai.sivaxi.test`)"
       entryPoints:
         - websecure
