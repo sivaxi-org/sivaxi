@@ -42,7 +42,7 @@ pipeline {
             }
             steps {
                 script {
-                    env.DEPLOY_APPS = 'shell,vixi,portfolio'
+                    env.DEPLOY_APPS = 'shell,vixi,portfolio,auth'
                     echo "Applications selected: ${env.DEPLOY_APPS}"
                 }
             }
