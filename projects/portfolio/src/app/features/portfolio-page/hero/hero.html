@@ -85,16 +85,14 @@
       <!-- Bio -->
       @if (portfolioData()?.bio) {
         <div
-          class="anim-reveal animate-reveal [animation-delay:0.28s] mx-auto mt-7 flex max-w-[540px] gap-3.5 text-left opacity-0 lg:mx-0"
+          class="anim-reveal animate-reveal [animation-delay:0.28s] mx-auto mt-7 flex max-w-[540px] gap-3.5 text-left opacity-0 lg:mx-0 "
         >
-          <span
-            aria-hidden="true"
-            class="mt-1.5 w-0.5 shrink-0 self-stretch rounded-full bg-accent/60"
-          ></span>
-
-          <p class="text-[0.95rem] leading-7 text-text-muted sm:text-base sm:leading-7">
-            {{ portfolioData()?.bio }}
-          </p>
+  
+          <p
+  class="text-center text-[0.95rem] leading-7 text-text-muted sm:text-base sm:leading-7 lg:text-left"
+>
+  {{ portfolioData()?.bio }}
+</p>
         </div>
       }
 
@@ -104,7 +102,7 @@
       >
         <a
           href="#work"
-          class="group inline-flex items-center gap-3 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(61,140,120,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+          class="group inline-flex items-center gap-3 rounded-md bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(61,140,120,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
           Explore my work
 
