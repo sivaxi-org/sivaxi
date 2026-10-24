@@ -32,14 +32,14 @@ export interface AboutContent {
 export const ABOUT_CONTENT: AboutContent = {
   badge: 'About Sivaxi',
 
-  title: 'Building software with',
-  highlightedTitle: 'purpose and perspective.',
+  title: 'An independent technology company',
+  highlightedTitle: 'building with purpose.',
 
   description:
-    'Sivaxi is a technology ecosystem focused on building useful software products, intelligent systems, and the engineering foundations that bring them together.',
+    'Sivaxi is an independent technology company focused on building software products, AI-powered applications, web platforms, and reliable backend systems.',
 
   supportingDescription:
-    'From user-facing applications to backend infrastructure and AI-driven workflows, we explore how thoughtful engineering can make complex technology practical, connected, and easier to use.',
+    'From intuitive user experiences to connected services, intelligent workflows, and infrastructure, Sivaxi brings different areas of engineering together to build practical digital solutions that can grow over time.',
 
   primaryAction: {
     label: 'Explore on GitHub',
@@ -55,26 +55,27 @@ export const ABOUT_CONTENT: AboutContent = {
     {
       title: 'Products over demos',
       description:
-        'Build useful experiences with attention to usability, reliability, and the details beyond the first release.',
+        'Build practical software products with attention to usability, reliability, and the details that matter beyond the first release.',
       icon: 'lucide:blocks',
     },
     {
-      title: 'Systems that connect',
+      title: 'Engineering that connects',
       description:
-        'Bring interfaces, services, data, identity, and automation together through considered architecture.',
+        'Connect interfaces, backend services, data, identity, and automation through thoughtful architecture and reusable foundations.',
       icon: 'lucide:network',
     },
     {
       title: 'Progress in the open',
       description:
-        'Share technical decisions, implementation challenges, lessons learned, and progress as the ecosystem evolves.',
+        'Share engineering decisions, implementation challenges, lessons learned, and product progress as Sivaxi evolves.',
       icon: 'lucide:git-commit-horizontal',
     },
   ],
 
-  closingStatement: "The goal isn't to use more technology.",
-  closingHighlight: "It's to make technology work better together.",
+  closingStatement: 'Technology should be more than individual tools.',
+  closingHighlight: 'It should work together to solve real problems.',
 };
+
 
 @Component({
   imports: [ButtonDirective],

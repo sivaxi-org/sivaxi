@@ -1,37 +1,40 @@
+
 <!-- LEFT: Hero content -->
 <section class="flex flex-col items-start">
   <!-- Eyebrow -->
-  <span appPill class="px-3" >
+  <span appPill class="px-3">
     <span class="h-2 w-2 rounded-full bg-accent"></span>
-    Engineering that connects
+    Independent Technology Company
   </span>
 
   <!-- Main heading -->
   <h1
     class="max-w-2xl text-4xl font-semibold leading-tight tracking-tight text-primary sm:text-5xl lg:text-6xl"
   >
-    Products, platforms, and the
-    <span class="text-accent">systems behind them.</span>
+    Building technology for
+    <span class="text-accent">a connected world.</span>
   </h1>
 
   <!-- Description -->
   <p class="mt-6 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8">
-    Sivaxi builds useful software across AI, web applications, backend services, and infrastructure.
-    Each product ships on its own; the engineering underneath is shared and keeps growing.
+    Sivaxi is an independent technology company building software products,
+    AI-powered applications, web platforms, and backend systems. We bring
+    thoughtful engineering and practical ideas together to create useful
+    digital experiences.
   </p>
 
   <!-- Actions -->
   <div class="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-
     <button appButton variant="primary">
       Explore Products
-      <iconify-icon icon="lucide:arrow-up-right" width="18" height="18"></iconify-icon>
+      <iconify-icon
+        icon="lucide:arrow-up-right"
+        width="18"
+        height="18"
+      ></iconify-icon>
     </button>
 
-    <button
-      appButton
-      variant="secondary"
-    >
+    <button appButton variant="secondary">
       Discover Ecosystem
     </button>
   </div>
@@ -39,7 +42,7 @@
   <!-- Areas of engineering -->
   <div class="mt-10 flex flex-wrap gap-x-6 gap-y-3 border-t border-border pt-6">
     @for (item of engineeringAreas; track item.title) {
-    <app-icon-label [data]="item" />
+      <app-icon-label [data]="item" />
     }
   </div>
 </section>
