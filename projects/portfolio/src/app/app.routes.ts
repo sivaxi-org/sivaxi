@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard, NotFoundComponent } from 'shared';
 import { HomeLayout } from './core/layout/home-layout/home-layout';
-import { PortfolioPage } from './features/portfolio-page/portfolio-home';
 import { Plans } from './features/plans/plans';
 
 export const routes: Routes = [
@@ -14,17 +13,15 @@ export const routes: Routes = [
         pathMatch: 'full',
         redirectTo: 'portfolio/ajaymalah',
       },
-
       {
         path: 'portfolio/:username',
-        component: PortfolioPage,
+        loadComponent: () =>
+          import('./features/portfolio-page/portfolio-home').then((m) => m.PortfolioPage),
       },
-
       {
         path: 'portfolio/:username/projects',
         loadComponent: () => import('./features/projects/projects').then((m) => m.Projects),
       },
-
       {
         path: 'portfolio/:username/projects/:slug',
         loadComponent: () =>
@@ -47,28 +44,14 @@ export const routes: Routes = [
       section: 'dashboard',
       requiresAuth: true,
     },
-
     loadComponent: () =>
       import('./core/layout/dashboard-layout/dashboard-layout').then((m) => m.DashboardLayout),
-
     children: [
-      // {
-      //   path: '',
-      //   pathMatch: 'full',
-      //   redirectTo: 'portfolio/' + keycloak.tokenParsed?.['preferred_username'],
-      // },
-
       {
-        path: 'overview',
-        title: 'Sivaxi | Overview',
-        data: {
-          page: 'overview',
-          section: 'dashboard',
-        },
-        loadComponent: () =>
-          import('./features/dashboard/overview/overview').then((m) => m.Overview),
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'profile',
       },
-
       {
         path: 'profile',
         title: 'Sivaxi | Profile',
@@ -79,7 +62,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/portfolio/portfolio').then((m) => m.Portfolio),
       },
-
       {
         path: 'about',
         title: 'Sivaxi | About',
@@ -89,7 +71,6 @@ export const routes: Routes = [
         },
         loadComponent: () => import('./features/dashboard/about/about').then((m) => m.About),
       },
-
       {
         path: 'projects',
         title: 'Sivaxi | Projects',
@@ -100,7 +81,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/project/projects').then((m) => m.Projects),
       },
-
       {
         path: 'projects/:id',
         title: 'Sivaxi | Project',
@@ -113,7 +93,6 @@ export const routes: Routes = [
             (m) => m.ProjectDetail
           ),
       },
-
       {
         path: 'experience',
         title: 'Sivaxi | Experience',
@@ -124,7 +103,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/experience/experience').then((m) => m.Experience),
       },
-
       {
         path: 'experience/:id',
         title: 'Sivaxi | Experience',
@@ -137,7 +115,6 @@ export const routes: Routes = [
             (m) => m.ExperienceDetail
           ),
       },
-
       {
         path: 'skills',
         title: 'Sivaxi | Skills',
@@ -147,7 +124,6 @@ export const routes: Routes = [
         },
         loadComponent: () => import('./features/dashboard/skills/skills').then((m) => m.Skills),
       },
-
       {
         path: 'stats',
         title: 'Sivaxi | Stats',
@@ -157,7 +133,6 @@ export const routes: Routes = [
         },
         loadComponent: () => import('./features/dashboard/stats/stats').then((m) => m.Stats),
       },
-
       {
         path: 'testimonials',
         title: 'Sivaxi | Testimonials',
@@ -168,7 +143,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/testimonial/testimonial').then((m) => m.Testimonials),
       },
-
       {
         path: 'contacts',
         title: 'Sivaxi | Contacts',

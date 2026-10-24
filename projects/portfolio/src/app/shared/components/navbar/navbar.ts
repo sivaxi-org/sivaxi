@@ -21,7 +21,7 @@ interface NavLink {
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink,ThemeComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   styleUrl: './navbar.css',
   templateUrl: './navbar.html',

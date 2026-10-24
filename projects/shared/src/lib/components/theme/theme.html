@@ -1,6 +1,21 @@
+
 <button
   type="button"
-  class="theme-toggle"
+  class="theme-toggle inline-flex h-10 w-10 shrink-0
+         items-center justify-center rounded-xl
+         border border-glass-border-soft
+         bg-glass-fill-strong text-text-muted
+         shadow-(--shadow-glass)
+         backdrop-blur-[14px]
+         transition-[color,background-color,border-color,transform]
+         duration-200 ease-out
+         hover:border-glass-border
+         hover:bg-glass-fill
+         hover:text-accent
+         active:scale-[0.94]
+         focus-visible:outline-2
+         focus-visible:outline-accent-1
+         focus-visible:outline-offset-[3px]"
   (click)="toggleTheme()"
   [attr.aria-label]="
     themeService.isDark() ? 'Switch to light theme' : 'Switch to dark theme'
@@ -10,8 +25,18 @@
   "
 >
   @if (themeService.isDark()) {
-    <iconify-icon icon="lucide:sun"></iconify-icon>
+    <iconify-icon
+      icon="lucide:sun"
+      width="19"
+      height="19"
+      aria-hidden="true"
+    />
   } @else {
-    <iconify-icon icon="lucide:moon"></iconify-icon>
+    <iconify-icon
+      icon="lucide:moon"
+      width="19"
+      height="19"
+      aria-hidden="true"
+    />
   }
 </button>

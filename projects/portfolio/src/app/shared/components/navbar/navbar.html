@@ -1,8 +1,16 @@
-<header class="fixed left-0 right-0 top-6 z-50 isolate w-full px-4 sm:px-6 lg:px-8">
+
+<header
+  class="fixed left-0 right-0 top-6 z-50 isolate w-full px-4 sm:px-6 lg:px-8"
+>
   <div
-    class="glass-panel mx-auto max-w-6xl rounded-2xl border border-glass-border-soft bg-glass-fill py-2 backdrop-blur-sm backdrop-saturate-[1.4] md:py-3"
+    class="glass-panel mx-auto max-w-6xl rounded-2xl
+           border border-glass-border-soft bg-glass-fill
+           py-2 backdrop-blur-sm backdrop-saturate-[1.4]
+           transition-colors duration-300 md:py-3"
   >
     <div class="flex items-center justify-between px-4 sm:px-6">
+
+      <!-- Brand -->
       <a
         routerLink="/"
         class="flex shrink-0 items-center gap-2.5"
@@ -15,83 +23,157 @@
               ? branding().logos.primaryHorizontalLight
               : branding().logos.primaryHorizontalDark
           "
-          alt="Logo"
+          alt="Sivaxi"
           class="h-6 w-auto object-contain"
         />
       </a>
 
-      <nav class="hidden items-center gap-2 md:flex" aria-label="Primary navigation">
+      <!-- Desktop navigation -->
+      <nav
+        class="hidden items-center gap-2 md:flex"
+        aria-label="Primary navigation"
+      >
         @for (link of navLinks; track link.fragment) {
-        <a
-          [href]="'#' + link.fragment"
-          class="rounded-lg px-3.5 py-2 text-[0.88rem] text-text-muted transition-colors hover:bg-glass-fill-strong hover:text-text-primary"
-          (click)="goToSection(link.fragment, $event)"
-        >
-          {{ link.label }}
-        </a>
+          <a
+            [href]="'#' + link.fragment"
+            class="rounded-lg px-3.5 py-2 text-[0.88rem]
+                   text-text-muted transition-colors
+                   hover:bg-glass-fill-strong
+                   hover:text-text-primary
+                   focus-visible:outline-none
+                   focus-visible:ring-2
+                   focus-visible:ring-accent-1"
+            (click)="goToSection(link.fragment, $event)"
+          >
+            {{ link.label }}
+          </a>
         }
       </nav>
 
-      <div class="flex items-center gap-2.5">
+      <!-- Actions -->
+      <div class="flex shrink-0 items-center gap-2 sm:gap-2.5">
+
+        <!-- Dashboard / Login -->
         <a
           routerLink="/dashboard"
-          class="hidden items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-all hover:bg-glass-fill sm:inline-flex"
+          class="hidden items-center justify-center
+                 rounded-[9px] border border-glass-border
+                 bg-glass-fill-strong px-4 py-2.5
+                 text-[0.85rem] font-medium text-text-primary
+                 transition-colors hover:bg-glass-fill sm:inline-flex"
+          (click)="closeMenu()"
         >
-          {{ authService.isAuthenticated() ? 'dashboard' : 'login' }}
+          {{ authService.isAuthenticated() ? 'Dashboard' : 'Login' }}
         </a>
 
-        @if(!authService.isAuthenticated()){
-        <a
-          routerLink="/plans"
-          class="hidden items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-all hover:bg-glass-fill sm:inline-flex"
-        >
-          Get Started
-        </a>
+        <!-- Get Started: desktop -->
+        @if (!authService.isAuthenticated()) {
+          <a
+            routerLink="/plans"
+            class="hidden items-center justify-center
+                   rounded-[9px] border border-glass-border
+                   bg-glass-fill-strong px-4 py-2.5
+                   text-[0.85rem] font-medium text-text-primary
+                   transition-colors hover:bg-glass-fill sm:inline-flex"
+            (click)="closeMenu()"
+          >
+            Get Started
+          </a>
         }
 
+        <!-- Theme switch: desktop and mobile -->
+        <lib-theme />
+
+        <!-- Mobile menu toggle -->
         <button
           type="button"
-          class="group inline-flex h-10 w-10 items-center justify-center rounded-xl border border-glass-border-soft bg-glass-fill-strong text-text-muted shadow-(--shadow-glass) backdrop-blur-[14px] transition-[color,background-color,border-color,transform] duration-200 ease-out hover:border-glass-border hover:bg-glass-fill-strong hover:text-text-primary active:scale-[0.94] focus-visible:outline-2 focus-visible:outline-accent-1 focus-visible:outline-offset-[3px] md:hidden"
+          class="group inline-flex h-10 w-10 shrink-0
+                 items-center justify-center rounded-xl
+                 border border-glass-border-soft
+                 bg-glass-fill-strong text-text-muted
+                 shadow-(--shadow-glass)
+                 backdrop-blur-[14px]
+                 transition-[color,background-color,border-color,transform]
+                 duration-200 ease-out
+                 hover:border-glass-border
+                 hover:text-text-primary
+                 active:scale-[0.94]
+                 focus-visible:outline-2
+                 focus-visible:outline-accent-1
+                 focus-visible:outline-offset-[3px]
+                 md:hidden"
           [attr.aria-expanded]="menuOpen()"
           aria-controls="mobile-menu"
           aria-label="Toggle navigation menu"
           (click)="toggleMenu(); $event.stopPropagation()"
         >
           @if (!menuOpen()) {
-          <iconify-icon icon="lucide:menu" class="text-text-secondary" width="24" height="24" />
+            <iconify-icon
+              icon="lucide:menu"
+              class="text-text-secondary"
+              width="24"
+              height="24"
+              aria-hidden="true"
+            />
           } @else {
-          <iconify-icon icon="lucide:x" class="text-text-secondary" width="24" height="24" />
+            <iconify-icon
+              icon="lucide:x"
+              class="text-text-secondary"
+              width="24"
+              height="24"
+              aria-hidden="true"
+            />
           }
         </button>
       </div>
     </div>
 
+    <!-- Mobile navigation -->
     @if (menuOpen()) {
-    <div id="mobile-menu" class="border-t mt-2 border-glass-border-soft px-4 pb-4 pt-2 md:hidden">
-      <nav class="flex flex-col" aria-label="Mobile navigation">
-        @for (link of navLinks; track link.fragment) {
-        <a
-          [href]="'#' + link.fragment"
-          class="mobile-nav-link"
-          (click)="goToSection(link.fragment, $event)"
-        >
-          {{ link.label }}
-        </a>
-        }
-
-        <a routerLink="/dashboard" class="mobile-nav-link" (click)="closeMenu()">
-          {{ authService.isAuthenticated() ? 'Dashboard' : 'Login' }}
-        </a>
-      </nav>
-
-      <a
-        routerLink="/plans"
-        class="mt-2 flex w-full items-center justify-center rounded-[9px] border border-glass-border bg-glass-fill-strong px-4 py-2.5 text-[0.85rem] font-medium text-text-primary transition-colors hover:bg-glass-fill"
-        (click)="closeMenu()"
+      <div
+        id="mobile-menu"
+        class="mt-2 border-t border-glass-border-soft
+               px-4 pb-4 pt-2 md:hidden"
       >
-        Get Started
-      </a>
-    </div>
+        <nav
+          class="flex flex-col"
+          aria-label="Mobile navigation"
+        >
+          @for (link of navLinks; track link.fragment) {
+            <a
+              [href]="'#' + link.fragment"
+              class="mobile-nav-link"
+              (click)="goToSection(link.fragment, $event)"
+            >
+              {{ link.label }}
+            </a>
+          }
+
+          <a
+            routerLink="/dashboard"
+            class="mobile-nav-link"
+            (click)="closeMenu()"
+          >
+            {{ authService.isAuthenticated() ? 'Dashboard' : 'Login' }}
+          </a>
+        </nav>
+
+        <!-- Get Started: mobile -->
+        @if (!authService.isAuthenticated()) {
+          <a
+            routerLink="/plans"
+            class="mt-2 flex w-full items-center
+                   justify-center rounded-[9px]
+                   border border-glass-border
+                   bg-glass-fill-strong px-4 py-2.5
+                   text-[0.85rem] font-medium text-text-primary
+                   transition-colors hover:bg-glass-fill"
+            (click)="closeMenu()"
+          >
+            Get Started
+          </a>
+        }
+      </div>
     }
   </div>
 </header>

@@ -1,609 +1,191 @@
+
 <div class="min-h-screen bg-bg-base text-text-primary">
-
   <div class="flex min-h-screen">
-
-    <!-- ================================================================
-         Mobile Overlay
-         ================================================================ -->
+    <!-- Mobile overlay -->
     @if (mobileMenuOpen) {
       <button
         type="button"
         aria-label="Close navigation"
-        class="
-          fixed inset-0 z-[110]
-          bg-black/40
-          backdrop-blur-[2px]
-          lg:hidden
-        "
+        class="fixed inset-0 z-[110] bg-black/40 backdrop-blur-[2px] lg:hidden"
         (click)="closeMobileMenu()"
       ></button>
     }
 
-
-    <!-- ================================================================
-         Sidebar
-         ================================================================ -->
+    <!-- Sidebar -->
     <aside
-      class="
-        fixed inset-y-0 left-0 z-[120]
-        flex h-screen w-64 shrink-0 flex-col
-        overflow-hidden
-        border-r border-glass-border-soft
-        bg-bg-elev
-        transition-transform duration-300 ease-out
-        lg:sticky lg:top-0
-        lg:z-auto
-        lg:translate-x-0
-      "
+      id="dashboard-sidebar"
+      class="fixed inset-y-0 left-0 z-[120] flex h-screen w-64 shrink-0 flex-col overflow-hidden border-r border-glass-border-soft bg-bg-elev transition-transform duration-300 ease-out lg:sticky lg:top-0 lg:z-auto lg:translate-x-0"
       [class.-translate-x-full]="!mobileMenuOpen"
       [class.translate-x-0]="mobileMenuOpen"
     >
-
-      <!-- ============================================================
-           Sidebar Logo
-           ============================================================ -->
+      <!-- Brand -->
       <div
-        class="
-          flex h-16 shrink-0 items-center justify-between
-          border-b border-glass-border-soft
-          px-5
-        "
+        class="flex h-16 shrink-0 items-center justify-between border-b border-glass-border-soft px-5"
       >
-
-        <div class="flex items-center gap-3">
-
-          <div class="flex h-8 w-8 items-center justify-center">
-
-
+        <a
+          routerLink="/dashboard"
+          class="flex min-w-0 items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-accent-1"
+          aria-label="Sivaxi dashboard home"
+          (click)="closeMobileMenu()"
+        >
+          <div
+            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-glass-border-soft bg-glass-fill-strong text-sm font-bold text-accent"
+          >
+            S
           </div>
 
-          <div>
-            <h1 class="text-sm font-semibold text-text-primary">
-              Sivaxi
-            </h1>
-
-            <p class="text-[11px] text-text-muted">
+          <div class="min-w-0">
+            <h1 class="text-sm font-semibold text-text-primary">Sivaxi</h1>
+            <p class="truncate text-[11px] text-text-muted">
               Portfolio Management
             </p>
           </div>
+        </a>
 
-        </div>
-
-
-        <!-- Mobile Close -->
         <button
           type="button"
-          class="
-            rounded-lg p-2
-            text-text-muted
-            transition
-            hover:bg-glass-fill
-            hover:text-text-primary
-            lg:hidden
-          "
+          class="rounded-lg p-2 text-text-muted transition hover:bg-glass-fill hover:text-text-primary focus-visible:outline-2 focus-visible:outline-accent-1 lg:hidden"
           aria-label="Close navigation"
           (click)="closeMobileMenu()"
         >
-          ✕
+          <iconify-icon
+            icon="lucide:x"
+            width="18"
+            height="18"
+            aria-hidden="true"
+          />
         </button>
-
       </div>
 
-
-      <!-- ============================================================
-           Navigation
-           ============================================================ -->
+      <!-- Data-driven navigation -->
       <nav
-        class="
-          min-h-0
-          flex-1
-          overflow-y-auto
-          overflow-x-hidden
-          p-3
-        "
+        class="min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-3"
+        aria-label="Dashboard navigation"
       >
-
-        <!-- ==========================================================
-             General
-             ========================================================== -->
-        <p
-          class="
-            px-3 pb-2 pt-3
-            text-[11px]
-            font-medium
-            uppercase
-            tracking-[0.12em]
-            text-text-faint
-          "
-        >
-          General
-        </p>
-
-
-        <!-- Overview -->
-        <a [routerLink]="['/portfolio', authService.getUsername()]"
-          routerLinkActive="bg-glass-fill-strong text-text-primary"
-          [routerLinkActiveOptions]="{ exact: true }"
-          (click)="closeMobileMenu()"
-          class="
-            mb-1
-            flex items-center gap-3
-            rounded-lg
-            px-3 py-2.5
-            text-sm
-            text-text-muted
-            transition
-            hover:bg-glass-fill
-            hover:text-text-primary
-          "
-        >
-          <span class="w-5 text-center">
-            ⌂
-          </span>
-
-          <span>
-            Overview
-          </span>
-        </a>
-
-
-        <!-- ==========================================================
-             Portfolio
-             ========================================================== -->
-        <p
-          class="
-            px-3 pb-2 pt-6
-            text-[11px]
-            font-medium
-            uppercase
-            tracking-[0.12em]
-            text-text-faint
-          "
-        >
-          Portfolio
-        </p>
-
-
-        <!-- Profile -->
-        <a
-          routerLink="/dashboard/profile"
-          routerLinkActive="bg-glass-fill-strong text-text-primary"
-          (click)="closeMobileMenu()"
-          class="
-            mb-1
-            flex items-center gap-3
-            rounded-lg
-            px-3 py-2.5
-            text-sm
-            text-text-muted
-            transition
-            hover:bg-glass-fill
-            hover:text-text-primary
-          "
-        >
-          <span class="w-5 text-center">
-            ◎
-          </span>
-
-          <span>
-            Profile
-          </span>
-        </a>
-
-
-        <!-- About -->
-        <a
-          routerLink="/dashboard/about"
-          routerLinkActive="bg-glass-fill-strong text-text-primary"
-          (click)="closeMobileMenu()"
-          class="
-            mb-1
-            flex items-center gap-3
-            rounded-lg
-            px-3 py-2.5
-            text-sm
-            text-text-muted
-            transition
-            hover:bg-glass-fill
-            hover:text-text-primary
-          "
-        >
-          <span class="w-5 text-center">
-            i
-          </span>
-
-          <span>
-            About
-          </span>
-        </a>
-
-
-        <!-- ==========================================================
-             Content
-             ========================================================== -->
-        <p
-          class="
-            px-3 pb-2 pt-6
-            text-[11px]
-            font-medium
-            uppercase
-            tracking-[0.12em]
-            text-text-faint
-          "
-        >
-          Content
-        </p>
-
-
-        <!-- Projects -->
-        <a
-          routerLink="/dashboard/projects"
-          routerLinkActive="bg-glass-fill-strong text-text-primary"
-          (click)="closeMobileMenu()"
-          class="
-            mb-1
-            flex items-center gap-3
-            rounded-lg
-            px-3 py-2.5
-            text-sm
-            text-text-muted
-            transition
-            hover:bg-glass-fill
-            hover:text-text-primary
-          "
-        >
-          <span class="w-5 text-center">
-            ▣
-          </span>
-
-          <span>
-            Projects
-          </span>
-        </a>
-
-
-        <!-- Experience -->
-        <a
-          routerLink="/dashboard/experience"
-          routerLinkActive="bg-glass-fill-strong text-text-primary"
-          (click)="closeMobileMenu()"
-          class="
-            mb-1
-            flex items-center gap-3
-            rounded-lg
-            px-3 py-2.5
-            text-sm
-            text-text-muted
-            transition
-            hover:bg-glass-fill
-            hover:text-text-primary
-          "
-        >
-          <span class="w-5 text-center">
-            ⌁
-          </span>
-
-          <span>
-            Experience
-          </span>
-        </a>
-
-
-        <!-- Skills -->
-        <a
-          routerLink="/dashboard/skills"
-          routerLinkActive="bg-glass-fill-strong text-text-primary"
-          (click)="closeMobileMenu()"
-          class="
-            mb-1
-            flex items-center gap-3
-            rounded-lg
-            px-3 py-2.5
-            text-sm
-            text-text-muted
-            transition
-            hover:bg-glass-fill
-            hover:text-text-primary
-          "
-        >
-          <span class="w-5 text-center">
-            ◇
-          </span>
-
-          <span>
-            Skills
-          </span>
-        </a>
-
-
-        <!-- Stats -->
-        <a
-          routerLink="/dashboard/stats"
-          routerLinkActive="bg-glass-fill-strong text-text-primary"
-          (click)="closeMobileMenu()"
-          class="
-            mb-1
-            flex items-center gap-3
-            rounded-lg
-            px-3 py-2.5
-            text-sm
-            text-text-muted
-            transition
-            hover:bg-glass-fill
-            hover:text-text-primary
-          "
-        >
-          <span class="w-5 text-center">
-            ↗
-          </span>
-
-          <span>
-            Stats
-          </span>
-        </a>
-
-
-        <!-- Testimonials -->
-        <a
-          routerLink="/dashboard/testimonials"
-          routerLinkActive="bg-glass-fill-strong text-text-primary"
-          (click)="closeMobileMenu()"
-          class="
-            mb-1
-            flex items-center gap-3
-            rounded-lg
-            px-3 py-2.5
-            text-sm
-            text-text-muted
-            transition
-            hover:bg-glass-fill
-            hover:text-text-primary
-          "
-        >
-          <span class="w-5 text-center">
-            ❝
-          </span>
-
-          <span>
-            Testimonials
-          </span>
-        </a>
-
-
-        <!-- Contacts -->
-        <a
-          routerLink="/dashboard/contacts"
-          routerLinkActive="bg-glass-fill-strong text-text-primary"
-          (click)="closeMobileMenu()"
-          class="
-            mb-1
-            flex items-center gap-3
-            rounded-lg
-            px-3 py-2.5
-            text-sm
-            text-text-muted
-            transition
-            hover:bg-glass-fill
-            hover:text-text-primary
-          "
-        >
-          <span class="w-5 text-center">
-            ✉
-          </span>
-
-          <span>
-            Contacts
-          </span>
-        </a>
-
-      </nav>
-
-
-      <!-- ============================================================
-           Sidebar Footer
-           ============================================================ -->
-<!-- ============================================================
-     Sidebar Footer
-     ============================================================ -->
-<div
-  class="
-    shrink-0
-    border-t
-    border-glass-border-soft
-    p-3
-  "
->
-
-  <!-- User -->
-  <div
-    class="
-      mb-3
-      flex items-center gap-3
-      rounded-xl
-      bg-glass-fill
-      p-3
-    "
-  >
-
-    <!-- Avatar -->
-    <!-- <div
-      class="
-        flex h-9 w-9 shrink-0
-        items-center justify-center
-        rounded-full
-        bg-gradient-to-br
-        from-accent-1
-        to-accent-2
-        text-xs
-        font-semibold
-        text-on-accent
-      "
-    >
-      {{ authService.username?.charAt(0)?.toUpperCase() || '?' }}
-    </div> -->
-
-
-    <!-- User Details -->
-    <!-- <div class="min-w-0 flex-1">
-
-      <p
-        class="
-          truncate
-          text-xs
-          font-medium
-          text-text-primary
-        "
-        [title]="authService.username || 'User'"
-      >
-        {{ authService.username || 'User' }}
-      </p>
-
-      <p
-        class="
-          truncate
-          text-[10px]
-          text-text-muted
-        "
-        [title]="authService.email || ''"
-      >
-        {{ authService.email || 'No email available' }}
-      </p>
-
-    </div> -->
-
-  </div>
-
-
-  <!-- Logout -->
-  <button
-    type="button"
-    (click)="logout()"
-    class="
-      flex w-full
-      items-center
-      justify-center
-      gap-2
-      rounded-lg
-      border
-      border-glass-border
-      px-3 py-2.5
-      text-sm
-      font-medium
-      text-text-muted
-      transition
-      hover:bg-glass-fill
-      hover:text-text-primary
-    "
-  >
-    <span>↪</span>
-    <span>Logout</span>
-  </button>
-
-</div>
-
-    </aside>
-
-
-    <!-- ================================================================
-         Main
-         ================================================================ -->
-    <div class="flex min-w-0 flex-1 flex-col">
-
-
-      <!-- ==============================================================
-           Header
-           ============================================================== -->
-      <header
-        class="
-          sticky top-0 z-[90]
-          flex h-16 shrink-0
-          items-center justify-between
-          border-b
-          border-glass-border-soft
-          bg-bg-elev/90
-          px-4
-          backdrop-blur-xl
-          sm:px-6
-        "
-      >
-
-        <!-- Header Left -->
-        <div
-          class="
-            flex min-w-0
-            items-center gap-3
-          "
-        >
-
-          <!-- Mobile Menu -->
-          <button
-            type="button"
-            class="
-              rounded-lg
-              p-2
-              text-text-muted
-              transition
-              hover:bg-glass-fill
-              hover:text-text-primary
-              lg:hidden
-            "
-            aria-label="Open navigation"
-            (click)="openMobileMenu()"
-          >
-            ☰
-          </button>
-
-
-          <!-- Page Title -->
-          <div class="min-w-0">
-
+        @for (group of navGroups; track group.title) {
+          <section class="mb-6">
             <h2
-              class="
-                text-sm
-                font-semibold
-                text-text-primary
-              "
+              class="px-3 pb-2 pt-3 text-[11px] font-medium uppercase tracking-[0.12em] text-text-faint"
             >
-              Dashboard
+              {{ group.title }}
             </h2>
 
-            <p
-              class="
-                hidden
-                truncate
-                text-xs
-                text-text-muted
-                sm:block
+            <div class="space-y-1">
+              @for (item of group.items; track item.route) {
+                @if (item.external) {
+                  <!-- Public portfolio preview: open in a new tab -->
+                  <a
+                    [href]="item.route"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    (click)="closeMobileMenu()"
+                    class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-sm text-text-muted transition-colors hover:bg-glass-fill hover:text-text-primary focus-visible:outline-2 focus-visible:outline-accent-1"
+                  >
+                    <iconify-icon
+                      [attr.icon]="item.icon"
+                      width="18"
+                      height="18"
+                      aria-hidden="true"
+                    />
+                    <span>{{ item.label }}</span>
+                    <iconify-icon
+                      icon="lucide:arrow-up-right"
+                      width="14"
+                      height="14"
+                      class="ml-auto shrink-0 opacity-60"
+                      aria-hidden="true"
+                    />
+                  </a>
+                } @else {
+                  <!-- Internal dashboard navigation -->
+                  <a
+                    [routerLink]="item.route"
+                    routerLinkActive="!border-glass-border !bg-glass-fill-strong !text-text-primary"
+                    [routerLinkActiveOptions]="{
+                      exact: item.exact ?? false
+                    }"
+                    (click)="closeMobileMenu()"
+                    class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-sm text-text-muted transition-colors hover:bg-glass-fill hover:text-text-primary focus-visible:outline-2 focus-visible:outline-accent-1"
+                  >
+                    <iconify-icon
+                      [attr.icon]="item.icon"
+                      width="18"
+                      height="18"
+                      aria-hidden="true"
+                    />
+                    <span>{{ item.label }}</span>
+                  </a>
+                }
+              }
+            </div>
+          </section>
+        }
+      </nav>
+
+      <!-- Sidebar footer -->
+      <div class="shrink-0 border-t border-glass-border-soft p-3">
+        <button
+          type="button"
+          (click)="logout()"
+          class="flex w-full items-center justify-center gap-2 rounded-xl border border-glass-border-soft px-3 py-2.5 text-sm font-medium text-text-muted transition-colors hover:bg-glass-fill hover:text-text-primary focus-visible:outline-2 focus-visible:outline-accent-1"
+        >
+          <iconify-icon
+            icon="lucide:log-out"
+            width="18"
+            height="18"
+            aria-hidden="true"
+          />
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main layout -->
+    <div class="flex min-w-0 flex-1 flex-col">
+      <!-- Header -->
+      <header
+        class="sticky top-0 z-[90] flex h-16 shrink-0 items-center justify-between gap-4 border-b border-glass-border-soft bg-bg-elev/90 px-4 backdrop-blur-xl sm:px-6"
+      >
+        <div class="flex min-w-0 items-center gap-3">
+          <!-- Mobile menu -->
+          <button
+            type="button"
+            class="rounded-xl border border-glass-border-soft bg-glass-fill px-2.5 py-2 text-text-muted transition hover:text-text-primary focus-visible:outline-2 focus-visible:outline-accent-1 lg:hidden"
+            aria-label="Open navigation"
+            aria-controls="dashboard-sidebar"
+            [attr.aria-expanded]="mobileMenuOpen"
+            (click)="openMobileMenu()"
+          >
+            <iconify-icon
+              [attr.icon]="
+                mobileMenuOpen ? 'lucide:x' : 'lucide:menu'
               "
-            >
+              width="20"
+              height="20"
+              aria-hidden="true"
+            />
+          </button>
+
+          <div class="min-w-0">
+            <h2 class="text-sm font-semibold text-text-primary">
+              Dashboard
+            </h2>
+            <p class="hidden truncate text-xs text-text-muted sm:block">
               Manage your portfolio
             </p>
-
           </div>
-
         </div>
 
-
+        <!-- Header actions -->
+        <div class="flex shrink-0 items-center gap-2">
+          <lib-theme />
+        </div>
       </header>
 
-
-      <!-- ==============================================================
-           Page Content
-           ============================================================== -->
-      <main
-        class="
-          min-w-0
-          flex-1
-          p-4
-          sm:p-6
-          lg:p-8
-        "
-      >
+      <!-- Routed page content -->
+      <main class="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
         <router-outlet />
       </main>
-
     </div>
-
   </div>
-
 </div>

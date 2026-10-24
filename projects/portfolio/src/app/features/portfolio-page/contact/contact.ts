@@ -1,4 +1,9 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, input } from '@angular/core';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  input,
+  signal,
+} from '@angular/core';
 import { IconRenderer } from '../../../shared/components/icon/icon-renderer/icon-renderer';
 
 @Component({
@@ -11,6 +16,8 @@ import { IconRenderer } from '../../../shared/components/icon/icon-renderer/icon
 export class Contact {
   readonly contactsData = input<any | undefined>(undefined);
 
+  readonly copiedContact = signal<string | null>(null);
+
   sendMessage(data: any) {}
 
   async copyContact(link: string): Promise<void> {
@@ -18,9 +25,16 @@ export class Contact {
 
     try {
       await navigator.clipboard.writeText(value);
+
+      this.copiedContact.set(link);
+
+      setTimeout(() => {
+        if (this.copiedContact() === link) {
+          this.copiedContact.set(null);
+        }
+      }, 1500);
     } catch {
       // Clipboard access may be unavailable in insecure contexts.
-      // The visible contact link remains selectable and usable.
     }
   }
 }

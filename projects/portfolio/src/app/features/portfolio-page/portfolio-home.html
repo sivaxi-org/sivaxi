@@ -11,29 +11,41 @@
     loop
     playsinline
     preload="auto"
-    class="fixed inset-0  h-full w-full object-cover"
+    class="fixed inset-0 h-full w-full object-cover"
   ></video>
 
   <div class="relative">
-
     <app-hero
       [portfolioData]="portfolio()?.portfolioData"
       [contacts]="portfolio()?.contactsData?.contacts ?? []"
       [stats]="portfolio()?.statsData?.stats ?? []"
     />
 
-    <app-skills [skillsData]="portfolio()?.skillsData.categories"></app-skills>
-    <app-work [username]="username" [projectsData]="portfolio()?.projectsData"></app-work>
+    <app-skills [skillsData]="portfolio()?.skillsData.categories" />
+
+    <app-work
+      [username]="username"
+      [projectsData]="portfolio()?.projectsData"
+    />
+
     <app-experience [experienceData]="portfolio()?.experienceData" />
-    <app-blog></app-blog>
-    <app-testimonials [testimonialsData]="portfolio()?.testimonialsData"></app-testimonials>
+
+    <app-blog />
+
+    <app-testimonials
+      [testimonialsData]="portfolio()?.testimonialsData"
+    />
+
     <app-about
       [portfolioData]="portfolio()?.portfolioData"
       [aboutData]="portfolio()?.aboutData"
     />
-    <app-contact [contactsData]="portfolio()?.contactsData"></app-contact>
-    <app-footer></app-footer>
 
+    <app-contact [contactsData]="portfolio()?.contactsData" />
+
+    <app-footer
+      [portfolioData]="portfolio()?.portfolioData"
+      [contacts]="portfolio()?.contactsData?.contacts ?? []"
+    />
   </div>
-
 </div>
