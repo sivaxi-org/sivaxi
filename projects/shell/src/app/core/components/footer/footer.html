@@ -1,10 +1,10 @@
 
 <footer class="border-t border-border bg-bg">
   <div class="mx-auto max-w-6xl px-5">
-
     <!-- Main footer -->
-    <div class="grid grid-cols-1 gap-10 py-12 sm:grid-cols-2 sm:gap-12 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:py-16">
-
+    <div
+      class="grid grid-cols-1 gap-10 py-12 sm:grid-cols-2 sm:gap-12 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:py-16"
+    >
       <!-- Brand -->
       <div class="max-w-sm">
         <a
@@ -13,11 +13,11 @@
           aria-label="Sivaxi home"
         >
           <img
-                   [src]="
-          themeService.isDark()
-            ? branding().logos.primaryHorizontalLight
-            : branding().logos.primaryHorizontalDark
-        "
+            [src]="
+              themeService.isDark()
+                ? branding().logos.primaryHorizontalLight
+                : branding().logos.primaryHorizontalDark
+            "
             alt="Sivaxi"
             class="h-8 w-auto"
           />
@@ -29,7 +29,7 @@
         </p>
 
         <a
-          href="https://github.com/sivaxi-org/sivaxi"
+          href="https://github.com/ajaymalah"
           target="_blank"
           rel="noopener noreferrer"
           class="mt-6 inline-flex min-h-10 items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-primary transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
@@ -52,9 +52,7 @@
 
       <!-- Explore -->
       <nav aria-label="Explore Sivaxi">
-        <h2 class="text-sm font-semibold text-primary">
-          Explore
-        </h2>
+        <h2 class="text-sm font-semibold text-primary">Explore</h2>
 
         <ul class="mt-5 space-y-3">
           <li>
@@ -82,9 +80,7 @@
 
       <!-- Products -->
       <nav aria-label="Sivaxi products">
-        <h2 class="text-sm font-semibold text-primary">
-          Products
-        </h2>
+        <h2 class="text-sm font-semibold text-primary">Products</h2>
 
         <ul class="mt-5 space-y-3">
           <li>
@@ -124,43 +120,104 @@
 
       <!-- Connect -->
       <div>
-        <h2 class="text-sm font-semibold text-primary">
-          Connect
-        </h2>
+        <h2 class="text-sm font-semibold text-primary">Connect</h2>
 
         <p class="mt-5 text-sm leading-6 text-muted">
-          Follow the engineering journey and explore what's being built.
+          Have a question or want to connect? Reach out through any of these channels.
         </p>
 
-        <div class="mt-4 flex flex-wrap gap-3">
-          <a
-            href="https://github.com/sivaxi-org/sivaxi"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Sivaxi on GitHub"
-            class="flex h-10 w-10 items-center justify-center rounded-xl border border-border text-muted transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
-          >
-            <iconify-icon icon="lucide:github" width="19" height="19" aria-hidden="true"></iconify-icon>
-          </a>
+        <ul class="mt-5 space-y-4">
+          <!-- Email -->
+          <li>
+            <a
+              href="mailto:ajaymalah.2003@gmail.com"
+              class="group inline-flex items-center gap-3 text-sm text-muted transition-colors hover:text-accent"
+            >
+              <iconify-icon
+                icon="lucide:mail"
+                width="18"
+                height="18"
+                aria-hidden="true"
+                class="shrink-0"
+              ></iconify-icon>
+              <span class="break-all">ajaymalah.2003@gmail.com</span>
+            </a>
+          </li>
 
-          <!-- Replace with the official Sivaxi LinkedIn URL when available -->
-          <a
-            href="https://www.linkedin.com/in/ajaymalah"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Sivaxi on LinkedIn"
-            class="flex h-10 w-10 items-center justify-center rounded-xl border border-border text-muted transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
-          >
-            <iconify-icon icon="lucide:linkedin" width="19" height="19" aria-hidden="true"></iconify-icon>
-          </a>
-        </div>
+          <!-- Phone -->
+          <li>
+            <a
+              href="tel:+917489463450"
+              class="inline-flex items-center gap-3 text-sm text-muted transition-colors hover:text-accent"
+            >
+              <iconify-icon
+                icon="lucide:phone"
+                width="18"
+                height="18"
+                aria-hidden="true"
+                class="shrink-0"
+              ></iconify-icon>
+              <span>+91 74894 63450</span>
+            </a>
+          </li>
+
+          <!-- GitHub -->
+          <li>
+            <a
+              href="https://github.com/ajaymalah"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-3 text-sm text-muted transition-colors hover:text-accent"
+            >
+              <iconify-icon
+                icon="lucide:github"
+                width="18"
+                height="18"
+                aria-hidden="true"
+                class="shrink-0"
+              ></iconify-icon>
+              <span>GitHub</span>
+              <iconify-icon
+                icon="lucide:arrow-up-right"
+                width="13"
+                height="13"
+                aria-hidden="true"
+              ></iconify-icon>
+            </a>
+          </li>
+
+          <!-- LinkedIn -->
+          <li>
+            <a
+              href="https://www.linkedin.com/in/ajaymalah"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-3 text-sm text-muted transition-colors hover:text-accent"
+            >
+              <iconify-icon
+                icon="lucide:linkedin"
+                width="18"
+                height="18"
+                aria-hidden="true"
+                class="shrink-0"
+              ></iconify-icon>
+              <span>LinkedIn</span>
+              <iconify-icon
+                icon="lucide:arrow-up-right"
+                width="13"
+                height="13"
+                aria-hidden="true"
+              ></iconify-icon>
+            </a>
+          </li>
+        </ul>
       </div>
-
     </div>
 
     <!-- Bottom bar -->
-    <div class="flex flex-col gap-4 border-t border-border py-6 sm:flex-row sm:items-center sm:justify-between">
-
+    <div
+      class="flex flex-col gap-4 border-t border-border py-6 sm:flex-row sm:items-center sm:justify-between"
+    >
       <p class="text-xs leading-5 text-muted">
         © {{ currentYear }} Sivaxi. Built with purpose.
       </p>
@@ -193,7 +250,6 @@
           ></iconify-icon>
         </a>
       </div>
-
     </div>
   </div>
 </footer>
