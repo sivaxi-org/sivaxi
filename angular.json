@@ -1,3 +1,4 @@
+
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
@@ -248,11 +249,13 @@
             }
           },
           "defaultConfiguration": "development",
-  "options": {
-    "port": 4200,
-    "host": "0.0.0.0",
-    "allowedHosts": ["ai.sivaxi.test"]
-  }
+          "options": {
+            "port": 4200,
+            "host": "0.0.0.0",
+            "allowedHosts": [
+              "ai.sivaxi.test"
+            ]
+          }
         }
       }
     },
@@ -266,9 +269,6 @@
           "skipTests": true
         },
         "@schematics/angular:directive": {
-          "skipTests": true
-        },
-        "@schematics/angular:guard": {
           "skipTests": true
         },
         "@schematics/angular:interceptor": {
@@ -403,98 +403,6 @@
           "options": {
             "tsConfig": "projects/shared/tsconfig.spec.json"
           }
-        }
-      }
-    },
-    "auth": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:class": {
-          "skipTests": true
-        },
-        "@schematics/angular:component": {
-          "skipTests": true
-        },
-        "@schematics/angular:directive": {
-          "skipTests": true
-        },
-        "@schematics/angular:guard": {
-          "skipTests": true
-        },
-        "@schematics/angular:interceptor": {
-          "skipTests": true
-        },
-        "@schematics/angular:pipe": {
-          "skipTests": true
-        },
-        "@schematics/angular:resolver": {
-          "skipTests": true
-        },
-        "@schematics/angular:service": {
-          "skipTests": true
-        }
-      },
-      "root": "projects/auth",
-      "sourceRoot": "projects/auth/src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular/build:application",
-          "options": {
-            "browser": "projects/auth/src/main.ts",
-            "tsConfig": "projects/auth/tsconfig.app.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/auth/public"
-              }
-            ],
-            "styles": [
-              "projects/auth/src/styles.css"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve": {
-          "builder": "@angular/build:dev-server",
-          "options": {
-            "host": "0.0.0.0",
-            "port": 4203,
-            "allowedHosts": [
-              "auth.sivaxi.test"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "auth:build:production"
-            },
-            "development": {
-              "buildTarget": "auth:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
         }
       }
     }

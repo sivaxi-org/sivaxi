@@ -6,7 +6,7 @@ import { ThemeService } from '../theme/theme-service';
 @Component({
   selector: 'sivaxi-not-found',
   standalone: true,
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './not-found.html' ,
 })
 export class NotFoundComponent {

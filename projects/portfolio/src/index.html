@@ -1,13 +1,113 @@
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Portfolio</title>
+
+    <title>Developer Portfolio | Sivaxi</title>
+
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="Explore software engineering projects, technical skills, and development work through the Sivaxi developer portfolio."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Sivaxi" />
+    <meta name="application-name" content="Sivaxi Portfolio" />
+    <meta name="theme-color" content="#111318" />
+
+    <!-- Canonical -->
+    <link
+      rel="canonical"
+      href="https://portfolio.sivaxi.com/"
+    />
+
+    <!-- Favicons -->
+    <link
+      id="app-favicon"
+      rel="icon"
+      type="image/x-icon"
+      href="/primary_icon_dark.ico"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Sivaxi Portfolio" />
+    <meta
+      property="og:title"
+      content="Developer Portfolio | Sivaxi"
+    />
+    <meta
+      property="og:description"
+      content="Explore software projects, technical skills, and development work from Sivaxi."
+    />
+    <meta
+      property="og:url"
+      content="https://portfolio.sivaxi.com/"
+    />
+
+    <!-- Social sharing -->
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="Developer Portfolio | Sivaxi"
+    />
+    <meta
+      name="twitter:description"
+      content="Software engineering projects, technical skills, and development work from Sivaxi."
+    />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Sivaxi Portfolio",
+        "url": "https://portfolio.sivaxi.com/",
+        "description": "A portfolio showcasing software engineering projects, technical skills, and development work."
+      }
+    </script>
+
+    <!-- Iconify -->
+    <script
+      src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"
+    ></script>
+
+    <!-- Apply saved theme before Angular starts -->
+    <script>
+      (() => {
+        const match = document.cookie.match(
+          /(?:^|;\s*)sivaxi-theme=(dark|light)(?:;|$)/,
+        );
+
+        const theme = match ? match[1] : 'dark';
+        const root = document.documentElement;
+
+        root.setAttribute('data-theme', theme);
+
+        const favicon = document.getElementById('app-favicon');
+        if (favicon) {
+          favicon.href =
+            theme === 'dark'
+              ? '/primary_icon_dark.ico'
+              : '/primary_icon_light.ico';
+        }
+
+        const themeColor = document.querySelector(
+          'meta[name="theme-color"]',
+        );
+
+        if (themeColor) {
+          themeColor.content =
+            theme === 'dark' ? '#111318' : '#F4F2ED';
+        }
+      })();
+    </script>
   </head>
+
   <body>
     <app-root></app-root>
   </body>

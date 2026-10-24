@@ -22,6 +22,11 @@ export const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule('portfolio', './Routes').then((m) => m.routes),
   },
+    {
+    path: 'auth',
+    loadChildren: () =>
+      loadRemoteModule('auth', './Routes').then((m) => m.routes),
+  },
 {
   path: '**',
   component: NotFoundComponent
