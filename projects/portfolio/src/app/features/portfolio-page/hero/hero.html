@@ -1,5 +1,7 @@
-<section class="relative overflow-hidden pt-[172px] px-5 sm:px-10 lg:px-20 pb-16">
-  <div class="relative max-w-6xl mx-auto">
+
+<section class="relative overflow-hidden px-5 pb-16 pt-32 sm:px-10 sm:pb-20 sm:pt-40 lg:px-20">
+  <div class="relative mx-auto max-w-6xl">
+
     <!-- Decorative code mark -->
     <svg
       aria-hidden="true"
@@ -9,7 +11,7 @@
       stroke-width="1"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="pointer-events-none absolute z-0 text-text-primary opacity-[0.05] -right-4 md:-right-8 top-1/2 -translate-y-[56%] w-[240px] md:w-[340px] lg:w-[440px] h-auto"
+      class="pointer-events-none absolute -right-4 top-1/2 z-0 h-auto w-48 -translate-y-1/2 text-text-primary opacity-[0.04] sm:w-72 lg:-right-8 lg:w-[400px]"
     >
       <polyline points="16 18 22 12 16 6" />
       <polyline points="8 6 2 12 8 18" />
@@ -17,104 +19,106 @@
 
     <!-- Social rail -->
     @if (contacts().length) {
-    <div
-      class="anim-reveal animate-reveal [animation-delay:0.5s] opacity-0 hidden lg:flex flex-col items-center gap-3 absolute right-8 xl:right-12 top-1/2 -translate-y-1/2 z-[2]"
-    >
-      <span class="w-px h-[34px] bg-glass-border"></span>
-
-      @for (contact of contacts(); track contact.id) {
-
-      <a
-        [href]="contact.link"
-        [attr.aria-label]="contact.title"
-        [attr.target]="contact.link.startsWith('http') ? '_blank' : null"
-        [attr.rel]="contact.link.startsWith('http') ? 'noopener noreferrer' : null"
-        class="relative group w-9 h-9 rounded-full flex items-center justify-center text-text-muted transition-all duration-200 hover:text-text-primary hover:bg-glass-fill-strong hover:-translate-y-0.5"
+      <div
+        class="anim-reveal animate-reveal [animation-delay:0.5s] absolute right-0 top-1/2 z-[2] hidden -translate-y-1/2 flex-col items-center gap-3 opacity-0 lg:flex xl:right-4"
       >
-        @if (contact.icon) {
-        <app-icon [svg]="contact.icon"></app-icon>
-        } @else {
-        <span
-          class="w-6 h-6 lg:w-9 lg:h-9 rounded-lg border border-glass-border flex items-center justify-center font-semibold text-[0.65rem] lg:text-[0.82rem] uppercase text-text-primary"
-        >
-          {{ contact.title.charAt(0).toUpperCase() }}
-        </span>
+        <span class="h-8 w-px bg-glass-border"></span>
+
+        @for (contact of contacts(); track contact.id) {
+          <a
+            [href]="contact.link"
+            [attr.aria-label]="contact.title"
+            [attr.target]="contact.link.startsWith('http') ? '_blank' : null"
+            [attr.rel]="contact.link.startsWith('http') ? 'noopener noreferrer' : null"
+            class="group relative flex h-10 w-10 items-center justify-center rounded-full text-text-muted transition-colors duration-200 hover:bg-glass-fill-strong hover:text-accent"
+          >
+            @if (contact.icon) {
+              <app-icon [svg]="contact.icon"></app-icon>
+            } @else {
+              <span class="text-xs font-semibold uppercase">
+                {{ contact.title.charAt(0) }}
+              </span>
+            }
+
+            <span
+              class="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-md bg-neutral-900 px-2.5 py-1.5 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100"
+            >
+              {{ contact.title }}
+            </span>
+          </a>
         }
 
-        <span
-          class="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 whitespace-nowrap rounded-md bg-neutral-900 px-2 py-1 text-[0.68rem] font-medium text-white opacity-0 scale-95 transition-all duration-150 group-hover:opacity-100 group-hover:scale-100 z-50"
-        >
-          {{ contact.title }}
-          <span
-            class="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-4 border-transparent border-t-neutral-900"
-          ></span>
-        </span>
-      </a>
-      }
-
-      <span class="w-px h-[34px] bg-glass-border"></span>
-    </div>
+        <span class="h-8 w-px bg-glass-border"></span>
+      </div>
     }
 
     <!-- Hero content -->
-    <div class="relative z-[1] max-w-[680px] mx-auto lg:mx-0 text-center lg:text-left">
-      <!-- Identity -->
+    <div class="relative z-[1] mx-auto max-w-[760px] text-center lg:mx-0 lg:text-left">
+
+      <!-- Name -->
       @if (portfolioData()?.displayName) {
-      <span
-        class="anim-reveal animate-reveal [animation-delay:0.05s] opacity-0 inline-flex items-center gap-2 font-mono text-[0.74rem] tracking-[0.1em] uppercase text-text-faint"
-      >
-        <span class="w-1.5 h-1.5 rounded-full bg-text-primary"></span>
-        {{ portfolioData()?.displayName }}
-      </span>
+        <div
+          class="anim-reveal animate-reveal [animation-delay:0.05s] mb-6 inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.16em] text-text-faint opacity-0"
+        >
+          <span class="h-px w-7 bg-accent"></span>
+          {{ portfolioData()?.displayName }}
+        </div>
       }
 
       <!-- Headline -->
       @if (portfolioData()?.headline; as headline) {
-      <h1
-        class="anim-reveal animate-reveal [animation-delay:0.15s] opacity-0 mt-5 mx-auto lg:mx-0 max-w-[17ch] text-[clamp(2.2rem,5.6vw,3.7rem)] font-bold leading-[1.1] tracking-[-0.03em]"
-      >
-        <span class="text-accent">
-          {{ headline.split('·')[0].trim() }}
-        </span>
+        <h1
+          class="anim-reveal animate-reveal [animation-delay:0.15s] mx-auto mt-1 max-w-[19ch] text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-[1.1] tracking-[-0.035em] opacity-0 lg:mx-0"
+        >
+          <span class="text-accent">
+            {{ headline.split('·')[0].trim() }}
+          </span>
 
-        @if (headline.split('·')[1]; as secondPart) {
-        <span class="text-text-primary">
-          {{ secondPart.trim() }}
-        </span>
-        }
-      </h1>
+          @if (headline.split('·')[1]; as secondPart) {
+            <span class="text-text-primary">
+              {{ secondPart.trim() }}
+            </span>
+          }
+        </h1>
       }
 
       <!-- Bio -->
       @if (portfolioData()?.bio) {
-      <p
-        class="anim-reveal animate-reveal [animation-delay:0.28s] opacity-0 mt-[18px] mx-auto lg:mx-0 max-w-[48ch] text-text-muted text-[1.02rem] leading-relaxed"
-      >
-        {{ portfolioData()?.bio }}
-      </p>
+        <div
+          class="anim-reveal animate-reveal [animation-delay:0.28s] mx-auto mt-7 flex max-w-[540px] gap-3.5 text-left opacity-0 lg:mx-0"
+        >
+          <span
+            aria-hidden="true"
+            class="mt-1.5 w-0.5 shrink-0 self-stretch rounded-full bg-accent/60"
+          ></span>
+
+          <p class="text-[0.95rem] leading-7 text-text-muted sm:text-base sm:leading-7">
+            {{ portfolioData()?.bio }}
+          </p>
+        </div>
       }
 
       <!-- CTA -->
       <div
-        class="anim-reveal animate-reveal [animation-delay:0.4s] opacity-0 mt-[34px] flex justify-center lg:justify-start"
+        class="anim-reveal animate-reveal [animation-delay:0.4s] mt-9 flex flex-wrap items-center justify-center gap-4 opacity-0 lg:justify-start"
       >
         <a
           href="#work"
-          class="group inline-flex items-center gap-2 bg-text-primary text-bg-base px-6 py-3.5 rounded-full text-[0.92rem] font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(0,0,0,0.15)]"
+          class="group inline-flex items-center gap-3 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(61,140,120,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
-          View my work
+          Explore my work
 
           <svg
-            class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2.4"
+            stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            <path d="M7 17 17 7" />
-            <path d="M7 7h10v10" />
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
           </svg>
         </a>
       </div>
@@ -122,7 +126,9 @@
 
     <!-- Stats -->
     @if (stats().length) {
-    <app-stats [stats]="stats()" />
+      <div class="relative z-[1] mt-16 sm:mt-20">
+        <app-stats [stats]="stats()" />
+      </div>
     }
   </div>
 </section>
