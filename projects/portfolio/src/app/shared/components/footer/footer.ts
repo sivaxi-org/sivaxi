@@ -1,11 +1,12 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, input, signal } from '@angular/core';
 import { ContactDto } from '../../../features/dashboard/contact/contact-service';
 import { ProfileResponse } from '../../../features/dashboard/portfolio/portfolio-service';
+import { IconRenderer } from '../icon/icon-renderer/icon-renderer';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [],
+  imports: [IconRenderer],
   templateUrl: './footer.html',
   styleUrl: './footer.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
