@@ -1,15 +1,16 @@
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Sivaxi | SaaS Products &amp; Custom Software Development</title>
+    <title>Sivaxi — Independent Technology Brand</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Primary SEO -->
+    <!-- Root domain SEO -->
     <meta
       name="description"
-      content="Sivaxi builds SaaS products and delivers custom software development services. Explore AI assistants, agentic AI, web applications, backend systems, API integrations, cloud solutions, and scalable software engineering."
+      content="Sivaxi is an independent technology brand focused on building software products and practical digital solutions through thoughtful engineering."
     />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="Sivaxi" />
@@ -19,19 +20,24 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://sivaxi.com/" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Theme-aware favicon -->
+    <link
+      id="app-favicon"
+      rel="icon"
+      type="image/x-icon"
+      href="primary_icon_dark.ico"
+    />
 
-    <!-- Open Graph / Social Sharing -->
+    <!-- Open Graph: Root domain -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Sivaxi" />
     <meta
       property="og:title"
-      content="Sivaxi | SaaS Products &amp; Custom Software Development"
+      content="Sivaxi — Independent Technology Brand"
     />
     <meta
       property="og:description"
-      content="Building SaaS products and delivering custom software solutions in AI, web development, backend engineering, API integration, and cloud infrastructure."
+      content="Discover Sivaxi, an independent technology brand creating software products and practical digital solutions."
     />
     <meta property="og:url" content="https://sivaxi.com/" />
     <meta property="og:locale" content="en_IN" />
@@ -40,27 +46,28 @@
     <meta name="twitter:card" content="summary" />
     <meta
       name="twitter:title"
-      content="Sivaxi | SaaS Products &amp; Custom Software Development"
+      content="Sivaxi — Independent Technology Brand"
     />
     <meta
       name="twitter:description"
-      content="Explore Sivaxi's SaaS products, AI solutions, and custom software development services."
+      content="Sivaxi builds software products and digital solutions through thoughtful engineering."
     />
 
-    <!-- Structured data -->
+    <!-- Structured data: Organization -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "Sivaxi",
         "url": "https://sivaxi.com/",
-        "description": "Sivaxi builds SaaS products and provides custom software development services, including AI solutions, web applications, backend systems, API integrations, and cloud engineering."
+        "description": "An independent technology brand focused on software products and digital solutions."
       }
     </script>
 
+    <!-- Iconify -->
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 
-    <!-- Preserve the existing theme initialization -->
+    <!-- Initialize theme and favicon before Angular renders -->
     <script>
       (() => {
         const match = document.cookie.match(
@@ -68,7 +75,24 @@
         );
 
         const theme = match ? match[1] : 'dark';
+
         document.documentElement.setAttribute('data-theme', theme);
+
+        const favicon = document.getElementById('app-favicon');
+
+        if (favicon) {
+          favicon.href =
+            theme === 'dark'
+              ? 'primary_icon_dark.ico'
+              : 'primary_icon_light.ico';
+        }
+
+        document
+          .querySelector('meta[name="theme-color"]')
+          ?.setAttribute(
+            'content',
+            theme === 'dark' ? '#111318' : '#F4F2ED'
+          );
       })();
     </script>
   </head>

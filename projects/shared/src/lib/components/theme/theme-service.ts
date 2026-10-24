@@ -69,36 +69,26 @@ export class ThemeService {
   }
 
   private readCookie(): SivaxiTheme | null {
-    const match = this.document.cookie.match(
-      /(?:^|;\s*)sivaxi-theme=(dark|light)(?:;|$)/,
-    );
+    const match = this.document.cookie.match(/(?:^|;\s*)sivaxi-theme=(dark|light)(?:;|$)/);
 
-    return match?.[1] === 'light' || match?.[1] === 'dark'
-      ? match[1]
-      : null;
+    return match?.[1] === 'light' || match?.[1] === 'dark' ? match[1] : null;
   }
 
   private persistTheme(theme: SivaxiTheme): void {
-const hostname = this.document.location?.hostname ?? '';
+    const hostname = this.document.location?.hostname ?? '';
 
-const isSivaxiDomain =
-  hostname === 'sivaxi.com' ||
-  hostname.endsWith('.sivaxi.com');
+    const isSivaxiDomain = hostname === 'sivaxi.com' || hostname.endsWith('.sivaxi.com');
 
-const isLocalDomain =
-  hostname === 'sivaxi.test' ||
-  hostname.endsWith('.sivaxi.test');
+    const isLocalDomain = hostname === 'sivaxi.test' || hostname.endsWith('.sivaxi.test');
 
-const domain =
-  isSivaxiDomain || isLocalDomain
-    ? `; Domain=${isSivaxiDomain ? '.sivaxi.com' : '.sivaxi.test'}`
-    : '';
+    const domain =
+      isSivaxiDomain || isLocalDomain
+        ? `; Domain=${isSivaxiDomain ? '.sivaxi.com' : '.sivaxi.test'}`
+        : '';
 
-    const secure =
-      this.document.location?.protocol === 'https:' ? '; Secure' : '';
+    const secure = this.document.location?.protocol === 'https:' ? '; Secure' : '';
 
-    this.document.cookie =
-      `${THEME_KEY}=${theme}; Path=/; Max-Age=${MAX_AGE}; SameSite=Lax${domain}${secure}`;
+    this.document.cookie = `${THEME_KEY}=${theme}; Path=/; Max-Age=${MAX_AGE}; SameSite=Lax${domain}${secure}`;
 
     try {
       this.document.defaultView?.localStorage.setItem(THEME_KEY, theme);
@@ -109,5 +99,15 @@ const domain =
 
   private applyTheme(theme: SivaxiTheme): void {
     this.document.documentElement.setAttribute('data-theme', theme);
+
+    const favicon = this.document.querySelector<HTMLLinkElement>('#app-favicon');
+
+    if (favicon) {
+      favicon.href = theme === 'dark' ? 'primary_icon_dark.ico' : 'primary_icon_light.ico';
+    }
+
+    const themeColor = this.document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+
+    themeColor?.setAttribute('content', theme === 'dark' ? '#111318' : '#F4F2ED');
   }
 }

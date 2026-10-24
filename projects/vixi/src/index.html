@@ -1,12 +1,97 @@
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Vixi</title>
+    <title>Vixi AI — Your Intelligent AI Assistant</title>
+
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="Meet Vixi, an AI assistant by Sivaxi designed to help you explore ideas, find information, and solve problems through intelligent conversations."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Sivaxi" />
+    <meta name="application-name" content="Vixi AI" />
+    <meta name="theme-color" content="#111318" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://ai.sivaxi.com/" />
+
+    <!-- Favicons -->
+    <link
+      id="app-favicon"
+      rel="icon"
+      type="image/x-icon"
+      href="/primary_icon_dark.ico"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Vixi AI" />
+    <meta property="og:title" content="Vixi AI — Your Intelligent AI Assistant" />
+    <meta
+      property="og:description"
+      content="Explore ideas, find information, and solve problems with Vixi, the AI assistant by Sivaxi."
+    />
+    <meta property="og:url" content="https://ai.sivaxi.com/" />
+
+    <!-- Social sharing -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Vixi AI — Your Intelligent AI Assistant" />
+    <meta
+      name="twitter:description"
+      content="An intelligent AI assistant by Sivaxi for conversations, research, and problem-solving."
+    />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Vixi AI",
+        "url": "https://ai.sivaxi.com/",
+        "description": "An AI assistant by Sivaxi for intelligent conversations, information discovery, and problem-solving.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web"
+      }
+    </script>
+
+    <!-- Apply theme before Angular starts to reduce theme flash -->
+    <script>
+      (() => {
+        const match = document.cookie.match(
+          /(?:^|;\s*)sivaxi-theme=(dark|light)(?:;|$)/,
+        );
+
+        const theme = match ? match[1] : 'dark';
+        const root = document.documentElement;
+
+        root.setAttribute('data-theme', theme);
+
+        const favicon = document.getElementById('app-favicon');
+        if (favicon) {
+          favicon.href =
+            theme === 'dark'
+              ? '/primary_icon_dark.ico'
+              : '/primary_icon_light.ico';
+        }
+
+        const themeColor = document.querySelector(
+          'meta[name="theme-color"]',
+        );
+
+        if (themeColor) {
+          themeColor.content =
+            theme === 'dark' ? '#111318' : '#F4F2ED';
+        }
+      })();
+    </script>
   </head>
+
   <body>
     <app-root></app-root>
   </body>
