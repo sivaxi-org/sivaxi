@@ -1,100 +1,102 @@
-<section id="about" class="px-6 py-14">
-  <div class="max-w-6xl mx-auto">
 
+<section
+  id="about"
+  class="px-6 py-14 transition-colors duration-300"
+>
+  <div class="mx-auto max-w-6xl">
     @if (aboutData(); as about) {
-
       <div
-        class="glass-panel rounded-[22px] p-7 sm:p-9 lg:p-11
-               grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-9
-               bg-glass-fill border border-glass-border
-               backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass"
+        class="glass-panel grid grid-cols-1 gap-9
+               rounded-[22px] border border-glass-border
+               bg-glass-fill p-7 shadow-glass
+               backdrop-blur-sm backdrop-saturate-[1.4]
+               transition-colors duration-300
+               sm:p-9 lg:grid-cols-[1.3fr_1fr] lg:p-11"
       >
-
         <!-- About content -->
-        <div>
-
+        <div class="min-w-0">
           @if (about.title) {
             <h2
-              class="text-[clamp(1.5rem,3.6vw,2.2rem)]
-                     font-semibold tracking-[-0.01em] mb-7"
+              class="mb-7 text-[clamp(1.5rem,3.6vw,2.2rem)]
+                     font-semibold tracking-[-0.01em]
+                     text-text-primary"
             >
               {{ about.title }}
             </h2>
           }
 
           @if (about.contentBlocks?.length) {
-           
-
-      @for (block of about?.contentBlocks; track block.id ?? $index) {
-  <app-content-block-renderer [block]="block" />
-}
+            <div class="space-y-4 text-text-primary">
+              @for (
+                block of about.contentBlocks;
+                track block.id ?? $index
+              ) {
+                <app-content-block-renderer [block]="block" />
+              }
+            </div>
           } @else if (portfolioData()?.bio) {
-            <p
-              class="text-text-muted text-[0.98rem] leading-relaxed"
-            >
+            <p class="text-[0.98rem] leading-relaxed text-text-muted">
               {{ portfolioData()?.bio }}
             </p>
           }
-
         </div>
 
-
         <!-- Portfolio details -->
-        <div class="flex flex-col gap-5 justify-center">
-
+        <div
+          class="flex min-w-0 flex-col justify-center gap-5
+                 border-t border-glass-border pt-6
+                 md:border-l md:border-t-0 md:pl-7 md:pt-0"
+        >
           @if (portfolioData()?.displayName) {
-            <div>
+            <div class="min-w-0">
               <div
                 class="font-mono text-[0.76rem] text-text-faint"
               >
                 Name
               </div>
-
               <div
-                class="font-mono text-[0.92rem] mt-1 text-text-primary"
+                class="mt-1 break-words font-mono text-[0.92rem]
+                       text-text-primary"
               >
                 {{ portfolioData()?.displayName }}
               </div>
             </div>
           }
 
-
           @if (portfolioData()?.headline) {
-            <div>
+            <div class="min-w-0">
               <div
                 class="font-mono text-[0.76rem] text-text-faint"
               >
                 Role
               </div>
-
               <div
-                class="font-mono text-[0.92rem] mt-1 text-text-primary"
+                class="mt-1 break-words font-mono text-[0.92rem]
+                       text-text-primary"
               >
                 {{ portfolioData()?.headline }}
               </div>
             </div>
           }
 
-
           @if (portfolioData()?.siteTitle) {
-            <div>
+            <div class="min-w-0">
               <div
                 class="font-mono text-[0.76rem] text-text-faint"
               >
                 Website
               </div>
-
               <div
-                class="font-mono text-[0.92rem] mt-1 text-text-primary"
+                class="mt-1 break-words font-mono text-[0.92rem]
+                       text-text-primary"
               >
                 {{ portfolioData()?.siteTitle }}
               </div>
             </div>
           }
 
-
           @if (portfolioData()?.resumeUrl) {
-            <div>
+            <div class="min-w-0">
               <div
                 class="font-mono text-[0.76rem] text-text-faint"
               >
@@ -105,44 +107,45 @@
                 [href]="portfolioData()?.resumeUrl"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-1.5
-                       font-mono text-[0.92rem] mt-1
-                       text-text-primary underline underline-offset-4
-                       decoration-glass-border
-                       hover:opacity-70 transition-opacity"
+                class="mt-1 inline-flex items-center gap-1.5
+                       font-mono text-[0.92rem] text-text-primary
+                       underline decoration-glass-border
+                       underline-offset-4 transition-colors
+                       hover:text-accent
+                       focus-visible:outline-none
+                       focus-visible:ring-2 focus-visible:ring-accent
+                       focus-visible:ring-offset-2
+                       focus-visible:ring-offset-transparent"
               >
                 View resume
 
                 <svg
-                  class="w-3.5 h-3.5"
+                  class="h-3.5 w-3.5 shrink-0"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                   stroke-width="1.8"
                   stroke-linecap="round"
                   stroke-linejoin="round"
+                  aria-hidden="true"
                 >
                   <path d="M14 3h7v7" />
                   <path d="M10 14 21 3" />
-                  <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5" />
+                  <path
+                    d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"
+                  />
                 </svg>
               </a>
             </div>
           }
-
         </div>
-
       </div>
-
     } @else {
-
       <div
-        class="py-10 text-center text-text-faint text-sm"
+        class="py-10 text-center text-sm text-text-faint"
       >
         About information is not available.
       </div>
-
     }
-
   </div>
 </section>

@@ -1,65 +1,100 @@
-<section id="work" class="px-6 py-14">
-  <div class="max-w-6xl mx-auto">
+
+<section
+  id="work"
+  class="px-6 py-14 transition-colors duration-300"
+>
+  <div class="mx-auto max-w-6xl">
     <!-- Section heading -->
-    <div class="mb-9 flex items-baseline justify-between gap-5 flex-wrap">
-      <div>
-        <h2 class="text-[clamp(1.4rem,2.8vw,1.85rem)] font-semibold tracking-[-0.01em]">
+    <div
+      class="mb-9 flex flex-wrap items-baseline
+             justify-between gap-5"
+    >
+      <div class="min-w-0">
+        <h2
+          class="text-[clamp(1.4rem,2.8vw,1.85rem)]
+                 font-semibold tracking-[-0.01em]
+                 text-text-primary"
+        >
           Selected work
         </h2>
 
-        <p class="text-text-muted max-w-[44ch] text-[0.95rem] mt-1">
-          Projects spanning backend infrastructure, developer tooling, and production interfaces.
+        <p
+          class="mt-1 max-w-[44ch] text-[0.95rem]
+                 leading-relaxed text-text-muted"
+        >
+          Projects spanning backend infrastructure,
+          developer tooling, and production interfaces.
         </p>
       </div>
 
-      <div class="flex items-center gap-4">
-        @if (projectsData()?.projects?.length) {
-        <span class="font-mono text-[0.8rem] text-text-faint">
-          {{ projectsData()!.projects.length }}
-          {{ projectsData()!.projects.length === 1 ? 'project' : 'projects' }}
-        </span>
-        } @if (projectsData()?.projects?.length) {
-        <button
-          type="button"
-          (click)="showAll()"
-          class="font-mono inline-flex items-center gap-1.5 text-[0.8rem] text-text-muted transition-colors hover:text-text-primary"
-        >
-          Show all
+      @if (projectsData()?.projects?.length) {
+        <div class="flex shrink-0 items-center gap-4">
+          <span class="font-mono text-[0.8rem] text-text-faint">
+            {{ projectsData()!.projects.length }}
+            {{ projectsData()!.projects.length === 1
+                ? 'project'
+                : 'projects' }}
+          </span>
 
-          <svg
-            class="h-3.25 w-3.25"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+          <button
+            type="button"
+            (click)="showAll()"
+            class="inline-flex items-center gap-1.5
+                   rounded-md font-mono text-[0.8rem]
+                   text-text-muted transition-colors
+                   hover:text-accent
+                   focus-visible:outline-none
+                   focus-visible:ring-2
+                   focus-visible:ring-accent
+                   focus-visible:ring-offset-2
+                   focus-visible:ring-offset-transparent"
           >
-            <path d="M5 12h14" />
-            <path d="M12 5l7 7-7 7" />
-          </svg>
-        </button>
-        }
-      </div>
+            Show all
+
+            <svg
+              class="h-3.5 w-3.5 transition-transform
+                     duration-200 group-hover:translate-x-0.5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14" />
+              <path d="M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      }
     </div>
 
     <!-- Projects -->
-    @if (projectsData()?.projects?.length) { @if (projectsData()?.projects?.length) {
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-      @for (project of projectsData()!.projects; track project.id; let i = $index) {
-      <app-project-card
-        [project]="project"
-        [class]="i % 3 === 0 ? 'lg:col-span-4' : 'lg:col-span-2'"
-        (openProject)="openProject($event)"
-      />
-      }
-    </div>
-    } } @else {
-    <div
-      class="rounded-[18px] border border-glass-border bg-glass-fill p-8 text-center text-text-muted"
-    >
-      No projects available.
-    </div>
+    @if (projectsData()?.projects?.length) {
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
+        @for (
+          project of projectsData()!.projects;
+          track project.id;
+          let i = $index
+        ) {
+          <app-project-card
+            [project]="project"
+            [class]="i % 3 === 0
+              ? 'lg:col-span-4'
+              : 'lg:col-span-2'"
+            (openProject)="openProject($event)"
+          />
+        }
+      </div>
+    } @else {
+      <div
+        class="rounded-[18px] border border-glass-border
+               bg-glass-fill p-8 text-center
+               text-text-muted transition-colors duration-300"
+      >
+        No projects available.
+      </div>
     }
   </div>
 </section>

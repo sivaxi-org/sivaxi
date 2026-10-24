@@ -1,66 +1,201 @@
-<section id="contact" class="px-6 py-14">
-  <div class="max-w-6xl mx-auto">
-
+<section id="contact" class="px-5 py-16 sm:px-6 sm:py-20">
+  <div class="mx-auto max-w-6xl">
     <div
-      class="glass-panel rounded-[22px] p-8 sm:p-10 lg:p-14 text-center
-             bg-glass-fill border border-glass-border
-             backdrop-blur-sm backdrop-saturate-[1.4] shadow-glass"
+      class="glass-panel overflow-hidden rounded-[22px] border border-glass-border bg-glass-fill shadow-glass backdrop-blur-sm backdrop-saturate-[1.4]"
     >
+      <div class="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr]">
+        <!-- Introduction and dashboard-configured contacts -->
+        <div class="flex flex-col items-start p-7 sm:p-10 lg:p-12">
+          <span
+            class="inline-flex items-center gap-2 rounded-full border border-glass-border px-3 py-1.5 text-xs font-medium text-text-muted"
+          >
+            <span class="h-2 w-2 rounded-full bg-accent"></span>
+            Get in touch
+          </span>
 
-      <h2
-        class="text-[clamp(1.5rem,3.6vw,2.2rem)] font-semibold
-               tracking-[-0.01em] max-w-[22ch] mx-auto"
-      >
-        Have something worth building?
-      </h2>
+          <h2
+            class="mt-6 max-w-md text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl"
+          >
+            Have something worth building?
+            <span class="text-accent">Let's connect.</span>
+          </h2>
 
-      <p class="text-text-muted mt-3">
-        Generally responsive within a day or two.
-      </p>
+          <p class="mt-4 max-w-md text-sm leading-7 text-text-muted sm:text-base">
+            Have a project idea, a collaboration opportunity, or a question? Choose a contact method
+            or send a message using the form.
+          </p>
 
-      @if (contactsData()?.contacts?.length) {
-        <div class="mt-7 flex gap-3.5 justify-center flex-wrap">
+          <!-- Contacts remain entirely dashboard-driven -->
 
-          @for (
-            contact of contactsData()?.contacts;
-            track contact.id
-          ) {
-            <a
-              [href]="contact.link"
-              [attr.target]="contact.link.startsWith('http') ? '_blank' : null"
-              [attr.rel]="contact.link.startsWith('http') ? 'noopener noreferrer' : null"
-              [attr.aria-label]="contact.title"
-              class="inline-flex items-center gap-2 px-6 py-3.5 rounded-[11px]
-                     text-[0.92rem] font-medium
-                     bg-glass-fill border border-glass-border
-                     text-text-primary
-                     transition-all duration-200
-                     hover:-translate-y-0.5 hover:bg-glass-fill-strong"
-            >
+          @if (contactsData()?.contacts?.length) {
+          <div class="mt-8 w-full">
+            <h3 class="text-sm font-semibold text-text-primary">Contact details</h3>
 
-              @if (contact.icon) {
-                <app-icon [svg]="contact.icon"></app-icon>
-              } @else {
+            <div class="mt-4 space-y-3">
+              @for (contact of contactsData()?.contacts; track contact.id) {
+              <div
+                class="flex min-w-0 items-center gap-3 rounded-xl border border-glass-border bg-glass-fill p-3 sm:p-4"
+              >
+                <!-- Configured icon -->
                 <span
-                  class="w-4 h-4 rounded-full border border-glass-border
-                         flex items-center justify-center
-                         text-[0.55rem] font-semibold"
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-glass-border text-text-primary"
                 >
-                  {{ contact.title.charAt(0).toUpperCase() }}
+                  @if (contact.icon) {
+                  <app-icon [svg]="contact.icon"></app-icon>
+                  } @else {
+                  <span class="text-sm font-semibold">
+                    {{ contact.title.charAt(0).toUpperCase() }}
+                  </span>
+                  }
                 </span>
+
+                <!-- Visible contact title and value -->
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs text-text-muted">
+                    {{ contact.title }}
+                  </p>
+
+                  <a
+                    [href]="contact.link"
+                    [attr.target]="contact.link.startsWith('http') ? '_blank' : null"
+                    [attr.rel]="contact.link.startsWith('http') ? 'noopener noreferrer' : null"
+                    class="mt-1 block break-all text-sm font-medium text-text-primary underline-offset-4 transition-colors hover:text-accent hover:underline"
+                  >
+                    {{
+                      contact.link.startsWith('mailto:')
+                        ? contact.link.slice(7)
+                        : contact.link.startsWith('tel:')
+                        ? contact.link.slice(4)
+                        : contact.link.startsWith('https://')
+                        ? contact.link.slice(8)
+                        : contact.link.startsWith('http://')
+                        ? contact.link.slice(7)
+                        : contact.link
+                    }}
+                  </a>
+                </div>
+
+                <!-- Copy action -->
+                <button
+                  type="button"
+                  [attr.aria-label]="'Copy ' + contact.title"
+                  [attr.title]="'Copy ' + contact.title"
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-glass-border text-text-muted transition-colors hover:border-accent hover:bg-glass-fill-strong hover:text-accent"
+                  (click)="copyContact(contact.link)"
+                >
+                  <iconify-icon
+                    icon="lucide:copy"
+                    width="17"
+                    height="17"
+                    aria-hidden="true"
+                  ></iconify-icon>
+                </button>
+              </div>
               }
-
-              <span>
-                {{ contact.title }}
-              </span>
-
-            </a>
+            </div>
+          </div>
           }
 
+          <div class="mt-8 border-t border-glass-border pt-5">
+            <p class="text-xs leading-6 text-text-muted">
+              Prefer a direct conversation? Choose whichever contact method works best for you.
+            </p>
+          </div>
         </div>
-      }
 
+        <!-- Contact form -->
+        <div class="border-t border-glass-border p-7 sm:p-10 lg:border-l lg:border-t-0 lg:p-12">
+          <h3 class="text-xl font-semibold text-text-primary">Send a message</h3>
+
+          <p class="mt-2 text-sm leading-6 text-text-muted">
+            Tell me a little about what you have in mind.
+          </p>
+
+          <form class="mt-7 space-y-5" (submit)="sendMessage($event)">
+            <div>
+              <label for="contact-name" class="mb-2 block text-sm font-medium text-text-primary">
+                Your name
+              </label>
+
+              <input
+                id="contact-name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                required
+                maxlength="100"
+                placeholder="Enter your name"
+                class="w-full rounded-xl border border-glass-border bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-accent"
+              />
+            </div>
+
+            <div>
+              <label for="contact-email" class="mb-2 block text-sm font-medium text-text-primary">
+                Email address
+              </label>
+
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                maxlength="254"
+                placeholder="you@example.com"
+                class="w-full rounded-xl border border-glass-border bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-accent"
+              />
+            </div>
+
+            <div>
+              <label for="contact-subject" class="mb-2 block text-sm font-medium text-text-primary">
+                Subject
+              </label>
+
+              <input
+                id="contact-subject"
+                name="subject"
+                type="text"
+                required
+                maxlength="150"
+                placeholder="What would you like to discuss?"
+                class="w-full rounded-xl border border-glass-border bg-glass-fill px-4 py-3 text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-accent"
+              />
+            </div>
+
+            <div>
+              <label for="contact-message" class="mb-2 block text-sm font-medium text-text-primary">
+                Message
+              </label>
+
+              <textarea
+                id="contact-message"
+                name="message"
+                required
+                minlength="10"
+                maxlength="5000"
+                rows="5"
+                placeholder="Write your message..."
+                class="w-full resize-y rounded-xl border border-glass-border bg-glass-fill px-4 py-3 text-sm leading-6 text-text-primary outline-none placeholder:text-text-muted focus:border-accent"
+              ></textarea>
+            </div>
+
+            <button appButton variant="primary" type="submit" class="w-full justify-center">
+              Continue with email
+              <iconify-icon
+                icon="lucide:send"
+                width="17"
+                height="17"
+                aria-hidden="true"
+              ></iconify-icon>
+            </button>
+
+            <p class="text-xs leading-5 text-text-muted">
+              Your email application will open with the message prepared. You can review it before
+              sending.
+            </p>
+          </form>
+        </div>
+      </div>
     </div>
-
   </div>
 </section>
