@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 
-import { Navbar } from './navbar/navbar';
+
 import { Hero } from './hero/hero';
 import { ProductsSections } from './products-section/products-section';
 import { MoreProductsSection } from './more-products-section/more-products-section';
@@ -11,6 +11,7 @@ import { TechnologiesSection } from './technologies-section/technologies-section
 import { Footer } from '../../core/components/footer/footer';
 import { AboutSection } from './about-section/about-section';
 import { JournalSection } from './journal-section/journal-section';
+import { Navbar } from '../../core/components/navbar/navbar';
 
 
 
